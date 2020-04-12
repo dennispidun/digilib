@@ -57,17 +57,13 @@ dependencyManagement {
     }
 }
 
-test {
-    useJUnitPlatform()
-}
-
 node {
     download = false
     npmWorkDir = file("${project.buildDir}/npm")
     nodeModulesDir = file("${project.projectDir}/client")
 }
 
-task build(type: NpmTask) {
+task buildWithoutTests(type: NpmTask) {
     args = ['run', 'build']
 }
 
@@ -77,7 +73,7 @@ task deleteStaticFolder(type: Delete) {
 
 task copyResources(type: Copy) {
     mustRunAfter processResources
-    dependsOn build
+    dependsOn buildWithoutTests
     dependsOn deleteStaticFolder
 
     from 'client/dist/client' into 'src/main/resources/static'
