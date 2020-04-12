@@ -6,7 +6,7 @@ For building and running the application you need:
 
 - [JDK 11.0.5](https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html)
 - [npm 6.9.0](https://nodejs.org/en/download/)
-- Angular 8 (cd client --> npm install)
+- Angular 8 (```cd client && npm install```)
 
 ## Running the application locally
 
@@ -26,5 +26,3 @@ In order to output the Angular application correctly from the web server, it mus
 ```shell
 $ ./gradlew copy
 ```
-
-This will spin up the configuration in docker/docker-compose.yml
