@@ -39,7 +39,7 @@ repositories {
 ext['springCloudVersion'] = 'Greenwich.RC2'
 
 dependencies {
-    runtimeOnly 'mysql:mysql-connector-java'
+    runtimeOnly 'com.h2database:h2'
 
     compile 'org.projectlombok:lombok:1.18.8'
 

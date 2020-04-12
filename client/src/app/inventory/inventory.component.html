@@ -1,3 +1,42 @@
-<p>
-  inventory works!
-</p>
+<div class="page">
+  <h1>
+    Willkommen, Max Mustermann!
+  </h1>
+
+  <div class="booklist">
+    <div class="description">
+      <p>
+        {{ getBooksFiltered().length }} {{ getBooksFiltered().length > 1 || getBooksFiltered().length == 0 ? 'Bücher' : 'Buch' }} gefunden
+      </p>
+
+      <div>
+        <input type="checkbox" [(ngModel)]="behind"/>
+        Nur Bücher im Verzug anzeigen
+      </div>
+    </div>
+    <table>
+      <tr *ngFor="let book of getBooksFiltered()" valign="middle">
+        <td style="width: 400px">
+          <p>{{ book.title }}</p>
+          <p>{{ book.author }} | {{ book.createdOn | date : 'dd.MM.yyyy'}}</p>
+        </td>
+        <td>
+          <p>{{ book.isbn }}</p>
+        </td>
+        <td style="width: 300px">
+          <p>{{ book.invnr}}</p>
+          <p *ngIf="book.lentOn">Ausgeliehen am: {{ book.borrowedOn | date : 'dd.MM.yyyy'}}</p>
+        </td>
+        <td>
+          <button *ngIf="!book.borrowedOn" type="button" class="btn btn-outline-success">Verleihen</button>
+          <button *ngIf="book.borrowedOn" type="button" class="btn btn-outline-primary">Zurückgeben</button>
+        </td>
+        <td>
+          <button *ngIf="book.borrowedOn" type="button" class="btn btn-outline-danger">Verwarnen</button>
+        </td>
+      </tr>
+    </table>
+
+  </div>
+
+</div>
