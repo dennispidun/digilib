@@ -11,11 +11,14 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/book")
+@RequestMapping("/api/books")
 public class BookController {
 
-    @Autowired
-    BookRepository repository;
+    final BookRepository repository;
+
+    public BookController(BookRepository repository) {
+        this.repository = repository;
+    }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public List<Book> getBooks() {

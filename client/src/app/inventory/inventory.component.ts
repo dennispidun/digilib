@@ -24,7 +24,7 @@ export class InventoryComponent implements OnInit {
       this.books = this.books.filter(book => book.borrowedOn &&
         (Math.abs(Date.parse(String(book.borrowedOn)) - Date.now()) / (1000 * 3600 * 24)) >= 6);
     } else {
-      this.http.get('/api/book').toPromise().then((data) => {
+      this.http.get('/api/books').toPromise().then((data) => {
         this.books = data as [];
         console.log(data);
       });
