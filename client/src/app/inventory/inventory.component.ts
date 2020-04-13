@@ -10,33 +10,25 @@ import {HttpClient} from '@angular/common/http';
 export class InventoryComponent implements OnInit {
 
   books: Book[] = [];
-  behind = true;
+  behind = false;
 
   constructor(private http: HttpClient) {
-    this.books.push({
-      author: 'Christian Ullenboom',
-      invnr: '2018-04-1234',
-      createdOn: Date.now(),
-      isbn: '978-3-16-148410-0',
-      title: 'Java ist auch eine Insel',
-    });
-    this.books.push({
-      author: 'Christian Ullenboom',
-      invnr: '2017-03-1344',
-      createdOn: Date.now() - 123123332300,
-      borrowedOn: Date.now() - 3012000000,
-      isbn: '978-3-16-148410-0',
-      title: 'Java ist auch eine Insel',
-    });
+    this.updateBehind();
   }
 
   ngOnInit() {
   }
 
-  getBooksFiltered(): Book[] {
+  updateBehind() {
     if (this.behind) {
-      return this.books.filter(book => book.borrowedOn !== undefined && Math.abs(Date.now() - book.borrowedOn) / (1000 * 3600 * 24) > 6);
+      this.books = this.books.filter(book => book.borrowedOn &&
+        (Math.abs(Date.parse(String(book.borrowedOn)) - Date.now()) / (1000 * 3600 * 24)) >= 6);
+    } else {
+      this.http.get('/api/book').toPromise().then((data) => {
+        this.books = data as [];
+        console.log(data);
+      });
     }
-    return this.books;
+
   }
 }

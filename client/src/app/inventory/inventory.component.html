@@ -6,16 +6,16 @@
   <div class="booklist">
     <div class="description">
       <p>
-        {{ getBooksFiltered().length }} {{ getBooksFiltered().length > 1 || getBooksFiltered().length == 0 ? 'Bücher' : 'Buch' }} gefunden
+        {{ books.length }} {{ books.length > 1 || books.length == 0 ? 'Bücher' : 'Buch' }} gefunden
       </p>
 
       <div>
-        <input type="checkbox" [(ngModel)]="behind"/>
+        <input (change)="updateBehind()" type="checkbox" [(ngModel)]="behind"/>
         Nur Bücher im Verzug anzeigen
       </div>
     </div>
     <table>
-      <tr *ngFor="let book of getBooksFiltered()" valign="middle">
+      <tr *ngFor="let book of books" valign="middle">
         <td style="width: 400px">
           <p>{{ book.title }}</p>
           <p>{{ book.author }} | {{ book.createdOn | date : 'dd.MM.yyyy'}}</p>
@@ -25,7 +25,7 @@
         </td>
         <td style="width: 300px">
           <p>{{ book.invnr}}</p>
-          <p *ngIf="book.lentOn">Ausgeliehen am: {{ book.borrowedOn | date : 'dd.MM.yyyy'}}</p>
+          <p *ngIf="book.borrowedOn">Ausgeliehen am: {{ book.borrowedOn | date : 'dd.MM.yyyy'}}</p>
         </td>
         <td>
           <button *ngIf="!book.borrowedOn" type="button" class="btn btn-outline-success">Verleihen</button>
