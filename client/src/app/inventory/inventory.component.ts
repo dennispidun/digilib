@@ -1,6 +1,7 @@
 import {Component, OnInit} from "@angular/core";
 import {Book} from "./book.model";
 import {HttpClient} from "@angular/common/http";
+import {Router} from "@angular/router";
 
 @Component({
   selector: "app-inventory",
@@ -12,7 +13,7 @@ export class InventoryComponent implements OnInit {
   books: Book[] = [];
   behind = false;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
     this.updateBehind();
   }
 
@@ -43,7 +44,7 @@ export class InventoryComponent implements OnInit {
 
   }
 
-  test(book: Book) {
-    alert(book.title + " clicked");
+  view(book: Book) {
+    return this.router.navigate(["book/" + book.invnr]);
   }
 }

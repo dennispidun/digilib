@@ -1,10 +1,16 @@
-import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import {NgModule} from "@angular/core";
 import {RouterModule, Routes} from "@angular/router";
 import {InventoryComponent} from "./inventory/inventory.component";
+import {DetailsComponent} from "./details/details.component";
 
 const routes: Routes = [
-  { path: "**", component: InventoryComponent }
+  {
+    path: "book/:invnr",
+    component: DetailsComponent
+  },
+  {
+    path: "", component: InventoryComponent
+  }
 ];
 
 
@@ -12,4 +18,5 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}

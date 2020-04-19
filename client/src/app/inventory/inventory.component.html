@@ -22,7 +22,7 @@
       <th>Autor</th>
       <th>Verliehen seit</th>
     </tr>
-    <tr *ngFor="let book of books" valign="middle" (click)="test(book)">
+    <tr *ngFor="let book of books" valign="middle" (click)="view(book)">
       <td style="width: 160px">
         <p>{{ book.invnr}}</p>
       </td>
