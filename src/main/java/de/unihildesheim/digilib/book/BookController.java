@@ -1,6 +1,7 @@
 package de.unihildesheim.digilib.book;
 
-import org.apache.coyote.Response;
+import de.unihildesheim.digilib.book.borrow.BorrowingService;
+import de.unihildesheim.digilib.book.borrow.BorrowingsDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,8 +15,11 @@ public class BookController {
 
     final BookRepository repository;
 
-    public BookController(BookRepository repository) {
+    final BorrowingService borrowingService;
+
+    public BookController(BookRepository repository, BorrowingService borrowingService) {
         this.repository = repository;
+        this.borrowingService = borrowingService;
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
@@ -31,7 +35,6 @@ public class BookController {
         book.setInvnr(createBook.getInvnr());
         book.setIsbn(createBook.getIsbn());
 
-        book.setBorrowedOn(createBook.getBorrowedOn());
         book.setCreatedOn(createBook.getCreatedOn());
         if (createBook.getCreatedOn() == null) {
             book.setCreatedOn(new Date());
@@ -41,8 +44,23 @@ public class BookController {
     }
 
     @RequestMapping(value = "/{invnr}", method = RequestMethod.GET)
-    public ResponseEntity<Book> getBook(@PathVariable("invnr") String invnr) {
-        return ResponseEntity.ok(repository.findBookByInvnr(invnr).orElseThrow(() -> new BookNotFoundException()));
+    public ResponseEntity<ListBookDto> getBook(@PathVariable("invnr") String invnr) {
+        Book book = repository.findBookByInvnr(invnr).orElseThrow(() -> new BookNotFoundException());
+        ListBookDto bookDto = new ListBookDto();
+        bookDto.setIsbn(book.getIsbn());
+        bookDto.setInvnr(book.getInvnr());
+        bookDto.setTitle(book.getTitle());
+        bookDto.setCreatedOn(book.getCreatedOn());
+        bookDto.setAuthor(book.getAuthor());
+        bookDto.setCreatedOn(book.getCreatedOn());
+
+        try {
+            BorrowingsDto latestBorrowing = borrowingService.getLatestBorrowing(invnr);
+            bookDto.setBorrowedOn(latestBorrowing.getBorrowedOn());
+            bookDto.setReturnedOn(latestBorrowing.getReturnedOn());
+        } catch (Exception e) { }
+
+        return ResponseEntity.ok().body(bookDto);
     }
 
 
