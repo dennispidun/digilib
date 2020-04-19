@@ -8,13 +8,18 @@ import { HttpClientModule } from "@angular/common/http";
 import { AppRoutingModule } from "./app-routing.module";
 import { DetailsComponent } from "./details/details.component";
 
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import { BorrowComponent } from "./borrow/borrow.component";
+
 @NgModule({
   declarations: [
     AppComponent,
     InventoryComponent,
-    DetailsComponent
+    DetailsComponent,
+    BorrowComponent
   ],
   imports: [
+    NgbModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule,
