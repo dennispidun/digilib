@@ -16,27 +16,28 @@
       </th>
     </tr>
     <tr class="header">
-      <th>Inventar-Nr</th>
-      <th>ISBN</th>
-      <th>Titel</th>
-      <th>Autor</th>
-      <th>Verliehen seit</th>
+      <th style="width: 160px">Inventar-Nr</th>
+      <th style="width: 180px">ISBN</th>
+      <th style="width: 300px">Titel</th>
+      <th style="width: 250px">Autor</th>
+      <th style="width: 200px">Verliehen seit</th>
     </tr>
     <tr *ngFor="let book of books" valign="middle" (click)="view(book)">
-      <td style="width: 160px">
+      <td>
         <p>{{ book.invnr}}</p>
       </td>
-      <td style="width: 180px">
+      <td>
         <p>{{ book.isbn }}</p>
       </td>
-      <td style="width: 300px">
+      <td>
         <p>{{ book.title }}</p>
       </td>
-      <td style="width: 250px">
+      <td>
         <p>{{ book.author }}</p>
       </td>
-      <td style="width: 200px" colspan="2">
+      <td colspan="2">
         <p *ngIf="book.borrowedOn">{{ book.borrowedOn | date : 'dd.MM.yyyy'}}</p>
+        <p *ngIf="!book.borrowedOn">-</p>
       </td>
     </tr>
   </table>

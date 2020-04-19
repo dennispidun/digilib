@@ -1,1 +1,29 @@
-<p>{{book.title}}</p>
+<div class="page">
+  <h1>
+    {{book.title}}
+  </h1>
+  <h2>
+    Inventar-Nummer: {{book.invnr}}
+  </h2>
+
+  <p>
+    Author(en): {{book.author}}
+  </p>
+
+  <p>
+    Erstellt am {{book.createdOn | date : 'dd.MM.yyyy'}}
+  </p>
+
+  <p *ngIf="book.borrowedOn">
+    Verliehen am {{book.borrowedOn | date : 'dd.MM.yyyy'}}
+  </p>
+
+  <p *ngIf="!book.borrowedOn">
+    Aktuell nicht verliehen.
+  </p>
+
+  <button>Verleihen</button>
+
+
+
+</div>
