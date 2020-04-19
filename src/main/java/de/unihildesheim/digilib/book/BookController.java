@@ -1,13 +1,13 @@
 package de.unihildesheim.digilib.book;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -26,18 +26,21 @@ public class BookController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public ResponseEntity<Book> createBook(@RequestBody CreateBookDto createBook) {
+    public ResponseEntity<Book> createBook(@Valid @RequestBody CreateBookDto createBook) {
         Book book = new Book();
         book.setAuthor(createBook.getAuthor());
-        book.setBorrowedOn(createBook.getBorrowedOn());
-        book.setCreatedOn(createBook.getCreatedOn());
         book.setTitle(createBook.getTitle());
         book.setInvnr(createBook.getInvnr());
         book.setIsbn(createBook.getIsbn());
 
+        book.setBorrowedOn(createBook.getBorrowedOn());
+        book.setCreatedOn(createBook.getCreatedOn());
+        if (createBook.getCreatedOn() == null) {
+            book.setCreatedOn(new Date());
+        }
+
         return ResponseEntity.ok(repository.save(book));
     }
-
 
 
 }

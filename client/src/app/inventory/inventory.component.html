@@ -3,40 +3,42 @@
     Willkommen, Max Mustermann!
   </h1>
 
-  <div class="booklist">
-    <div class="description">
-      <p>
-        {{ books.length }} {{ books.length > 1 || books.length == 0 ? 'Bücher' : 'Buch' }} gefunden
-      </p>
-
-      <div>
-        <input (change)="updateBehind()" type="checkbox" [(ngModel)]="behind"/>
+  <table>
+    <tr class="description">
+      <th colspan="2">
+        <p>
+          {{ books.length }} {{ books.length > 1 || books.length == 0 ? 'Bücher' : 'Buch' }} gefunden
+        </p>
+      </th>
+      <th colspan="4">
+        <input (change)="updateBehind()" ngbButton type="checkbox" [(ngModel)]="behind"/>
         Nur Bücher im Verzug anzeigen
-      </div>
-    </div>
-    <table>
-      <tr *ngFor="let book of books" valign="middle">
-        <td style="width: 400px">
-          <p>{{ book.title }}</p>
-          <p>{{ book.author }} | {{ book.createdOn | date : 'dd.MM.yyyy'}}</p>
-        </td>
-        <td>
-          <p>{{ book.isbn }}</p>
-        </td>
-        <td style="width: 300px">
-          <p>{{ book.invnr}}</p>
-          <p *ngIf="book.borrowedOn">Ausgeliehen am: {{ book.borrowedOn | date : 'dd.MM.yyyy'}}</p>
-        </td>
-        <td>
-          <button *ngIf="!book.borrowedOn" type="button" class="btn btn-outline-success">Verleihen</button>
-          <button *ngIf="book.borrowedOn" type="button" class="btn btn-outline-primary">Zurückgeben</button>
-        </td>
-        <td>
-          <button *ngIf="book.borrowedOn" type="button" class="btn btn-outline-danger">Verwarnen</button>
-        </td>
-      </tr>
-    </table>
-
-  </div>
+      </th>
+    </tr>
+    <tr class="header">
+      <th>Inventar-Nr</th>
+      <th>ISBN</th>
+      <th>Titel</th>
+      <th>Autor</th>
+      <th>Verliehen seit</th>
+    </tr>
+    <tr *ngFor="let book of books" valign="middle" (click)="test(book)">
+      <td style="width: 160px">
+        <p>{{ book.invnr}}</p>
+      </td>
+      <td style="width: 180px">
+        <p>{{ book.isbn }}</p>
+      </td>
+      <td style="width: 300px">
+        <p>{{ book.title }}</p>
+      </td>
+      <td style="width: 250px">
+        <p>{{ book.author }}</p>
+      </td>
+      <td style="width: 200px" colspan="2">
+        <p *ngIf="book.borrowedOn">{{ book.borrowedOn | date : 'dd.MM.yyyy'}}</p>
+      </td>
+    </tr>
+  </table>
 
 </div>
