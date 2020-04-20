@@ -1,4 +1,4 @@
-package de.unihildesheim.digilib;
+package de.unihildesheim.digilib.book;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

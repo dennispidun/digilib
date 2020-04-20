@@ -1,7 +1,5 @@
 package de.unihildesheim.digilib.book;
 
-import de.unihildesheim.digilib.ISBNNotValidException;
-
 public class ISBNUtils {
 
     public static void validateIsbn13(String isbn) {
