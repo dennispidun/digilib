@@ -24,7 +24,17 @@ public class BorrowingService {
         this.studentRepository = studentRepository;
     }
 
-    public Borrowing borrow(CreateBorrowingDto createBorrowing, String invnr) {
+    public Borrowing borrow(CreateBorrowingDto createBorrowing, String invnr) throws BookAlreadyBorrowedException {
+        try {
+            BorrowingsDto latestBorrowing = getLatestBorrowing(invnr);
+            if (latestBorrowing.getBorrowedOn() != null && latestBorrowing.getReturnedOn() == null) {
+                throw new BookAlreadyBorrowedException();
+            }
+        } catch (BookNeverBorrowedException e) {
+
+        }
+
+
         Book book = bookRepository.findBookByInvnr(invnr).orElseThrow(() -> new BookNotFoundException());
 
         Borrowing borrowing = new Borrowing();

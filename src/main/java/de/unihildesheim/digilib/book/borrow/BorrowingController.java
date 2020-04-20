@@ -17,7 +17,7 @@ public class BorrowingController {
     }
 
     @RequestMapping(value = "/borrowings", method = RequestMethod.POST)
-    private ResponseEntity addBorrowing(@PathVariable("invnr") String invnr, @RequestBody CreateBorrowingDto createBorrowingDto) {
+    private ResponseEntity addBorrowing(@PathVariable("invnr") String invnr, @RequestBody CreateBorrowingDto createBorrowingDto) throws BookAlreadyBorrowedException {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.borrow(createBorrowingDto, invnr));
     }
 
