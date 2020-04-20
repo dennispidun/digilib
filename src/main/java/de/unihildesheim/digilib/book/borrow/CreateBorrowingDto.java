@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class CreateBorrowingDto {
 
-    private String surname;
+    private String firstname;
     private String lastname;
 
 }

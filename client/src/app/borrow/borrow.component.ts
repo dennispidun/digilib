@@ -22,7 +22,7 @@ export class BorrowComponent implements OnInit {
     const splittedStudentName = this.studentName.split(" ");
 
     this.http.post("/api/books/" + this.invnr + "/borrowings", {
-      surname: splittedStudentName[0],
+      firstname: splittedStudentName[0],
       lastname: splittedStudentName[1]
     }).subscribe((data) => {
       this.activeModal.close(data);

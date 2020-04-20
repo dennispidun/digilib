@@ -16,7 +16,7 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String surname;
+    private String firstname;
 
     private String lastname;
 }

@@ -40,7 +40,7 @@ public class BookController {
             BorrowingsDto latestBorrowing = borrowingService.getLatestBorrowing(book.getInvnr());
             if(latestBorrowing.getReturnedOn() == null && latestBorrowing.getBorrowedOn() != null) {
                 bookDto.setBorrowedOn(latestBorrowing.getBorrowedOn());
-                bookDto.setBorrowerName(latestBorrowing.getStudent().getSurname() + " " + latestBorrowing.getStudent().getLastname());
+                bookDto.setBorrowerName(latestBorrowing.getStudent().getFirstname() + " " + latestBorrowing.getStudent().getLastname());
             }
         } catch (Exception e) { }
     }
@@ -63,7 +63,7 @@ public class BookController {
 //                bookDto.setBorrowedOn(latestBorrowing.getBorrowedOn());
 //            }
 //            bookDto.setReturnedOn(latestBorrowing.getReturnedOn());
-//            bookDto.setBorrowerName(latestBorrowing.getStudent().getSurname() + " " + latestBorrowing.getStudent().getLastname());
+//            bookDto.setBorrowerName(latestBorrowing.getStudent().getFirstname() + " " + latestBorrowing.getStudent().getLastname());
 //        } catch (Exception e) { }
         addBorrowHistory(book, bookDto);
         return ResponseEntity.ok().body(bookDto);

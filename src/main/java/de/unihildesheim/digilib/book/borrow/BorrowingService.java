@@ -42,7 +42,7 @@ public class BorrowingService {
         borrowing.setBook(book);
 
         Student student = new Student();
-        student.setSurname(createBorrowing.getSurname());
+        student.setFirstname(createBorrowing.getFirstname());
         student.setLastname(createBorrowing.getLastname());
 
         studentRepository.save(student);
