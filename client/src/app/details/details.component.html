@@ -1,29 +1,32 @@
-<div class="page">
+<div class="page" *ngIf="book">
   <h1>
     {{book.title}}
   </h1>
-  <h2>
-    Inventar-Nummer: {{book.invnr}}
-  </h2>
 
-  <p>
-    Author(en): {{book.author}}
-  </p>
+  <div class="details">
+    <h2>
+      Inventar-Nummer: {{book.invnr}}
+    </h2>
 
-  <p>
-    Erstellt am {{book.createdOn | date : 'dd.MM.yyyy'}}
-  </p>
+    <p>
+      Author(en): {{book.author}}
+    </p>
 
-  <p *ngIf="book.borrowedOn">
-    Verliehen am {{book.borrowedOn | date : 'dd.MM.yyyy'}}
-  </p>
+    <p>
+      Erstellt am {{book.createdOn | date : 'dd.MM.yyyy'}}
+    </p>
 
-  <p *ngIf="!book.borrowedOn">
-    Aktuell nicht verliehen.
-  </p>
+    <p *ngIf="book.borrowedOn && !book.returnedOn">
+      Verliehen am {{book.borrowedOn | date : 'dd.MM.yyyy'}} an {{book.borrowerName}}
+    </p>
 
-  <button (click)="borrow()">Verleihen</button>
+    <p *ngIf="!book.borrowedOn">
+      Aktuell nicht verliehen.
+    </p>
+  </div>
 
-
-
+  <div class="actions">
+    <button *ngIf="!book.borrowedOn" type="button" class="btn btn-success" (click)="borrow()">Verleihen</button>
+    <button *ngIf="book.borrowedOn && !book.returnedOn" type="button" class="btn btn-primary" (click)="borrow()">Zurücknehmen</button>
+  </div>
 </div>

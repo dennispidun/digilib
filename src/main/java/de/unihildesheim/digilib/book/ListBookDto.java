@@ -13,6 +13,7 @@ public class ListBookDto {
     private String author;
     private Date createdOn;
     private Date borrowedOn;
+    private String borrowerName;
     private Date returnedOn;
 
 }

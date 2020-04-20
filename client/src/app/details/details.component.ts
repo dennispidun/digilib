@@ -2,8 +2,8 @@ import {Component, OnInit} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {ActivatedRoute} from "@angular/router";
 import {Book} from "../inventory/book.model";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {BorrowComponent} from "../borrow/borrow.component";
+import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: "app-details",
@@ -26,6 +26,13 @@ export class DetailsComponent implements OnInit {
   }
 
   borrow() {
-    const modalRef = this.modalService.open(BorrowComponent);
+    const modalRef: NgbModalRef = this.modalService.open(BorrowComponent);
+    modalRef.componentInstance.invnr = this.invNr;
+
+    modalRef.result.then((result) => {
+      this.book.borrowedOn = result.borrowedOn;
+      this.book.borrowerName = result.student.surname + " " + result.student.lastname;
+    })
+
   }
 }

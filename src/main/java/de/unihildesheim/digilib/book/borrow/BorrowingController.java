@@ -18,8 +18,7 @@ public class BorrowingController {
 
     @RequestMapping(value = "/borrowings", method = RequestMethod.POST)
     private ResponseEntity addBorrowing(@PathVariable("invnr") String invnr, @RequestBody CreateBorrowingDto createBorrowingDto) {
-        service.borrow(createBorrowingDto, invnr);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.borrow(createBorrowingDto, invnr));
     }
 
     @RequestMapping(value = "/borrowings", method = RequestMethod.GET)

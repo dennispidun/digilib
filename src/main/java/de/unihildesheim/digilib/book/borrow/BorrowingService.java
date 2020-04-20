@@ -24,7 +24,7 @@ public class BorrowingService {
         this.studentRepository = studentRepository;
     }
 
-    public void borrow(CreateBorrowingDto createBorrowing, String invnr) {
+    public Borrowing borrow(CreateBorrowingDto createBorrowing, String invnr) {
         Book book = bookRepository.findBookByInvnr(invnr).orElseThrow(() -> new BookNotFoundException());
 
         Borrowing borrowing = new Borrowing();
@@ -39,7 +39,7 @@ public class BorrowingService {
 
         borrowing.setStudent(student);
 
-        repository.save(borrowing);
+        return repository.save(borrowing);
     }
 
     public BorrowingsDto getLatestBorrowing(String invnr) {

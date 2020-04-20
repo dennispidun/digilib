@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/books")
@@ -23,8 +24,23 @@ public class BookController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public List<Book> getBooks() {
-        return repository.findAll();
+    public List<ListBookDto> getBooks() {
+        return repository.findAll().stream().map(book -> {
+            ListBookDto bookDto = new ListBookDto();
+            bookDto.setIsbn(book.getIsbn());
+            bookDto.setInvnr(book.getInvnr());
+            bookDto.setTitle(book.getTitle());
+            bookDto.setCreatedOn(book.getCreatedOn());
+            bookDto.setAuthor(book.getAuthor());
+
+            try {
+                BorrowingsDto latestBorrowing = borrowingService.getLatestBorrowing(book.getInvnr());
+                bookDto.setBorrowedOn(latestBorrowing.getBorrowedOn());
+                bookDto.setReturnedOn(latestBorrowing.getReturnedOn());
+                bookDto.setBorrowerName(latestBorrowing.getStudent().getSurname() + " " + latestBorrowing.getStudent().getLastname());
+            } catch (Exception e) { }
+            return bookDto;
+        }).collect(Collectors.toList());
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
@@ -52,12 +68,15 @@ public class BookController {
         bookDto.setTitle(book.getTitle());
         bookDto.setCreatedOn(book.getCreatedOn());
         bookDto.setAuthor(book.getAuthor());
-        bookDto.setCreatedOn(book.getCreatedOn());
 
         try {
             BorrowingsDto latestBorrowing = borrowingService.getLatestBorrowing(invnr);
-            bookDto.setBorrowedOn(latestBorrowing.getBorrowedOn());
+
+            if (latestBorrowing.getBorrowedOn() != null && latestBorrowing.getReturnedOn() == null) {
+                bookDto.setBorrowedOn(latestBorrowing.getBorrowedOn());
+            }
             bookDto.setReturnedOn(latestBorrowing.getReturnedOn());
+            bookDto.setBorrowerName(latestBorrowing.getStudent().getSurname() + " " + latestBorrowing.getStudent().getLastname());
         } catch (Exception e) { }
 
         return ResponseEntity.ok().body(bookDto);

@@ -5,8 +5,8 @@
   </button>
 </div>
 <div class="modal-body">
-  <input type="text" class="form-control"  placeholder="Name des Schülers">
+  <input type="text" class="form-control" [(ngModel)]="studentName" placeholder="Name des Schülers">
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-outline-success" (click)="activeModal.close('Borrow click')">Verleihen</button>
+  <button type="button" class="btn btn-outline-success" (click)="borrow()">Verleihen</button>
 </div>

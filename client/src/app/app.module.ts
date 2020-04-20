@@ -8,7 +8,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { AppRoutingModule } from "./app-routing.module";
 import { DetailsComponent } from "./details/details.component";
 
-import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import {NgbButtonLabel, NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import { BorrowComponent } from "./borrow/borrow.component";
 
 @NgModule({
@@ -25,7 +25,7 @@ import { BorrowComponent } from "./borrow/borrow.component";
     FormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [NgbButtonLabel],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

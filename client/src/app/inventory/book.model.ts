@@ -3,6 +3,8 @@ export interface Book {
   isbn: string;
   title: string;
   author: string;
-  borrowedOn?: number;
   createdOn: number;
+  borrowedOn?: number;
+  borrowerName?: string
+  returnedOn?: number;
 }
