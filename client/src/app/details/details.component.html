@@ -20,13 +20,13 @@
       Verliehen am {{book.borrowedOn | date : 'dd.MM.yyyy'}} an {{book.borrowerName}}
     </p>
 
-    <p *ngIf="!book.borrowedOn">
+    <p *ngIf="!book.borrowedOn || book.returnedOn">
       Aktuell nicht verliehen.
     </p>
   </div>
 
   <div class="actions">
-    <button *ngIf="!book.borrowedOn" type="button" class="btn btn-success" (click)="borrow()">Verleihen</button>
-    <button *ngIf="book.borrowedOn && !book.returnedOn" type="button" class="btn btn-primary" (click)="borrow()">Zurücknehmen</button>
+    <button *ngIf="!book.borrowedOn || book.returnedOn" type="button" class="btn btn-success" (click)="borrow()">Verleihen</button>
+    <button *ngIf="book.borrowedOn && !book.returnedOn" type="button" class="btn btn-primary" (click)="cancel()">Zurücknehmen</button>
   </div>
 </div>

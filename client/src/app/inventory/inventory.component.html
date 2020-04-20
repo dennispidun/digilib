@@ -36,8 +36,8 @@
         <p>{{ book.author }}</p>
       </td>
       <td colspan="2">
-        <p *ngIf="book.borrowedOn">{{ book.borrowedOn | date : 'dd.MM.yyyy'}}</p>
-        <p *ngIf="!book.borrowedOn">-</p>
+        <p *ngIf="book.borrowedOn && !book.returnedOn">{{ book.borrowedOn | date : 'dd.MM.yyyy'}}</p>
+        <p *ngIf="!book.borrowedOn || book.returnedOn">-</p>
       </td>
     </tr>
   </table>

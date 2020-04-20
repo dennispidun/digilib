@@ -1,12 +1,12 @@
 package de.unihildesheim.digilib.book;
 
-import lombok.Value;
+import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 
-@Value
-public class CreateBookDto {
+@Data
+public class BookDto {
 
     @NotEmpty
     private String invnr;
@@ -21,5 +21,4 @@ public class CreateBookDto {
     private String author;
 
     private Date createdOn;
-
 }

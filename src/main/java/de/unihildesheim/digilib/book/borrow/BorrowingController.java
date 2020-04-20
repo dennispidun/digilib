@@ -31,7 +31,9 @@ public class BorrowingController {
         return ResponseEntity.status(HttpStatus.OK).body(service.getLatestBorrowing(invnr));
     }
 
-
-
+    @RequestMapping(value = "/latest-borrowing", method = RequestMethod.DELETE)
+    private ResponseEntity<BorrowingsDto> cancelLatestBorrowing(@PathVariable("invnr") String invnr) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.cancelLatestBorrowing(invnr));
+    }
 
 }

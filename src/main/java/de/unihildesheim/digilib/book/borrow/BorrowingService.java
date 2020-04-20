@@ -51,7 +51,25 @@ public class BorrowingService {
             BorrowingsDto borrowingDto = new BorrowingsDto();
             borrowingDto.setStudent(borrowing.getStudent());
             borrowingDto.setBorrowedOn(borrowing.getBorrowedOn());
+            borrowingDto.setReturnedOn(borrowing.getReturnedOn());
             return borrowingDto;
         }).collect(Collectors.toList());
+    }
+
+    public BorrowingsDto cancelLatestBorrowing(String invnr) {
+        Borrowing borrowing = repository.getBorrowingByBook_InvnrOrderByBorrowedOnDesc(invnr)
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new BookNeverBorrowedException());
+        borrowing.setReturnedOn(new Date());
+
+        repository.save(borrowing);
+
+        BorrowingsDto borrowingDto = new BorrowingsDto();
+        borrowingDto.setStudent(borrowing.getStudent());
+        borrowingDto.setBorrowedOn(borrowing.getBorrowedOn());
+        borrowingDto.setReturnedOn(borrowing.getReturnedOn());
+
+        return borrowingDto;
     }
 }

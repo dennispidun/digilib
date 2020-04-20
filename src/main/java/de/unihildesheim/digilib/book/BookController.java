@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,68 +17,66 @@ public class BookController {
 
     final BorrowingService borrowingService;
 
-    public BookController(BookRepository repository, BorrowingService borrowingService) {
+    final BooksProvider booksProvider;
+
+    public BookController(BookRepository repository, BorrowingService borrowingService, BooksProvider booksProvider) {
         this.repository = repository;
         this.borrowingService = borrowingService;
+        this.booksProvider = booksProvider;
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public List<ListBookDto> getBooks() {
         return repository.findAll().stream().map(book -> {
-            ListBookDto bookDto = new ListBookDto();
-            bookDto.setIsbn(book.getIsbn());
-            bookDto.setInvnr(book.getInvnr());
-            bookDto.setTitle(book.getTitle());
-            bookDto.setCreatedOn(book.getCreatedOn());
-            bookDto.setAuthor(book.getAuthor());
+            ListBookDto bookDto = mapBook(book);
 
-            try {
-                BorrowingsDto latestBorrowing = borrowingService.getLatestBorrowing(book.getInvnr());
-                bookDto.setBorrowedOn(latestBorrowing.getBorrowedOn());
-                bookDto.setReturnedOn(latestBorrowing.getReturnedOn());
-                bookDto.setBorrowerName(latestBorrowing.getStudent().getSurname() + " " + latestBorrowing.getStudent().getLastname());
-            } catch (Exception e) { }
+            addBorrowHistory(book, bookDto);
             return bookDto;
         }).collect(Collectors.toList());
     }
 
+    private void addBorrowHistory(Book book, ListBookDto bookDto) {
+        try {
+            BorrowingsDto latestBorrowing = borrowingService.getLatestBorrowing(book.getInvnr());
+            if(latestBorrowing.getReturnedOn() == null && latestBorrowing.getBorrowedOn() != null) {
+                bookDto.setBorrowedOn(latestBorrowing.getBorrowedOn());
+                bookDto.setBorrowerName(latestBorrowing.getStudent().getSurname() + " " + latestBorrowing.getStudent().getLastname());
+            }
+        } catch (Exception e) { }
+    }
+
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public ResponseEntity<Book> createBook(@Valid @RequestBody CreateBookDto createBook) {
-        Book book = new Book();
-        book.setAuthor(createBook.getAuthor());
-        book.setTitle(createBook.getTitle());
-        book.setInvnr(createBook.getInvnr());
-        book.setIsbn(createBook.getIsbn());
+    public ResponseEntity<Book> createBook(@Valid @RequestBody BookDto createBook) {
 
-        book.setCreatedOn(createBook.getCreatedOn());
-        if (createBook.getCreatedOn() == null) {
-            book.setCreatedOn(new Date());
-        }
-
-        return ResponseEntity.ok(repository.save(book));
+        return ResponseEntity.ok(booksProvider.create(createBook));
     }
 
     @RequestMapping(value = "/{invnr}", method = RequestMethod.GET)
     public ResponseEntity<ListBookDto> getBook(@PathVariable("invnr") String invnr) {
         Book book = repository.findBookByInvnr(invnr).orElseThrow(() -> new BookNotFoundException());
+        ListBookDto bookDto = mapBook(book);
+
+//        try {
+//            BorrowingsDto latestBorrowing = borrowingService.getLatestBorrowing(invnr);
+//
+//            if (latestBorrowing.getBorrowedOn() != null && latestBorrowing.getReturnedOn() == null) {
+//                bookDto.setBorrowedOn(latestBorrowing.getBorrowedOn());
+//            }
+//            bookDto.setReturnedOn(latestBorrowing.getReturnedOn());
+//            bookDto.setBorrowerName(latestBorrowing.getStudent().getSurname() + " " + latestBorrowing.getStudent().getLastname());
+//        } catch (Exception e) { }
+        addBorrowHistory(book, bookDto);
+        return ResponseEntity.ok().body(bookDto);
+    }
+
+    private ListBookDto mapBook(Book book) {
         ListBookDto bookDto = new ListBookDto();
         bookDto.setIsbn(book.getIsbn());
         bookDto.setInvnr(book.getInvnr());
         bookDto.setTitle(book.getTitle());
         bookDto.setCreatedOn(book.getCreatedOn());
         bookDto.setAuthor(book.getAuthor());
-
-        try {
-            BorrowingsDto latestBorrowing = borrowingService.getLatestBorrowing(invnr);
-
-            if (latestBorrowing.getBorrowedOn() != null && latestBorrowing.getReturnedOn() == null) {
-                bookDto.setBorrowedOn(latestBorrowing.getBorrowedOn());
-            }
-            bookDto.setReturnedOn(latestBorrowing.getReturnedOn());
-            bookDto.setBorrowerName(latestBorrowing.getStudent().getSurname() + " " + latestBorrowing.getStudent().getLastname());
-        } catch (Exception e) { }
-
-        return ResponseEntity.ok().body(bookDto);
+        return bookDto;
     }
 
 

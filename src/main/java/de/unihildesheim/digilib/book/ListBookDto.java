@@ -5,13 +5,8 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class ListBookDto {
+public class ListBookDto extends BookDto {
 
-    private String invnr;
-    private String isbn;
-    private String title;
-    private String author;
-    private Date createdOn;
     private Date borrowedOn;
     private String borrowerName;
     private Date returnedOn;
