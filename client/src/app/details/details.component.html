@@ -1,32 +1,71 @@
-<div class="page" *ngIf="book">
-  <h1>
-    {{book.title}}
-  </h1>
+<div class="page">
+  <div class="container-fluid" *ngIf="book">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <h1>
+            {{book.title}}
+          </h1>
+          <div class="details">
+            <h2>
+              Inventar-Nummer: {{book.invnr}}
+            </h2>
 
-  <div class="details">
-    <h2>
-      Inventar-Nummer: {{book.invnr}}
-    </h2>
+            <p>
+              Autor(en): {{book.author}}
+            </p>
 
-    <p>
-      Author(en): {{book.author}}
-    </p>
+            <p>
+              Erstellt am {{book.createdOn | date : 'dd.MM.yyyy'}}
+            </p>
 
-    <p>
-      Erstellt am {{book.createdOn | date : 'dd.MM.yyyy'}}
-    </p>
+            <p *ngIf="book.borrowedOn && !book.returnedOn">
+              Verliehen am {{book.borrowedOn | date : 'dd.MM.yyyy'}} an {{book.borrowerName}}
+            </p>
 
-    <p *ngIf="book.borrowedOn && !book.returnedOn">
-      Verliehen am {{book.borrowedOn | date : 'dd.MM.yyyy'}} an {{book.borrowerName}}
-    </p>
+            <p *ngIf="!book.borrowedOn || book.returnedOn">
+              Aktuell nicht verliehen.
+            </p>
+          </div>
 
-    <p *ngIf="!book.borrowedOn || book.returnedOn">
-      Aktuell nicht verliehen.
-    </p>
-  </div>
+          <div class="actions">
+            <button *ngIf="!book.borrowedOn || book.returnedOn" type="button" class="btn btn-success" (click)="borrow()">Verleihen</button>
+            <button *ngIf="book.borrowedOn && !book.returnedOn" type="button" class="btn btn-primary" (click)="cancel()">Zurücknehmen</button>
+          </div>
+        </div>
+        <div class="col">
+          <div class="history">
 
-  <div class="actions">
-    <button *ngIf="!book.borrowedOn || book.returnedOn" type="button" class="btn btn-success" (click)="borrow()">Verleihen</button>
-    <button *ngIf="book.borrowedOn && !book.returnedOn" type="button" class="btn btn-primary" (click)="cancel()">Zurücknehmen</button>
+            <h2>
+              Ausleihhistorie
+            </h2>
+
+            <table>
+              <tr class="header">
+                <th>
+                  Nachname
+                </th>
+                <th>
+                  Vorname
+                </th>
+                <th>
+                  Ausgeliehen am
+                </th>
+                <th>
+                  Zurückgegeben am
+                </th>
+              </tr>
+              <tr *ngFor="let item of history">
+                <td>{{item.student.lastname}}</td>
+                <td>{{item.student.firstname}}</td>
+                <td>{{item.borrowedOn | date : 'dd.MM.yyyy'}}</td>
+                <td>{{item.returnedOn | date : 'dd.MM.yyyy'}}</td>
+              </tr>
+            </table>
+
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

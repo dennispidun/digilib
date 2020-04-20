@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,23 +32,26 @@ public class BorrowingService {
                 throw new BookAlreadyBorrowedException();
             }
         } catch (BookNeverBorrowedException e) {
-
         }
 
+        Optional<Student> byFirstnameAndLastname = studentRepository.
+                findByFirstnameAndLastname(createBorrowing.getFirstname(), createBorrowing.getLastname());
 
         Book book = bookRepository.findBookByInvnr(invnr).orElseThrow(() -> new BookNotFoundException());
-
         Borrowing borrowing = new Borrowing();
         borrowing.setBorrowedOn(new Date());
         borrowing.setBook(book);
 
-        Student student = new Student();
-        student.setFirstname(createBorrowing.getFirstname());
-        student.setLastname(createBorrowing.getLastname());
+        if (byFirstnameAndLastname.isEmpty()) {
+            Student student = new Student();
+            student.setFirstname(createBorrowing.getFirstname());
+            student.setLastname(createBorrowing.getLastname());
 
-        studentRepository.save(student);
-
-        borrowing.setStudent(student);
+            studentRepository.save(student);
+            borrowing.setStudent(student);
+        } else {
+            borrowing.setStudent(byFirstnameAndLastname.get());
+        }
 
         return repository.save(borrowing);
     }
