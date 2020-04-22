@@ -42,18 +42,10 @@
 
             <table>
               <tr class="header">
-                <th>
-                  Nachname
-                </th>
-                <th>
-                  Vorname
-                </th>
-                <th>
-                  Ausgeliehen am
-                </th>
-                <th>
-                  Zurückgegeben am
-                </th>
+                <th style="width: 160px">Nachname</th>
+                <th style="width: 160px">Vorname</th>
+                <th style="width: 160px">Ausgeliehen am</th>
+                <th style="width: 160px">Zurückgegeben am</th>
               </tr>
               <tr *ngFor="let item of history">
                 <td>{{item.student.lastname}}</td>

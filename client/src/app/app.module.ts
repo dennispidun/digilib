@@ -10,13 +10,17 @@ import { DetailsComponent } from "./details/details.component";
 
 import {NgbButtonLabel, NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import { BorrowComponent } from "./borrow/borrow.component";
+import { ContentComponent } from './content/content.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     InventoryComponent,
     DetailsComponent,
-    BorrowComponent
+    BorrowComponent,
+    ContentComponent,
+    LoginComponent
   ],
   imports: [
     NgbModule,

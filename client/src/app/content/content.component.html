@@ -1,0 +1,31 @@
+<div class="header">
+  <p>
+    Digitale Bibliothek der Grundschule auf der Höhe
+  </p>
+</div>
+<div class="page">
+  <div class="navigation">
+    <div class="user">
+      <div class="avatar"></div>
+      <div class="who">
+        <p>Angemeldet als: </p>
+        <p style="font-weight: bold;">Max Mustermann</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <nav>
+        <ul>
+          <li><a [routerLink]="'/dashboard'"> Inventar</a></li>
+        </ul>
+      </nav>
+    </div>
+
+  </div>
+
+
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+
