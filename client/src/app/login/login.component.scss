@@ -1,3 +1,53 @@
-body {
-  background-color: white;
+.left {
+  position:absolute;
+  height: 100%;
+  width: 763px;
+
+  background-color: #A7C407;
+
+  .text {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    height: 392px;
+    width: 402px;
+
+    h1 {
+      text-align: left;
+      font: Bold 53px/61px Arial;
+      letter-spacing: 0px;
+      color: #FFFFFF;
+      opacity: 1;
+
+      margin-bottom: 100px;
+    }
+
+    h2 {
+      text-align: left;
+      font: Regular 53px/61px Arial;
+      color: #FFFFFF;
+    }
+  }
 }
+
+.right {
+  position: absolute;
+  left: 763px;
+  width: calc(100% - 763px);
+  height: 100%;
+  background-color: white;
+
+  .login {
+    position: relative;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    height: 40px;
+    width: 120px;
+  }
+}
+
+
