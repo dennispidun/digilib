@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +28,7 @@ public class BookController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public List<ListBookDto> getBooks() {
+    public List<ListBookDto> getBooks(@RequestParam(required = false) String search) {
         return repository.findAll().stream().map(book -> {
             ListBookDto bookDto = mapBook(book);
 

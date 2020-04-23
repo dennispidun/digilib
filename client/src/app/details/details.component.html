@@ -51,8 +51,8 @@
                 <th style="width: 160px">Zurückgegeben am</th>
               </tr>
               <tr *ngFor="let item of history">
-                <td>{{item.student.lastname}}</td>
-                <td>{{item.student.firstname}}</td>
+                <td>{{item.borrower.lastname}}</td>
+                <td>{{item.borrower.firstname}}</td>
                 <td>{{item.borrowedOn | date : 'dd.MM.yyyy'}}</td>
                 <td>{{item.returnedOn | date : 'dd.MM.yyyy'}}</td>
               </tr>

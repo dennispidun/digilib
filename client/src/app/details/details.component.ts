@@ -42,7 +42,7 @@ export class DetailsComponent implements OnInit {
     modalRef.result.then((result) => {
       this.book.borrowedOn = result.borrowedOn;
       this.book.returnedOn = result.returnedOn;
-      this.book.borrowerName = result.student.firstname + " " + result.student.lastname;
+      this.book.borrowerName = result.borrower.firstname + " " + result.borrower.lastname;
       this.updateHistory();
     });
 

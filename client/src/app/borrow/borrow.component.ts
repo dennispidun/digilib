@@ -7,7 +7,7 @@ import {HttpClient} from "@angular/common/http";
   styleUrls: ["./borrow.component.scss"]
 })
 export class BorrowComponent implements OnInit {
-  studentName: string;
+  borrowerName: string;
 
   @Input()
   invnr: string;
@@ -19,7 +19,7 @@ export class BorrowComponent implements OnInit {
   }
 
   borrow() {
-    const splittedStudentName = this.studentName.split(" ");
+    const splittedStudentName = this.borrowerName.split(" ");
 
     this.http.post("/api/books/" + this.invnr + "/borrowings", {
       firstname: splittedStudentName[0],
