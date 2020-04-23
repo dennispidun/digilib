@@ -6,8 +6,8 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface StudentRepository extends JpaRepository<Student, Long> {
+public interface BorrowerRepository extends JpaRepository<Borrower, Long> {
 
-    Optional<Student> findByFirstnameAndLastname(String firstname, String lastname);
+    Optional<Borrower> findByFirstnameAndLastname(String firstname, String lastname);
 
 }

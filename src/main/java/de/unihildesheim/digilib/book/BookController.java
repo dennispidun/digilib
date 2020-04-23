@@ -40,7 +40,7 @@ public class BookController {
             BorrowingsDto latestBorrowing = borrowingService.getLatestBorrowing(book.getInvnr());
             if(latestBorrowing.getReturnedOn() == null && latestBorrowing.getBorrowedOn() != null) {
                 bookDto.setBorrowedOn(latestBorrowing.getBorrowedOn());
-                bookDto.setBorrowerName(latestBorrowing.getStudent().getFirstname() + " " + latestBorrowing.getStudent().getLastname());
+                bookDto.setBorrowerName(latestBorrowing.getBorrower().getFirstname() + " " + latestBorrowing.getBorrower().getLastname());
             }
         } catch (Exception e) { }
     }

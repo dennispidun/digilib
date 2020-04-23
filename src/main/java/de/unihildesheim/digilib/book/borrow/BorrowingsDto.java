@@ -1,6 +1,6 @@
 package de.unihildesheim.digilib.book.borrow;
 
-import de.unihildesheim.digilib.student.Student;
+import de.unihildesheim.digilib.student.Borrower;
 import lombok.Data;
 
 import java.util.Date;
@@ -8,7 +8,7 @@ import java.util.Date;
 @Data
 public class BorrowingsDto {
 
-    private Student student;
+    private Borrower borrower;
     private Date borrowedOn;
     private Date returnedOn;
 }

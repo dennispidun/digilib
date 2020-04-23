@@ -1,8 +1,8 @@
 package de.unihildesheim.digilib.book.borrow;
 
 import de.unihildesheim.digilib.book.*;
-import de.unihildesheim.digilib.student.Student;
-import de.unihildesheim.digilib.student.StudentRepository;
+import de.unihildesheim.digilib.student.Borrower;
+import de.unihildesheim.digilib.student.BorrowerRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -17,12 +17,12 @@ public class BorrowingService {
 
     private BookRepository bookRepository;
 
-    private StudentRepository studentRepository;
+    private BorrowerRepository borrowerRepository;
 
-    public BorrowingService(BorrowingRepository repository, BookRepository bookRepository, StudentRepository studentRepository) {
+    public BorrowingService(BorrowingRepository repository, BookRepository bookRepository, BorrowerRepository borrowerRepository) {
         this.repository = repository;
         this.bookRepository = bookRepository;
-        this.studentRepository = studentRepository;
+        this.borrowerRepository = borrowerRepository;
     }
 
     public Borrowing borrow(CreateBorrowingDto createBorrowing, String invnr) throws BookAlreadyBorrowedException {
@@ -34,7 +34,7 @@ public class BorrowingService {
         } catch (BookNeverBorrowedException e) {
         }
 
-        Optional<Student> byFirstnameAndLastname = studentRepository.
+        Optional<Borrower> byFirstnameAndLastname = borrowerRepository.
                 findByFirstnameAndLastname(createBorrowing.getFirstname(), createBorrowing.getLastname());
 
         Book book = bookRepository.findBookByInvnr(invnr).orElseThrow(() -> new BookNotFoundException());
@@ -43,14 +43,14 @@ public class BorrowingService {
         borrowing.setBook(book);
 
         if (byFirstnameAndLastname.isEmpty()) {
-            Student student = new Student();
-            student.setFirstname(createBorrowing.getFirstname());
-            student.setLastname(createBorrowing.getLastname());
+            Borrower borrower = new Borrower();
+            borrower.setFirstname(createBorrowing.getFirstname());
+            borrower.setLastname(createBorrowing.getLastname());
 
-            studentRepository.save(student);
-            borrowing.setStudent(student);
+            borrowerRepository.save(borrower);
+            borrowing.setBorrower(borrower);
         } else {
-            borrowing.setStudent(byFirstnameAndLastname.get());
+            borrowing.setBorrower(byFirstnameAndLastname.get());
         }
 
         return repository.save(borrowing);
@@ -63,7 +63,7 @@ public class BorrowingService {
     public List<BorrowingsDto> getBorrowings(String invnr) {
         return repository.getBorrowingByBook_InvnrOrderByBorrowedOnDesc(invnr).stream().map(borrowing -> {
             BorrowingsDto borrowingDto = new BorrowingsDto();
-            borrowingDto.setStudent(borrowing.getStudent());
+            borrowingDto.setBorrower(borrowing.getBorrower());
             borrowingDto.setBorrowedOn(borrowing.getBorrowedOn());
             borrowingDto.setReturnedOn(borrowing.getReturnedOn());
             return borrowingDto;
@@ -80,7 +80,7 @@ public class BorrowingService {
         repository.save(borrowing);
 
         BorrowingsDto borrowingDto = new BorrowingsDto();
-        borrowingDto.setStudent(borrowing.getStudent());
+        borrowingDto.setBorrower(borrowing.getBorrower());
         borrowingDto.setBorrowedOn(borrowing.getBorrowedOn());
         borrowingDto.setReturnedOn(borrowing.getReturnedOn());
 

@@ -10,7 +10,7 @@ import javax.persistence.Id;
 
 @Entity
 @Data
-public class Student {
+public class Borrower {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

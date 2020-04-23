@@ -1,7 +1,7 @@
 package de.unihildesheim.digilib.book.borrow;
 
 import de.unihildesheim.digilib.book.Book;
-import de.unihildesheim.digilib.student.Student;
+import de.unihildesheim.digilib.student.Borrower;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -21,6 +21,6 @@ public class Borrowing {
     private Book book;
 
     @ManyToOne
-    private Student student;
+    private Borrower borrower;
 
 }

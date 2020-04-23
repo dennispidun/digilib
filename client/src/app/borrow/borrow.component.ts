@@ -27,6 +27,5 @@ export class BorrowComponent implements OnInit {
     }).subscribe((data) => {
       this.activeModal.close(data);
     });
-
   }
 }
