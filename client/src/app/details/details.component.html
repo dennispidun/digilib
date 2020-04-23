@@ -36,7 +36,7 @@
             <button *ngIf="book.borrowedOn && !book.returnedOn" type="button" class="btn btn-primary" (click)="cancel()">Zurücknehmen</button>
           </div>
         </div>
-        <div class="col">
+        <div class="col"  *ngIf="history.length != 0">
           <div class="history">
 
             <h2>
