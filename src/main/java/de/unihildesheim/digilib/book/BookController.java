@@ -6,9 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @RestController
@@ -29,12 +29,21 @@ public class BookController {
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public List<ListBookDto> getBooks(@RequestParam(required = false) String search) {
-        return repository.findAll().stream().map(book -> {
-            ListBookDto bookDto = mapBook(book);
+        if (search == null || search.isEmpty()) {
+            return repository.findAll().stream().map(mapBookAndAddBorrowing()).collect(Collectors.toList());
+        } else {
+            ListBookDto invnrBook = repository.findBookByInvnr(search).map(mapBookAndAddBorrowing()).orElse(null);
 
+            return (invnrBook != null ? Collections.singletonList(invnrBook) : Collections.emptyList());
+        }
+    }
+
+    private Function<Book, ListBookDto> mapBookAndAddBorrowing() {
+        return book -> {
+            ListBookDto bookDto = mapBook(book);
             addBorrowHistory(book, bookDto);
             return bookDto;
-        }).collect(Collectors.toList());
+        };
     }
 
     private void addBorrowHistory(Book book, ListBookDto bookDto) {
