@@ -4,7 +4,7 @@ public class ISBNUtils {
 
     public static void validateIsbn13(String isbn) {
         if (isbn == null) {
-            throw new ISBNNotValidException();
+            throw new ISBNNotValidException(isbn);
         }
 
         //remove any hyphens
@@ -12,7 +12,7 @@ public class ISBNUtils {
 
         //must be a 13 digit ISBN
         if (isbn.length() != 13) {
-            throw new ISBNNotValidException();
+            throw new ISBNNotValidException(isbn);
         }
 
         try {
@@ -29,10 +29,10 @@ public class ISBNUtils {
             }
 
             if (checksum != Integer.parseInt(isbn.substring(12))) {
-                throw new ISBNNotValidException();
+                throw new ISBNNotValidException(isbn);
             }
         } catch (NumberFormatException nfe) {
-            throw new ISBNNotValidException();
+            throw new ISBNNotValidException(isbn);
         }
     }
 

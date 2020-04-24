@@ -29,7 +29,7 @@ public class BorrowingService {
         try {
             BorrowingsDto latestBorrowing = getLatestBorrowing(invnr);
             if (latestBorrowing.getBorrowedOn() != null && latestBorrowing.getReturnedOn() == null) {
-                throw new BookAlreadyBorrowedException();
+                throw new BookAlreadyBorrowedException(invnr);
             }
         } catch (BookNeverBorrowedException e) {
         }
@@ -37,7 +37,7 @@ public class BorrowingService {
         Optional<Borrower> byFirstnameAndLastname = borrowerRepository.
                 findByFirstnameAndLastname(createBorrowing.getFirstname(), createBorrowing.getLastname());
 
-        Book book = bookRepository.findBookByInvnr(invnr).orElseThrow(() -> new BookNotFoundException());
+        Book book = bookRepository.findBookByInvnr(invnr).orElseThrow(() -> new BookNotFoundException(invnr));
         Borrowing borrowing = new Borrowing();
         borrowing.setBorrowedOn(new Date());
         borrowing.setBook(book);
@@ -57,7 +57,7 @@ public class BorrowingService {
     }
 
     public BorrowingsDto getLatestBorrowing(String invnr) {
-        return getBorrowings(invnr).stream().findFirst().orElseThrow(() -> new BookNeverBorrowedException());
+        return getBorrowings(invnr).stream().findFirst().orElseThrow(() -> new BookNeverBorrowedException(invnr));
     }
 
     public List<BorrowingsDto> getBorrowings(String invnr) {
@@ -74,7 +74,7 @@ public class BorrowingService {
         Borrowing borrowing = repository.getBorrowingByBook_InvnrOrderByBorrowedOnDesc(invnr)
                 .stream()
                 .findFirst()
-                .orElseThrow(() -> new BookNeverBorrowedException());
+                .orElseThrow(() -> new BookNeverBorrowedException(invnr));
         borrowing.setReturnedOn(new Date());
 
         repository.save(borrowing);

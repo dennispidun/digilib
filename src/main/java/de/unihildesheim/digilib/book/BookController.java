@@ -55,7 +55,7 @@ public class BookController {
 
     @RequestMapping(value = "/{invnr}", method = RequestMethod.GET)
     public ResponseEntity<ListBookDto> getBook(@PathVariable("invnr") String invnr) {
-        Book book = repository.findBookByInvnr(invnr).orElseThrow(() -> new BookNotFoundException());
+        Book book = repository.findBookByInvnr(invnr).orElseThrow(() -> new BookNotFoundException(invnr));
         ListBookDto bookDto = mapBook(book);
 
 //        try {
