@@ -1,7 +1,7 @@
 package de.unihildesheim.digilib.book.borrow;
 
 import de.unihildesheim.digilib.book.Book;
-import de.unihildesheim.digilib.student.Borrower;
+import de.unihildesheim.digilib.borrower.Borrower;
 import lombok.Data;
 
 import javax.persistence.*;

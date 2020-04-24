@@ -1,8 +1,8 @@
 package de.unihildesheim.digilib.book.borrow;
 
 import de.unihildesheim.digilib.book.*;
-import de.unihildesheim.digilib.student.Borrower;
-import de.unihildesheim.digilib.student.BorrowerRepository;
+import de.unihildesheim.digilib.borrower.Borrower;
+import de.unihildesheim.digilib.borrower.BorrowerRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;

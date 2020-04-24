@@ -1,4 +1,4 @@
-package de.unihildesheim.digilib.student;
+package de.unihildesheim.digilib.borrower;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
