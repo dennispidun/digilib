@@ -39,6 +39,18 @@ public class BorrowingService {
         Optional<Borrower> byFirstnameAndLastname = borrowerRepository.
                 findByFirstnameAndLastname(createBorrowing.getFirstname(), createBorrowing.getLastname());
 
+        byFirstnameAndLastname.ifPresent(
+                (borrower) -> {
+                    try {
+                        if (!(borrower.isTeacher()) && !(getUnreturnedBorrowings(borrower).isEmpty())) {
+                            throw new StudentCannotBorrowMultipleBooks();
+                        }
+                    } catch (StudentCannotBorrowMultipleBooks e) {
+                        // do some stuff
+                    }
+                }
+        );
+
         Book book = bookRepository.findBookByInvnr(invnr).orElseThrow(() -> new BookNotFoundException(invnr));
         Borrowing borrowing = new Borrowing();
         borrowing.setBorrowedOn(new Date());
@@ -46,14 +58,7 @@ public class BorrowingService {
 
         byFirstnameAndLastname.ifPresentOrElse(
                 (borrower) -> {
-                    try {
-                        if (!(borrower.isTeacher()) && !(getUnreturnedBorrowings(borrower).isEmpty())) {
-                            throw new StudentCannotBorrowMultipleBooks();
-                        }
-                        borrowing.setBorrower(borrower);
-                    } catch (StudentCannotBorrowMultipleBooks e) {
-
-                    }
+                    borrowing.setBorrower(borrower);
                 },
                 () -> {
                     Borrower borrower = new Borrower();
