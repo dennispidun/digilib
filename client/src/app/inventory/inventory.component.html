@@ -3,7 +3,7 @@
     Willkommen, Max Mustermann!
   </h1>
 
-  <input type="text" class="form-control" [(ngModel)]="searchInput" (change)="searchBook()" placeholder="ISBN/Inventar-Nr.">
+  <input type="text" class="form-control" placeholder="ISBN/Inventar-Nr." #search>
 
   <table>
     <tr class="description">
@@ -13,7 +13,7 @@
         </p>
       </th>
       <th colspan="4">
-        <input (change)="updateBehind()" ngbButton type="checkbox" [(ngModel)]="behind"/>
+        <input (change)="updateBooks()" ngbButton type="checkbox" [(ngModel)]="behind"/>
         Nur Bücher im Verzug anzeigen
       </th>
     </tr>

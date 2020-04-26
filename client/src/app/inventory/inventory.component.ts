@@ -1,7 +1,9 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
 import {Book} from "./book.model";
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
+import {fromEvent} from "rxjs";
+import {debounceTime, distinctUntilChanged, filter, tap} from "rxjs/operators";
 
 @Component({
   selector: "app-inventory",
@@ -10,27 +12,39 @@ import {Router} from "@angular/router";
 })
 export class InventoryComponent implements OnInit {
 
+  @ViewChild("search") searchElement: ElementRef;
+
   books: Book[] = [];
   behind = false;
 
-  searchInput: string;
-
   constructor(private http: HttpClient, private router: Router) {
-    this.updateBehind();
+    this.updateBooks();
   }
 
   ngOnInit() {
   }
 
-  updateBehind() {
+  ngAfterViewInit() {
+    // server-side search
+    fromEvent(this.searchElement.nativeElement, "keyup")
+      .pipe(
+        filter(Boolean),
+        debounceTime(350),
+        distinctUntilChanged(),
+        tap((text) => this.searchBook())
+      )
+      .subscribe();
+  }
+
+  updateBooks() {
     this.http.get("/api/books").toPromise().then((data) => {
-      this.updateBooks(data);
+      this.parseBooks(data);
     });
 
 
   }
 
-  private updateBooks(data: Object) {
+  private parseBooks(data: Object) {
     const newBooks: Book[] = (data as Book[]).map(book => {
       book.createdOn = Date.parse(String(book.createdOn));
       book.borrowedOn = Date.parse(String(book.borrowedOn));
@@ -53,9 +67,13 @@ export class InventoryComponent implements OnInit {
   }
 
   searchBook() {
-    this.http.get("/api/books?search=" + this.searchInput).toPromise().then((data) => {
-      this.behind = false;
-      this.updateBooks(data);
-    });
+    if (this.searchElement.nativeElement.value && this.searchElement.nativeElement.value.length >= 0) {
+      this.http.get("/api/books?search=" + this.searchElement.nativeElement.value).toPromise().then((data) => {
+        this.behind = false;
+        this.parseBooks(data);
+      });
+    } else {
+      this.updateBooks();
+    }
   }
 }
