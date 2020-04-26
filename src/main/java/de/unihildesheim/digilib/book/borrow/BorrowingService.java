@@ -31,33 +31,60 @@ public class BorrowingService {
             if (latestBorrowing.getBorrowedOn() != null && latestBorrowing.getReturnedOn() == null) {
                 throw new BookAlreadyBorrowedException(invnr);
             }
+
         } catch (BookNeverBorrowedException e) {
+
         }
 
         Optional<Borrower> byFirstnameAndLastname = borrowerRepository.
                 findByFirstnameAndLastname(createBorrowing.getFirstname(), createBorrowing.getLastname());
+
+        byFirstnameAndLastname.ifPresent(
+                (borrower) -> {
+                    try {
+                        if (!(borrower.isTeacher()) && !(getUnreturnedBorrowings(borrower).isEmpty())) {
+                            throw new StudentCannotBorrowMultipleBooks();
+                        }
+                    } catch (StudentCannotBorrowMultipleBooks e) {
+                        // do some stuff
+                    }
+                }
+        );
 
         Book book = bookRepository.findBookByInvnr(invnr).orElseThrow(() -> new BookNotFoundException(invnr));
         Borrowing borrowing = new Borrowing();
         borrowing.setBorrowedOn(new Date());
         borrowing.setBook(book);
 
-        if (byFirstnameAndLastname.isEmpty()) {
-            Borrower borrower = new Borrower();
-            borrower.setFirstname(createBorrowing.getFirstname());
-            borrower.setLastname(createBorrowing.getLastname());
+        byFirstnameAndLastname.ifPresentOrElse(
+                (borrower) -> {
+                    borrowing.setBorrower(borrower);
+                },
+                () -> {
+                    Borrower borrower = new Borrower();
+                    borrower.setFirstname(createBorrowing.getFirstname());
+                    borrower.setLastname(createBorrowing.getLastname());
 
-            borrowerRepository.save(borrower);
-            borrowing.setBorrower(borrower);
-        } else {
-            borrowing.setBorrower(byFirstnameAndLastname.get());
-        }
+                    borrowerRepository.save(borrower);
+                    borrowing.setBorrower(borrower);
+                }
+        );
 
         return repository.save(borrowing);
     }
 
     public BorrowingsDto getLatestBorrowing(String invnr) {
         return getBorrowings(invnr).stream().findFirst().orElseThrow(() -> new BookNeverBorrowedException(invnr));
+    }
+
+    public List<BorrowingsDto> getUnreturnedBorrowings(Borrower borrower) {
+        return repository.getBorrowingByBorrower_IdAndReturnedOnIsNull(borrower.getId()).stream().map(borrowing -> {
+            BorrowingsDto borrowingDto = new BorrowingsDto();
+            borrowingDto.setBorrower(borrowing.getBorrower());
+            borrowingDto.setBorrowedOn(borrowing.getBorrowedOn());
+            borrowingDto.setReturnedOn(borrowing.getReturnedOn());
+            return borrowingDto;
+        }).collect(Collectors.toList());
     }
 
     public List<BorrowingsDto> getBorrowings(String invnr) {
