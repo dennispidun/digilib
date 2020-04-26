@@ -25,30 +25,18 @@ public class BorrowingService {
         this.borrowerRepository = borrowerRepository;
     }
 
-    public Borrowing borrow(CreateBorrowingDto createBorrowing, String invnr) throws BookAlreadyBorrowedException {
-        try {
-            BorrowingsDto latestBorrowing = getLatestBorrowing(invnr);
-            if (latestBorrowing.getBorrowedOn() != null && latestBorrowing.getReturnedOn() == null) {
-                throw new BookAlreadyBorrowedException(invnr);
-            }
-
-        } catch (BookNeverBorrowedException e) {
-
-        }
+    public Borrowing borrow(CreateBorrowingDto createBorrowing, String invnr) throws BookAlreadyBorrowedException,
+            StudentCannotBorrowMultipleBooks {
+        checkIfBorrowed(invnr);
 
         Optional<Borrower> byFirstnameAndLastname = borrowerRepository.
                 findByFirstnameAndLastname(createBorrowing.getFirstname(), createBorrowing.getLastname());
 
-        byFirstnameAndLastname.ifPresent(
-                (borrower) -> {
-                    try {
-                        if (!(borrower.isTeacher()) && !(getUnreturnedBorrowings(borrower).isEmpty())) {
-                            throw new StudentCannotBorrowMultipleBooks();
-                        }
-                    } catch (StudentCannotBorrowMultipleBooks e) {
-                        // do some stuff
-                    }
+        byFirstnameAndLastname.ifPresent(borrower -> {
+                if (!(borrower.isTeacher()) && !(getUnreturnedBorrowings(borrower).isEmpty())) {
+                    throw new StudentCannotBorrowMultipleBooks();
                 }
+            }
         );
 
         Book book = bookRepository.findBookByInvnr(invnr).orElseThrow(() -> new BookNotFoundException(invnr));
@@ -71,6 +59,18 @@ public class BorrowingService {
         );
 
         return repository.save(borrowing);
+    }
+
+    private void checkIfBorrowed(String invnr) {
+        try {
+            BorrowingsDto latestBorrowing = getLatestBorrowing(invnr);
+            if (latestBorrowing.getBorrowedOn() != null && latestBorrowing.getReturnedOn() == null) {
+                throw new BookAlreadyBorrowedException(invnr);
+            }
+
+        } catch (BookNeverBorrowedException e) {
+
+        }
     }
 
     public BorrowingsDto getLatestBorrowing(String invnr) {

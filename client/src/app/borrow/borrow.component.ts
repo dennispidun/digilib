@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from "@angular/core";
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {HttpClient} from "@angular/common/http";
+
 @Component({
   selector: "app-borrow",
   templateUrl: "./borrow.component.html",
@@ -9,8 +10,9 @@ import {HttpClient} from "@angular/common/http";
 export class BorrowComponent implements OnInit {
   borrowerName: string;
 
-  @Input()
-  invnr: string;
+  @Input() invnr: string;
+
+  error: string;
 
   constructor(public activeModal: NgbActiveModal, private http: HttpClient) {
   }
@@ -26,6 +28,10 @@ export class BorrowComponent implements OnInit {
       lastname: splittedStudentName[1]
     }).subscribe((data) => {
       this.activeModal.close(data);
+    }, (err) => {
+      if (err.error.apierror.message === "StudentCannotBorrowMultipleBooks") {
+        this.error = "Ein Schüler darf nicht zwei Bücher gleichzeitig ausleihen.";
+      }
     });
   }
 }

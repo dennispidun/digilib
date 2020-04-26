@@ -6,6 +6,7 @@
 </div>
 <div class="modal-body">
   <input type="text" class="form-control" [(ngModel)]="borrowerName" placeholder="Name des Schülers/Lehrers">
+  <p class="error-message" *ngIf="error">{{error}}</p>
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-outline-success" (click)="borrow()">Verleihen</button>
