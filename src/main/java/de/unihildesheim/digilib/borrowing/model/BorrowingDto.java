@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class ListBorrowingDto {
+public class BorrowingDto {
 
     private Borrower borrower;
     private Date borrowedOn;

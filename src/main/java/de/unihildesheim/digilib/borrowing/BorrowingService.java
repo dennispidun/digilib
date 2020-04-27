@@ -69,7 +69,7 @@ class BorrowingService {
 
     public ListBookDto addBorrowHistory(ListBookDto book) {
         try {
-            ListBorrowingDto latestBorrowing = getLatestBorrowing(book.getInvnr());
+            BorrowingDto latestBorrowing = getLatestBorrowing(book.getInvnr());
             if (latestBorrowing.getReturnedOn() == null && latestBorrowing.getBorrowedOn() != null) {
                 book.setBorrowedOn(latestBorrowing.getBorrowedOn());
                 book.setBorrowerName(latestBorrowing.getBorrower().getFirstname() + " " + latestBorrowing.getBorrower().getLastname());
@@ -81,7 +81,7 @@ class BorrowingService {
 
     private void checkIfBorrowed(String invnr) {
         try {
-            ListBorrowingDto latestBorrowing = getLatestBorrowing(invnr);
+            BorrowingDto latestBorrowing = getLatestBorrowing(invnr);
             if (latestBorrowing.getBorrowedOn() != null && latestBorrowing.getReturnedOn() == null) {
                 throw new BookAlreadyBorrowedException(invnr);
             }
@@ -91,25 +91,25 @@ class BorrowingService {
         }
     }
 
-    public ListBorrowingDto getLatestBorrowing(String invnr) {
+    public BorrowingDto getLatestBorrowing(String invnr) {
         return getBorrowings(invnr).stream().findFirst().orElseThrow(() -> new BookNeverBorrowedException(invnr));
     }
 
-    public List<ListBorrowingDto> getUnreturnedBorrowings(Borrower borrower) {
+    public List<BorrowingDto> getUnreturnedBorrowings(Borrower borrower) {
         return repository.getBorrowingByBorrower_IdAndReturnedOnIsNull(borrower.getId())
                 .stream()
                 .map(borrowingModelMapper::mapToListBorrowing)
                 .collect(Collectors.toList());
     }
 
-    public List<ListBorrowingDto> getBorrowings(String invnr) {
+    public List<BorrowingDto> getBorrowings(String invnr) {
         return repository.getBorrowingByBook_InvnrOrderByBorrowedOnDesc(invnr)
                 .stream()
                 .map(borrowingModelMapper::mapToListBorrowing)
                 .collect(Collectors.toList());
     }
 
-    public ListBorrowingDto cancelLatestBorrowing(String invnr) {
+    public BorrowingDto cancelLatestBorrowing(String invnr) {
         Borrowing borrowing = repository.getBorrowingByBook_InvnrOrderByBorrowedOnDesc(invnr)
                 .stream()
                 .findFirst()

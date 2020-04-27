@@ -5,8 +5,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class BorrowingModelMapper {
 
-    public ListBorrowingDto mapToListBorrowing(Borrowing borrowing) {
-        ListBorrowingDto borrowingDto = new ListBorrowingDto();
+    public BorrowingDto mapToListBorrowing(Borrowing borrowing) {
+        BorrowingDto borrowingDto = new BorrowingDto();
         borrowingDto.setBorrower(borrowing.getBorrower());
         borrowingDto.setBorrowedOn(borrowing.getBorrowedOn());
         borrowingDto.setReturnedOn(borrowing.getReturnedOn());

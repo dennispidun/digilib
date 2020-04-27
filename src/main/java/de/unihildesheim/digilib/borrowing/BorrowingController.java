@@ -1,6 +1,6 @@
 package de.unihildesheim.digilib.borrowing;
 
-import de.unihildesheim.digilib.borrowing.model.ListBorrowingDto;
+import de.unihildesheim.digilib.borrowing.model.BorrowingDto;
 import de.unihildesheim.digilib.borrowing.model.CreateBorrowingDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,17 +24,17 @@ class BorrowingController {
     }
 
     @RequestMapping(value = "/borrowings", method = RequestMethod.GET)
-    private ResponseEntity<List<ListBorrowingDto>> getBorrowings(@PathVariable("invnr") String invnr) {
+    private ResponseEntity<List<BorrowingDto>> getBorrowings(@PathVariable("invnr") String invnr) {
         return ResponseEntity.status(HttpStatus.OK).body(service.getBorrowings(invnr));
     }
 
     @RequestMapping(value = "/latest-borrowing", method = RequestMethod.GET)
-    private ResponseEntity<ListBorrowingDto> latestBorrowing(@PathVariable("invnr") String invnr) {
+    private ResponseEntity<BorrowingDto> latestBorrowing(@PathVariable("invnr") String invnr) {
         return ResponseEntity.status(HttpStatus.OK).body(service.getLatestBorrowing(invnr));
     }
 
     @RequestMapping(value = "/latest-borrowing", method = RequestMethod.DELETE)
-    private ResponseEntity<ListBorrowingDto> cancelLatestBorrowing(@PathVariable("invnr") String invnr) {
+    private ResponseEntity<BorrowingDto> cancelLatestBorrowing(@PathVariable("invnr") String invnr) {
         return ResponseEntity.status(HttpStatus.OK).body(service.cancelLatestBorrowing(invnr));
     }
 
