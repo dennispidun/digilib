@@ -1,4 +1,4 @@
-package de.unihildesheim.digilib.book;
+package de.unihildesheim.digilib.book.model;
 
 import lombok.Data;
 

@@ -1,9 +1,10 @@
-package de.unihildesheim.digilib.book.borrow;
+package de.unihildesheim.digilib.borrowing.model;
 
 import lombok.Data;
 
 @Data
-public class CreateBorrowingDto {
+public
+class CreateBorrowingDto {
 
     private String firstname;
     private String lastname;

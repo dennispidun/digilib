@@ -1,8 +1,14 @@
 package de.unihildesheim.digilib.book;
 
+import de.unihildesheim.digilib.book.model.Book;
+import de.unihildesheim.digilib.book.model.BookDto;
+import de.unihildesheim.digilib.utils.ISBNUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BooksProvider {
@@ -28,6 +34,23 @@ public class BooksProvider {
             book.setCreatedOn(new Date());
         }
         return repository.save(book);
+    }
+
+    public List<Book> searchFor(String search) {
+        List<Book> invnrBooks = repository.findBooksByInvnrContaining(search);
+        List<Book> isbnBooks = repository.findBooksByIsbnContaining(search);
+
+        List<Book> foundBooks = new ArrayList<>();
+
+        if (invnrBooks.size() > 0) {
+            foundBooks.addAll(invnrBooks);
+        }
+
+        if (isbnBooks.size() > 0) {
+            foundBooks.addAll(isbnBooks);
+        }
+
+        return foundBooks.stream().distinct().collect(Collectors.toList());
     }
 
 }

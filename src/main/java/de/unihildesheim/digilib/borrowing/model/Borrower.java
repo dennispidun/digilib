@@ -1,4 +1,4 @@
-package de.unihildesheim.digilib.borrower;
+package de.unihildesheim.digilib.borrowing.model;
 
 
 import lombok.Data;

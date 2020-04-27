@@ -1,8 +1,10 @@
-package de.unihildesheim.digilib.book.borrow;
+package de.unihildesheim.digilib.borrowing;
 
 import de.unihildesheim.digilib.book.*;
-import de.unihildesheim.digilib.borrower.Borrower;
-import de.unihildesheim.digilib.borrower.BorrowerRepository;
+import de.unihildesheim.digilib.book.BookNotFoundException;
+import de.unihildesheim.digilib.book.model.Book;
+import de.unihildesheim.digilib.book.model.ListBookDto;
+import de.unihildesheim.digilib.borrowing.model.*;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -11,7 +13,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class BorrowingService {
+public
+class BorrowingService {
 
     private BorrowingRepository repository;
 
@@ -19,10 +22,13 @@ public class BorrowingService {
 
     private BorrowerRepository borrowerRepository;
 
-    public BorrowingService(BorrowingRepository repository, BookRepository bookRepository, BorrowerRepository borrowerRepository) {
+    private BorrowingModelMapper borrowingModelMapper;
+
+    public BorrowingService(BorrowingRepository repository, BookRepository bookRepository, BorrowerRepository borrowerRepository, BorrowingModelMapper borrowingModelMapper) {
         this.repository = repository;
         this.bookRepository = bookRepository;
         this.borrowerRepository = borrowerRepository;
+        this.borrowingModelMapper = borrowingModelMapper;
     }
 
     public Borrowing borrow(CreateBorrowingDto createBorrowing, String invnr) throws BookAlreadyBorrowedException,
@@ -61,9 +67,21 @@ public class BorrowingService {
         return repository.save(borrowing);
     }
 
+    public ListBookDto addBorrowHistory(ListBookDto book) {
+        try {
+            ListBorrowingDto latestBorrowing = getLatestBorrowing(book.getInvnr());
+            if (latestBorrowing.getReturnedOn() == null && latestBorrowing.getBorrowedOn() != null) {
+                book.setBorrowedOn(latestBorrowing.getBorrowedOn());
+                book.setBorrowerName(latestBorrowing.getBorrower().getFirstname() + " " + latestBorrowing.getBorrower().getLastname());
+            }
+        } catch (Exception e) {
+        }
+        return book;
+    }
+
     private void checkIfBorrowed(String invnr) {
         try {
-            BorrowingsDto latestBorrowing = getLatestBorrowing(invnr);
+            ListBorrowingDto latestBorrowing = getLatestBorrowing(invnr);
             if (latestBorrowing.getBorrowedOn() != null && latestBorrowing.getReturnedOn() == null) {
                 throw new BookAlreadyBorrowedException(invnr);
             }
@@ -73,31 +91,25 @@ public class BorrowingService {
         }
     }
 
-    public BorrowingsDto getLatestBorrowing(String invnr) {
+    public ListBorrowingDto getLatestBorrowing(String invnr) {
         return getBorrowings(invnr).stream().findFirst().orElseThrow(() -> new BookNeverBorrowedException(invnr));
     }
 
-    public List<BorrowingsDto> getUnreturnedBorrowings(Borrower borrower) {
-        return repository.getBorrowingByBorrower_IdAndReturnedOnIsNull(borrower.getId()).stream().map(borrowing -> {
-            BorrowingsDto borrowingDto = new BorrowingsDto();
-            borrowingDto.setBorrower(borrowing.getBorrower());
-            borrowingDto.setBorrowedOn(borrowing.getBorrowedOn());
-            borrowingDto.setReturnedOn(borrowing.getReturnedOn());
-            return borrowingDto;
-        }).collect(Collectors.toList());
+    public List<ListBorrowingDto> getUnreturnedBorrowings(Borrower borrower) {
+        return repository.getBorrowingByBorrower_IdAndReturnedOnIsNull(borrower.getId())
+                .stream()
+                .map(borrowingModelMapper::mapToListBorrowing)
+                .collect(Collectors.toList());
     }
 
-    public List<BorrowingsDto> getBorrowings(String invnr) {
-        return repository.getBorrowingByBook_InvnrOrderByBorrowedOnDesc(invnr).stream().map(borrowing -> {
-            BorrowingsDto borrowingDto = new BorrowingsDto();
-            borrowingDto.setBorrower(borrowing.getBorrower());
-            borrowingDto.setBorrowedOn(borrowing.getBorrowedOn());
-            borrowingDto.setReturnedOn(borrowing.getReturnedOn());
-            return borrowingDto;
-        }).collect(Collectors.toList());
+    public List<ListBorrowingDto> getBorrowings(String invnr) {
+        return repository.getBorrowingByBook_InvnrOrderByBorrowedOnDesc(invnr)
+                .stream()
+                .map(borrowingModelMapper::mapToListBorrowing)
+                .collect(Collectors.toList());
     }
 
-    public BorrowingsDto cancelLatestBorrowing(String invnr) {
+    public ListBorrowingDto cancelLatestBorrowing(String invnr) {
         Borrowing borrowing = repository.getBorrowingByBook_InvnrOrderByBorrowedOnDesc(invnr)
                 .stream()
                 .findFirst()
@@ -106,11 +118,6 @@ public class BorrowingService {
 
         repository.save(borrowing);
 
-        BorrowingsDto borrowingDto = new BorrowingsDto();
-        borrowingDto.setBorrower(borrowing.getBorrower());
-        borrowingDto.setBorrowedOn(borrowing.getBorrowedOn());
-        borrowingDto.setReturnedOn(borrowing.getReturnedOn());
-
-        return borrowingDto;
+        return borrowingModelMapper.mapToListBorrowing(borrowing);
     }
 }

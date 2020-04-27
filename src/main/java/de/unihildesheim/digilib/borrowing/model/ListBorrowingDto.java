@@ -1,12 +1,11 @@
-package de.unihildesheim.digilib.book.borrow;
+package de.unihildesheim.digilib.borrowing.model;
 
-import de.unihildesheim.digilib.borrower.Borrower;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
-public class BorrowingsDto {
+public class ListBorrowingDto {
 
     private Borrower borrower;
     private Date borrowedOn;
