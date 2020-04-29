@@ -22,4 +22,6 @@ public class Borrowing {
     @ManyToOne
     private Borrower borrower;
 
+
+
 }

@@ -3,10 +3,10 @@
     Willkommen, Max Mustermann!
   </h1>
 
-  <input type="text" class="form-control" placeholder="ISBN/Inventar-Nr." #search>
+  <input type="text" class="form-control" placeholder="ISBN/Inventar-Nr." #search [disabled]="behind">
 
   <div class="table-actions">
-    <nav class="pagecontroller" *ngIf="nextBooks.length > 0 || pageNo > 0">
+    <nav class="pagecontroller">
       <ul class="pagination">
         <li class="page-item" [ngClass]="pageNo == 0 && 'disabled'">
           <a class="page-link" (click)="back()">Zurück</a>

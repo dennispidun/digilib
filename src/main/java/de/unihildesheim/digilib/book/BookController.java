@@ -39,12 +39,14 @@ public class BookController {
                                       @RequestParam(required = false) Boolean behind) {
         behind = behind != null ? behind : false;
 
-        if (search == null || search.isEmpty()) {
-            return booksProvider.findPaginated(pageNo, pageSize).stream()
-                    .collect(Collectors.toList());
+        if (!behind) {
+            if (search == null || search.isEmpty()) {
+                return booksProvider.findPaginated(pageNo, pageSize);
+            } else {
+                return booksProvider.searchForPaginated(search, pageNo, pageSize);
+            }
         } else {
-            return booksProvider.searchForPaginated(search, pageNo, pageSize).stream()
-                    .collect(Collectors.toList());
+            return booksProvider.findBehindPaginated(pageNo, pageSize);
         }
     }
 

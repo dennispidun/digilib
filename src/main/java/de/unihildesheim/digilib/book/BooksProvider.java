@@ -3,13 +3,13 @@ package de.unihildesheim.digilib.book;
 import de.unihildesheim.digilib.book.model.Book;
 import de.unihildesheim.digilib.book.model.BookDto;
 import de.unihildesheim.digilib.book.model.ListBookDto;
+import de.unihildesheim.digilib.borrowing.BorrowingRepository;
 import de.unihildesheim.digilib.utils.ISBNUtils;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,10 +17,13 @@ import java.util.stream.Collectors;
 @Service
 public class BooksProvider {
 
+    public static final int BOOKS_BEHIND_DAYS = 1;
     private BookRepository repository;
+    private BorrowingRepository borrowingRepository;
 
-    public BooksProvider(BookRepository repository) {
+    public BooksProvider(BookRepository repository, BorrowingRepository borrowingRepository) {
         this.repository = repository;
+        this.borrowingRepository = borrowingRepository;
     }
 
     public Book create(BookDto createBook) {
@@ -44,22 +47,11 @@ public class BooksProvider {
 
         Pageable paging = PageRequest.of(pageNo, pageSize);
 
-        List<Book> invnrBooks = repository.findBooksByInvnrContaining(search, paging).toList();
-        List<Book> isbnBooks = repository.findBooksByIsbnContaining(search, paging).toList();
-
-        List<Book> foundBooks = new ArrayList<>();
-
-        if (invnrBooks.size() > 0) {
-            foundBooks.addAll(invnrBooks);
-        }
-
-        if (isbnBooks.size() > 0) {
-            foundBooks.addAll(isbnBooks);
-        }
+        List<Book> foundBooks = repository.findBooksByInvnrContainingOrIsbnContaining(search, search, paging).toList();
 
         return foundBooks.stream()
                 .distinct()
-                .map(book -> new ListBookDto(book))
+                .map(book -> new ListBookDto(book, null))
                 .collect(Collectors.toList());
     }
 
@@ -67,8 +59,19 @@ public class BooksProvider {
         return repository.findAll(PageRequest.of(pageNo, pageSize)).toList()
                 .stream()
                 .distinct()
-                .map(book -> new ListBookDto(book))
+                .map(book -> new ListBookDto(book, null))
                 .collect(Collectors.toList());
     }
 
+    public List<ListBookDto> findBehindPaginated(int pageNo, int pageSize) {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DAY_OF_MONTH, -BOOKS_BEHIND_DAYS);
+        Date thendate = cal.getTime();
+
+        return borrowingRepository.findAllByBorrowedOnBefore(PageRequest.of(pageNo, pageSize), thendate).toList()
+                .stream()
+                .map(borrowing -> new ListBookDto(borrowing.getBook(), borrowing.getBorrowedOn()))
+                .distinct()
+                .collect(Collectors.toList());
+    }
 }
