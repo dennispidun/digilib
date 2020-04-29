@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
+import {Component, ElementRef, HostListener, OnInit, ViewChild} from "@angular/core";
 import {Book} from "./book.model";
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
@@ -18,6 +18,8 @@ export class InventoryComponent implements OnInit {
   books: Book[] = [];
   nextBooks: Book[] = [];
   behind = false;
+
+  searchCache: String = "";
 
   private PAGE_SIZE = 8;
 
@@ -40,7 +42,19 @@ export class InventoryComponent implements OnInit {
         tap((text) => this.searchBook())
       )
       .subscribe();
+
+    fromEvent(document, "keypress")
+      .pipe(
+        filter(Boolean),
+        tap((text) => this.addSearchInput(text))
+      )
+      .subscribe();
   }
+
+  handleKeyboardEvent(event) {
+    console.log(event);
+  }
+
 
   updateBooks() {
     let searchOption = "";
@@ -101,6 +115,19 @@ export class InventoryComponent implements OnInit {
 
   updateBehind() {
     this.pageNo = 0;
+    this.searchElement.nativeElement.value = "";
     this.updateBooks();
+  }
+
+  private addSearchInput(text) {
+    if (!this.behind) {
+      if (text.key !== "Enter") {
+        this.searchCache += text.key;
+      } else {
+        this.searchElement.nativeElement.value = this.searchCache;
+        this.searchCache = "";
+        this.searchBook();
+      }
+    }
   }
 }
