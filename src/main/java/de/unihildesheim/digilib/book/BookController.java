@@ -35,25 +35,17 @@ public class BookController {
     @RequestMapping(value = "", method = RequestMethod.GET)
     public List<ListBookDto> getBooks(@RequestParam(required = false) String search,
                                       @RequestParam int pageNo,
-                                      @RequestParam int pageSize) {
+                                      @RequestParam int pageSize,
+                                      @RequestParam(required = false) Boolean behind) {
+        behind = behind != null ? behind : false;
+
         if (search == null || search.isEmpty()) {
-            return booksProvider.findPaginated(pageNo, pageSize).
-                    stream()
-                    .map(mapBookAndAddBorrowing())
+            return booksProvider.findPaginated(pageNo, pageSize).stream()
                     .collect(Collectors.toList());
         } else {
-            return booksProvider.searchForPaginated(search, pageNo, pageSize)
-                    .stream()
-                    .map(mapBookAndAddBorrowing())
+            return booksProvider.searchForPaginated(search, pageNo, pageSize).stream()
                     .collect(Collectors.toList());
         }
-    }
-
-    private Function<Book, ListBookDto> mapBookAndAddBorrowing() {
-        return book -> {
-            ListBookDto bookDto = bookModelMapper.mapToListBook(book);
-            return borrowingService.addBorrowHistory(bookDto);
-        };
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)

@@ -1,12 +1,11 @@
 package de.unihildesheim.digilib.book.model;
 
+import de.unihildesheim.digilib.borrowing.model.Borrowing;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -21,6 +20,10 @@ public class Book {
     private String title;
     private String author;
     private Date createdOn;
+
+    @OneToMany(targetEntity = Borrowing.class, mappedBy = "book", fetch = FetchType.LAZY)
+    @OrderBy("borrowedOn DESC")
+    public List<Borrowing> borrowings;
 
     @Override
     public boolean equals(Object o) {
