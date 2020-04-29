@@ -5,18 +5,28 @@
 
   <input type="text" class="form-control" placeholder="ISBN/Inventar-Nr." #search>
 
+  <div class="table-actions">
+    <nav class="pagecontroller" *ngIf="nextBooks.length > 0 || pageNo > 0">
+      <ul class="pagination">
+        <li class="page-item" [ngClass]="pageNo == 0 && 'disabled'">
+          <a class="page-link" (click)="back()">Zurück</a>
+        </li>
+        <li class="page-item active">
+          <p class="page-link">{{ pageNo+1 }}</p>
+        </li>
+        <li class="page-item" [ngClass]="nextBooks.length == 0 && 'disabled'">
+          <a class="page-link" (click)="next()">Weiter</a>
+        </li>
+      </ul>
+    </nav>
+
+    <div>
+      <input (change)="updateBehind()" ngbButton type="checkbox" [(ngModel)]="behind" id="behind"/>
+      <label for="behind">Nur Bücher im Verzug anzeigen</label>
+    </div>
+
+  </div>
   <table>
-    <tr class="description">
-      <th colspan="2">
-        <p>
-          {{ books.length }} {{ books.length > 1 || books.length == 0 ? 'Bücher' : 'Buch' }} gefunden
-        </p>
-      </th>
-      <th colspan="4">
-        <input (change)="updateBooks()" ngbButton type="checkbox" [(ngModel)]="behind"/>
-        Nur Bücher im Verzug anzeigen
-      </th>
-    </tr>
     <tr class="header">
       <th style="width: 160px">Inventar-Nr</th>
       <th style="width: 180px">ISBN</th>

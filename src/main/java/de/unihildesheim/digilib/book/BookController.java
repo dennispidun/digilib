@@ -33,11 +33,16 @@ public class BookController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public List<ListBookDto> getBooks(@RequestParam(required = false) String search) {
+    public List<ListBookDto> getBooks(@RequestParam(required = false) String search,
+                                      @RequestParam int pageNo,
+                                      @RequestParam int pageSize) {
         if (search == null || search.isEmpty()) {
-            return repository.findAll().stream().map(mapBookAndAddBorrowing()).collect(Collectors.toList());
+            return booksProvider.findPaginated(pageNo, pageSize).
+                    stream()
+                    .map(mapBookAndAddBorrowing())
+                    .collect(Collectors.toList());
         } else {
-            return booksProvider.searchFor(search)
+            return booksProvider.searchForPaginated(search, pageNo, pageSize)
                     .stream()
                     .map(mapBookAndAddBorrowing())
                     .collect(Collectors.toList());

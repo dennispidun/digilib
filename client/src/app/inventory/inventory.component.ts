@@ -2,6 +2,7 @@ import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
 import {Book} from "./book.model";
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
+// tslint:disable-next-line:import-blacklist
 import {fromEvent} from "rxjs";
 import {debounceTime, distinctUntilChanged, filter, tap} from "rxjs/operators";
 
@@ -15,7 +16,12 @@ export class InventoryComponent implements OnInit {
   @ViewChild("search") searchElement: ElementRef;
 
   books: Book[] = [];
+  nextBooks: Book[] = [];
   behind = false;
+
+  private PAGE_SIZE = 8;
+
+  pageNo = 0;
 
   constructor(private http: HttpClient, private router: Router) {
     this.updateBooks();
@@ -37,15 +43,44 @@ export class InventoryComponent implements OnInit {
   }
 
   updateBooks() {
-    this.http.get("/api/books").toPromise().then((data) => {
-      this.parseBooks(data);
+    let searchOption = "";
+    let behindOption = ""
+
+    if (this.searchElement && this.searchElement.nativeElement.value && this.searchElement.nativeElement.value.length >= 0) {
+      searchOption = "&search=" + this.searchElement.nativeElement.value;
+    }
+
+    if (this.behind) {
+      behindOption = "&behind=true";
+    }
+
+    this.http.get(`/api/books?pageNo=${this.pageNo}&pageSize=${this.PAGE_SIZE}${searchOption}${behindOption}`)
+      .toPromise().then((data) => {
+      this.books = this.parseBooks(data);
     });
 
-
+    this.http.get(`/api/books?pageNo=${this.pageNo + 1}&pageSize=${this.PAGE_SIZE}${searchOption}${behindOption}`)
+      .toPromise().then((data) => {
+      this.nextBooks = this.parseBooks(data);
+    });
   }
 
-  private parseBooks(data: Object) {
-    const newBooks: Book[] = (data as Book[]).map(book => {
+  next() {
+    if (this.nextBooks.length > 0) {
+      this.pageNo++;
+      this.updateBooks();
+    }
+  }
+
+  back() {
+    if (this.pageNo > 0) {
+      this.pageNo--;
+    }
+    this.updateBooks();
+  }
+
+  private parseBooks(data: Object): Book[] {
+    return (data as Book[]).map(book => {
       book.createdOn = Date.parse(String(book.createdOn));
       book.borrowedOn = Date.parse(String(book.borrowedOn));
       if (book.title.length > 30) {
@@ -53,13 +88,6 @@ export class InventoryComponent implements OnInit {
       }
       return book;
     });
-
-    if (this.behind) {
-      this.books = newBooks.filter(book => book.borrowedOn &&
-        (Math.abs(book.borrowedOn - Date.now()) / (1000 * 3600 * 24)) >= 6);
-    } else {
-      this.books = newBooks;
-    }
   }
 
   view(book: Book) {
@@ -67,13 +95,12 @@ export class InventoryComponent implements OnInit {
   }
 
   searchBook() {
-    if (this.searchElement.nativeElement.value && this.searchElement.nativeElement.value.length >= 0) {
-      this.http.get("/api/books?search=" + this.searchElement.nativeElement.value).toPromise().then((data) => {
-        this.behind = false;
-        this.parseBooks(data);
-      });
-    } else {
-      this.updateBooks();
-    }
+    this.pageNo = 0;
+    this.updateBooks();
+  }
+
+  updateBehind() {
+    this.pageNo = 0;
+    this.updateBooks();
   }
 }

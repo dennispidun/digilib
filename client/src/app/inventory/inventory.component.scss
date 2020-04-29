@@ -31,15 +31,16 @@ table {
   }
 
   tr {
+    height: 60px;
+    cursor: pointer;
+
     &:not(:nth-child(-n + 2)) {
-      height: 60px;
       border-top: 1px solid #ddd;
-      border-bottom: 1px solid #ddd;
-      cursor: pointer;
     }
+    border-bottom: 1px solid #ddd;
   }
 
-  tr:hover:not(:nth-child(-n + 2)) {
+  tr:hover:not(:nth-child(-n + 1)) {
     background-color: #f5f5f5;
   }
 
@@ -56,3 +57,30 @@ table {
   }
 }
 
+.pagecontroller {
+
+  li {
+    a:not(.disabled) {
+      cursor: pointer;
+    }
+
+    .active p{
+      cursor: hand;
+    }
+  }
+}
+
+.table-actions {
+
+  margin-top: 20px;
+
+  & > * {
+    float: left;
+    margin: auto 0;
+  }
+
+  & > *:not(:first-child){
+    margin-left: 50px;
+  }
+
+}

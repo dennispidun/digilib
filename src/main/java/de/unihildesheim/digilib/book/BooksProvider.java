@@ -3,6 +3,9 @@ package de.unihildesheim.digilib.book;
 import de.unihildesheim.digilib.book.model.Book;
 import de.unihildesheim.digilib.book.model.BookDto;
 import de.unihildesheim.digilib.utils.ISBNUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -36,9 +39,12 @@ public class BooksProvider {
         return repository.save(book);
     }
 
-    public List<Book> searchFor(String search) {
-        List<Book> invnrBooks = repository.findBooksByInvnrContaining(search);
-        List<Book> isbnBooks = repository.findBooksByIsbnContaining(search);
+    public List<Book> searchForPaginated(String search, int pageNo, int pageSize) {
+
+        Pageable paging = PageRequest.of(pageNo, pageSize);
+
+        List<Book> invnrBooks = repository.findBooksByInvnrContaining(search, paging).toList();
+        List<Book> isbnBooks = repository.findBooksByIsbnContaining(search, paging).toList();
 
         List<Book> foundBooks = new ArrayList<>();
 
@@ -51,6 +57,14 @@ public class BooksProvider {
         }
 
         return foundBooks.stream().distinct().collect(Collectors.toList());
+    }
+
+    public List<Book> findPaginated(int pageNo, int pageSize) {
+
+        Pageable paging = PageRequest.of(pageNo, pageSize);
+        Page<Book> pagedResult = repository.findAll(paging);
+
+        return pagedResult.toList();
     }
 
 }
