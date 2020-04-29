@@ -51,14 +51,9 @@ export class InventoryComponent implements OnInit {
       .subscribe();
   }
 
-  handleKeyboardEvent(event) {
-    console.log(event);
-  }
-
-
   updateBooks() {
     let searchOption = "";
-    let behindOption = ""
+    let behindOption = "";
 
     if (this.searchElement && this.searchElement.nativeElement.value && this.searchElement.nativeElement.value.length >= 0) {
       searchOption = "&search=" + this.searchElement.nativeElement.value;
@@ -124,9 +119,11 @@ export class InventoryComponent implements OnInit {
       if (text.key !== "Enter") {
         this.searchCache += text.key;
       } else {
-        this.searchElement.nativeElement.value = this.searchCache;
-        this.searchCache = "";
-        this.searchBook();
+        if (this.searchCache.length > 0) {
+          this.searchElement.nativeElement.value = this.searchCache;
+          this.searchCache = "";
+          this.searchBook();
+        }
       }
     }
   }
