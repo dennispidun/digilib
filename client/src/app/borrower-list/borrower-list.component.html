@@ -1,0 +1,43 @@
+<div class="table-actions">
+
+  <nav class="pagecontroller">
+    <ul class="pagination">
+      <li class="page-item" [ngClass]="pageNo == 0 && 'disabled'">
+        <a class="page-link" (click)="back()">Zurück</a>
+      </li>
+      <li class="page-item active">
+        <p class="page-link">{{ pageNo+1 }}</p>
+      </li>
+      <li class="page-item" [ngClass]="nextBorrowers.length == 0 && 'disabled'">
+        <a class="page-link" (click)="next()">Weiter</a>
+      </li>
+    </ul>
+  </nav>
+
+  <table>
+    <tr class="header">
+      <th style="width: 160px">ID</th>
+      <th style="width: 180px">Vorname</th>
+      <th style="width: 300px">Nachname</th>
+      <th style="width: 250px">Lehrer?</th>
+    </tr>
+    <tr *ngFor="let borrower of borrowers" valign="middle">
+      <td>
+        <p>{{ borrower.id}}</p>
+      </td>
+      <td>
+        <p>{{ borrower.firstname }}</p>
+      </td>
+      <td>
+        <p>{{ borrower.lastname }}</p>
+      </td>
+      <td>
+        <label class="switch">
+          <input (change)="setTeacher(borrower)" type="checkbox" [(ngModel)]="borrower.teacher">
+          <span class="slider round"></span>
+        </label>
+      </td>
+    </tr>
+  </table>
+
+</div>

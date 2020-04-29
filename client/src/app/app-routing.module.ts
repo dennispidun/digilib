@@ -5,6 +5,7 @@ import {DetailsComponent} from "./details/details.component";
 import {ContentComponent} from "./content/content.component";
 import {LoginComponent} from "./login/login.component";
 import {AppComponent} from "./app.component";
+import {BorrowerListComponent} from "./borrower-list/borrower-list.component";
 
 const routes: Routes = [
   {
@@ -12,6 +13,7 @@ const routes: Routes = [
     children: [
       {path: "book/:invnr", component: DetailsComponent},
       {path: "dashboard", component: InventoryComponent},
+      {path: "personen", component: BorrowerListComponent},
       {path: "", redirectTo: "/dashboard", pathMatch: "full"}
     ]
   },

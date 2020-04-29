@@ -1,6 +1,8 @@
-interface Borrower {
+export interface Borrower {
+  id: number;
   firstname: string;
   lastname: string;
+  teacher: boolean;
 }
 
 export interface Borrow {

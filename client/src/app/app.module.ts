@@ -13,6 +13,7 @@ import {BorrowComponent} from "./borrow/borrow.component";
 import {ContentComponent} from "./content/content.component";
 import {LoginComponent} from "./login/login.component";
 import {AuthInterceptor} from "./http.interceptor";
+import {BorrowerListComponent} from './borrower-list/borrower-list.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import {AuthInterceptor} from "./http.interceptor";
     DetailsComponent,
     BorrowComponent,
     ContentComponent,
-    LoginComponent
+    LoginComponent,
+    BorrowerListComponent
   ],
   imports: [
     NgbModule,
