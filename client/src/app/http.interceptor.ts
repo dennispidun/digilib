@@ -17,12 +17,11 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private router: Router) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-    if (currentUser && currentUser.token) {
+    const currentUser = localStorage.getItem("credentials");
+    if (currentUser) {
       request = request.clone({
         setHeaders: {
-          "Content-Type": "application/json",
-          Authorization: `JWT ${currentUser.token}`
+          Authorization: `Basic ${currentUser}`
         }
       });
     }

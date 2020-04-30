@@ -6,10 +6,11 @@ import {ContentComponent} from "./content/content.component";
 import {LoginComponent} from "./login/login.component";
 import {AppComponent} from "./app.component";
 import {BorrowerListComponent} from "./borrower-list/borrower-list.component";
+import {AuthGuardService} from "./auth-guard.service";
 
 const routes: Routes = [
   {
-    path: "", component: ContentComponent,
+    path: "", component: ContentComponent, canActivate: [AuthGuardService],
     children: [
       {path: "book/:invnr", component: DetailsComponent},
       {path: "dashboard", component: InventoryComponent},

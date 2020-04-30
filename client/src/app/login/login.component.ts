@@ -1,5 +1,7 @@
 import {Component, OnInit, ViewEncapsulation} from "@angular/core";
 import {Router} from "@angular/router";
+import {AppService} from "../app.service";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -9,12 +11,18 @@ import {Router} from "@angular/router";
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private router: Router) { }
 
+  credentials = {username: "admin", password: "password"};
+
+  constructor(private app: AppService, private http: HttpClient, private router: Router) {
+  }
   ngOnInit(): void {
   }
 
   login() {
-    this.router.navigate(["dashboard"]);
+    this.app.authenticate(this.credentials, () => {
+      this.router.navigate(["dashboard"]);
+    });
+    return false;
   }
 }

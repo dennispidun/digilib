@@ -10,4 +10,8 @@ spring:
     username: sa
     password:
     driver-class-name: org.h2.Driver
+security:
+  ignored:
+    - "*.bundle.*"
+
 
