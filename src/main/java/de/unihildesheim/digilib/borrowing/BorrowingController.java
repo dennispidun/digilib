@@ -7,10 +7,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/books/{invnr}")
 class BorrowingController {
+
+    public static final int MAX_HISTORY_ENTRIES = 8;
 
     private BorrowingService service;
 
@@ -25,7 +28,10 @@ class BorrowingController {
 
     @RequestMapping(value = "/borrowings", method = RequestMethod.GET)
     private ResponseEntity<List<BorrowingDto>> getBorrowings(@PathVariable("invnr") String invnr) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.getBorrowings(invnr));
+        return ResponseEntity.status(HttpStatus.OK).body(service.getBorrowings(invnr)
+                .stream()
+                .limit(MAX_HISTORY_ENTRIES)
+                .collect(Collectors.toList()));
     }
 
     @RequestMapping(value = "/latest-borrowing", method = RequestMethod.GET)
