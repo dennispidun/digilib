@@ -1,5 +1,6 @@
 package de.unihildesheim.digilib.book.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.unihildesheim.digilib.borrowing.model.Borrowing;
 import lombok.Data;
 
@@ -23,6 +24,7 @@ public class Book {
 
     @OneToMany(targetEntity = Borrowing.class, mappedBy = "book", fetch = FetchType.LAZY)
     @OrderBy("borrowedOn DESC")
+    @JsonIgnore
     public List<Borrowing> borrowings;
 
     @Override
