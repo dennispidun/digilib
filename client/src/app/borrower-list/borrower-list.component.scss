@@ -85,14 +85,13 @@ table {
   }
 
   tr.header {
-    height: 50px;
+    height: 40px;
     font-size: 17px;
     color: #717171;
   }
 
   tr {
-    height: 60px;
-    cursor: pointer;
+    height: 40px;
 
     &:not(:nth-child(-n + 2)) {
       border-top: 1px solid #ddd;

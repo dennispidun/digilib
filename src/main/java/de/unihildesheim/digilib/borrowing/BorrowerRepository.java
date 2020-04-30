@@ -13,6 +13,9 @@ import java.util.Optional;
 interface BorrowerRepository extends PagingAndSortingRepository<Borrower, Long> {
 
     Optional<Borrower> findByFirstnameAndLastname(String firstname, String lastname);
+    
+
+    List<Borrower> findAllByFirstnameIgnoreCaseContainingOrLastnameIgnoreCaseContaining(String firstname, String lastname);
 
     // JPQL
     @Query(value = "SELECT b.firstname, (SELECT count(*) FROM Borrowing WHERE borrower_id = b.id) as unreturned FROM Borrower as b", nativeQuery = true)

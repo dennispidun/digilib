@@ -23,4 +23,16 @@ public class Borrower {
 
     private boolean teacher = false;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Borrower borrower = (Borrower) o;
+        return Objects.equals(id, borrower.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }
