@@ -1,4 +1,4 @@
-import {Component, ElementRef, HostListener, OnInit, ViewChild} from "@angular/core";
+import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
 import {Book} from "./book.model";
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";

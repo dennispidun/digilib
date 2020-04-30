@@ -5,7 +5,12 @@
   </button>
 </div>
 <div class="modal-body">
-  <input type="text" class="form-control" [(ngModel)]="borrowerName" placeholder="Name des Schülers/Lehrers">
+
+  <input id="typeahead-http" type="text" class="form-control"
+         [class.is-invalid]="searchFailed"
+         [(ngModel)]="borrowerName"
+         [ngbTypeahead]="search"
+         placeholder="Name des Schülers/Lehrers"/>
   <p class="error-message" *ngIf="error">{{error}}</p>
 </div>
 <div class="modal-footer">

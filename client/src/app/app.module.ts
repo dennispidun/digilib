@@ -8,13 +8,14 @@ import {HTTP_INTERCEPTORS, HttpClientModule, HttpHandler, HttpInterceptor, HttpR
 import {AppRoutingModule} from "./app-routing.module";
 import {DetailsComponent} from "./details/details.component";
 
-import {NgbButtonLabel, NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import {NgbButtonLabel, NgbModule, NgbTypeaheadModule} from "@ng-bootstrap/ng-bootstrap";
 import {BorrowComponent} from "./borrow/borrow.component";
 import {ContentComponent} from "./content/content.component";
 import {LoginComponent} from "./login/login.component";
 import {BorrowerListComponent} from "./borrower-list/borrower-list.component";
 import {AppService} from "./app.service";
 import {AuthInterceptor} from "./http.interceptor";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @Injectable()
 export class XhrInterceptor implements HttpInterceptor {
@@ -42,7 +43,8 @@ export class XhrInterceptor implements HttpInterceptor {
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    NgbTypeaheadModule
   ],
   providers: [NgbButtonLabel,
     {provide: HTTP_INTERCEPTORS, useClass: XhrInterceptor, multi: true},
