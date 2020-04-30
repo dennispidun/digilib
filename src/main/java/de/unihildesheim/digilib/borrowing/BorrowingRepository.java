@@ -17,6 +17,6 @@ interface BorrowingRepository extends PagingAndSortingRepository<Borrowing, Long
     List<Borrowing> getBorrowingByBook_InvnrOrderByBorrowedOnDesc(String book_invnr);
     List<Borrowing> getBorrowingByBorrower_IdAndReturnedOnIsNull(Long Id);
 
-    Page<Borrowing> findAllByBorrowedOnBefore(Pageable pageable, Date before);
+    Page<Borrowing> findAllByBorrowedOnBeforeAndReturnedOnIsNull(Pageable pageable, Date before);
 
 }

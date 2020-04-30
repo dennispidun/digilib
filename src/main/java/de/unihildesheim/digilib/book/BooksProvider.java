@@ -68,7 +68,7 @@ public class BooksProvider {
         cal.add(Calendar.DAY_OF_MONTH, -BOOKS_BEHIND_DAYS);
         Date thendate = cal.getTime();
 
-        return borrowingRepository.findAllByBorrowedOnBefore(PageRequest.of(pageNo, pageSize), thendate).toList()
+        return borrowingRepository.findAllByBorrowedOnBeforeAndReturnedOnIsNull(PageRequest.of(pageNo, pageSize), thendate).toList()
                 .stream()
                 .map(borrowing -> new ListBookDto(borrowing.getBook(), borrowing.getBorrowedOn()))
                 .distinct()
