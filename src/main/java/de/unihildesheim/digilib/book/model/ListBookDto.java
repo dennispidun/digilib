@@ -28,6 +28,9 @@ public class ListBookDto extends BookDto {
 
         if (book.getBorrowings() != null && book.getBorrowings().size() >= 1 && book.getBorrowings().get(0) != null) {
             this.setBorrowedOn(book.getBorrowings().get(0).getBorrowedOn());
+            Borrowing borrowing = book.getBorrowings().get(0);
+            this.setReturnedOn(borrowing.getReturnedOn());
+            this.setBorrowerName(borrowing.getBorrower().getFirstname() + " " + borrowing.getBorrower().getLastname());
         }
     }
 
