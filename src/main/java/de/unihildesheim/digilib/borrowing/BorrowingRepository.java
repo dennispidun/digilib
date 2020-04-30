@@ -1,6 +1,5 @@
 package de.unihildesheim.digilib.borrowing;
 
-import de.unihildesheim.digilib.book.model.Book;
 import de.unihildesheim.digilib.borrowing.model.Borrowing;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

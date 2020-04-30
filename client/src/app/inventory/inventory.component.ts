@@ -21,7 +21,7 @@ export class InventoryComponent implements OnInit {
 
   searchCache: String = "";
 
-  private PAGE_SIZE = 8;
+  private PAGE_SIZE = 10;
 
   pageNo = 0;
 
