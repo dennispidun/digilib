@@ -6,7 +6,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --prod"
+    "build": "ng build --prod",
+    "buildWithoutTest": "ng build --prod --aot --progress=false"
   },
   "private": true,
   "dependencies": {
