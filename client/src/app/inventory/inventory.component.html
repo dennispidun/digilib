@@ -3,7 +3,9 @@
     Willkommen, Max Mustermann!
   </h1>
 
-  <input type="text" class="form-control" placeholder="ISBN/Inventar-Nr." #search [disabled]="behind">
+  <label>
+    <input type="text" class="form-control" placeholder="ISBN/Inventar-Nr." #search [disabled]="behind">
+  </label>
 
   <div class="table-actions">
     <nav class="pagecontroller">
@@ -34,7 +36,7 @@
       <th style="width: 250px">Autor</th>
       <th style="width: 200px">Verliehen seit</th>
     </tr>
-    <tr *ngFor="let book of books" valign="middle" (click)="view(book)">
+    <tr *ngFor="let book of books" class="tableAlign" (click)="view(book)">
       <td>
         <p>{{ book.invnr}}</p>
       </td>

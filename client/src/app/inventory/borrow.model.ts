@@ -3,6 +3,7 @@ export interface Borrower {
   firstname: string;
   lastname: string;
   teacher: boolean;
+  unreturned: number;
 }
 
 export interface Borrow {

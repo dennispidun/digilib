@@ -20,8 +20,9 @@
       <th style="width: 180px">Vorname</th>
       <th style="width: 300px">Nachname</th>
       <th style="width: 250px">Lehrer?</th>
+      <th style="width: 250px">Aktuell ausgeliehen</th>
     </tr>
-    <tr *ngFor="let borrower of borrowers" valign="middle">
+    <tr *ngFor="let borrower of borrowers" class="tableAlign">
       <td>
         <p>{{ borrower.id}}</p>
       </td>
@@ -32,10 +33,21 @@
         <p>{{ borrower.lastname }}</p>
       </td>
       <td>
-        <label class="switch">
-          <input (change)="setTeacher(borrower)" type="checkbox" [(ngModel)]="borrower.teacher">
-          <span class="slider round"></span>
-        </label>
+        <div *ngIf="borrower.unreturned > 1 && !borrower.teacher == false; else elseBlock">
+          <label class="switch">
+            <input type="checkbox" [(ngModel)]="borrower.teacher" disabled>
+            <span class="slider round locked"></span>
+          </label>
+        </div>
+        <ng-template #elseBlock>
+          <label class="switch">
+            <input (change)="setTeacher(borrower)" type="checkbox" [(ngModel)]="borrower.teacher">
+            <span class="slider round"></span>
+          </label>
+        </ng-template>
+      </td>
+      <td>
+        <p>{{ borrower.unreturned }}</p>
       </td>
     </tr>
   </table>

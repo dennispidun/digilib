@@ -22,4 +22,5 @@ public class Borrower {
     private String lastname;
 
     private boolean teacher = false;
+
 }
