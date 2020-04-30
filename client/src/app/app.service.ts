@@ -34,4 +34,7 @@ export class AppService {
     return credentials && credentials != null && credentials.length > 0;
   }
 
+  logout() {
+    localStorage.removeItem("credentials");
+  }
 }
