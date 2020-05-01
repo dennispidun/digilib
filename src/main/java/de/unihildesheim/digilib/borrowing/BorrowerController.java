@@ -63,4 +63,9 @@ public class BorrowerController {
         return borrowingRepository.getBorrowingByBorrower_IdAndReturnedOnIsNull(id);
     }
 
+    @GetMapping(value = "/unreturned")
+    public List<Borrowing> getAllUnreturned() {
+        return borrowingRepository.getBorrowingByReturnedOn(null);
+    }
+
 }

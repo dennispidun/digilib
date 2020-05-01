@@ -13,7 +13,7 @@ export class BorrowerListComponent implements OnInit {
   nextBorrowers: Borrower[] = [];
   borrowers: Borrower[] = [];
   borrowings: Borrowing[];
-  private PAGE_SIZE: number = 8;
+  private PAGE_SIZE = 8;
 
   constructor(private http: HttpClient) {
     this.updateBorrowers();

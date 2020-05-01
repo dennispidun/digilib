@@ -3,6 +3,7 @@ package de.unihildesheim.digilib.borrowing;
 import de.unihildesheim.digilib.borrowing.model.Borrowing;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,6 +16,7 @@ interface BorrowingRepository extends PagingAndSortingRepository<Borrowing, Long
 
     List<Borrowing> getBorrowingByBook_InvnrOrderByBorrowedOnDesc(String book_invnr);
     List<Borrowing> getBorrowingByBorrower_IdAndReturnedOnIsNull(Long Id);
+    List<Borrowing> getBorrowingByReturnedOn(Date returnedOn);
 
     Page<Borrowing> findAllByBorrowedOnBeforeAndReturnedOnIsNull(Pageable pageable, Date before);
 
