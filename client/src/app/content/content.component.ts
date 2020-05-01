@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import {AppService} from "../app.service";
 import {Router} from "@angular/router";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: "app-content",
@@ -9,7 +10,9 @@ import {Router} from "@angular/router";
 })
 export class ContentComponent implements OnInit {
 
-  constructor(private app: AppService, private router: Router) { }
+  constructor(private app: AppService, private http: HttpClient, private router: Router) {
+    this.app.authenticate(undefined, undefined);
+  }
 
   ngOnInit(): void {
   }

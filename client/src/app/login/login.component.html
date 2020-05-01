@@ -8,7 +8,17 @@
 <div class="right">
 
   <div class="login">
+
+    <span>
+      <input name="username" type="text" class="form-control" placeholder="Nutzername..." [(ngModel)]="credentials.username"/>
+    </span>
+    <span>
+      <input name="password" type="password" class="form-control" placeholder="Passwort..." [(ngModel)]="credentials.password"/>
+    </span>
+
     <button type="button" class="btn btn-outline-success" (click)="login()">Anmelden</button>
+
+    <ngb-alert *ngIf="error" [dismissible]="false" [type]="'danger'">{{error}}</ngb-alert>
   </div>
 
 </div>

@@ -13,19 +13,22 @@ export class AppService {
     if (!credentials) {
       return;
     }
-
     const headers = new HttpHeaders(credentials ? {
       authorization: "Basic " + btoa(credentials.username + ":" + credentials.password)
     } : {});
 
-    this.http.get("/api/user", {headers: headers}).subscribe(response => {
-      if (response["name"]) {
-        localStorage.setItem("credentials", btoa(credentials.username + ":" + credentials.password));
-      } else {
+    this.http.get("/api/user", {headers}).subscribe(response => {
+        if ((response as any).name) {
+          localStorage.setItem("credentials", btoa(credentials.username + ":" + credentials.password));
+        } else {
+          localStorage.removeItem("credentials");
+        }
+        return callback && callback({status: "authenticated"});
+      },
+      error => {
         localStorage.removeItem("credentials");
-      }
-      return callback && callback();
-    });
+        return callback && callback({status: "error", error});
+      });
 
   }
 
