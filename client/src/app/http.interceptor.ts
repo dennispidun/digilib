@@ -17,11 +17,11 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private router: Router) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const currentUser = localStorage.getItem("credentials");
-    if (currentUser) {
+    const token = localStorage.getItem("token");
+    if (token) {
       request = request.clone({
         setHeaders: {
-          Authorization: `Basic ${currentUser}`
+          Authorization: `${token}`
         }
       });
     }
