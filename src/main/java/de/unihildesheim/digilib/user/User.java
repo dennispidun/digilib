@@ -1,5 +1,6 @@
 package de.unihildesheim.digilib.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,11 @@ public class User {
 
     private String username;
 
+    private String firstname;
+
+    private String lastname;
+
+    @JsonIgnore
     private String password;
 
     private boolean enabled;
