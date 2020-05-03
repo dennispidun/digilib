@@ -43,14 +43,14 @@ public class BasicSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable()
+        http.cors().and().headers().frameOptions().sameOrigin().and().csrf().disable()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwtAudience, jwtIssuer, jwtSecret, jwtType))
                 .addFilter(new JwtAuthorizationFilter(authenticationManager(), jwtAudience, jwtIssuer, jwtSecret, jwtType))
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
                                 .antMatchers("/api/**").hasAnyRole("USER")
                                 .anyRequest().permitAll()
-                ).antMatcher("/h2-console/**").headers().frameOptions().disable().and()
+                )
                 .httpBasic().realmName("Digilib")
                 .and()
                 .sessionManagement()

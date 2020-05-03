@@ -18,7 +18,13 @@ public class UserController {
 
     @RequestMapping("/api/user")
     public User user(Principal user) {
-        return this.userRepository.findUserByUsername(user.getName()).orElseThrow(() -> new UsernameNotFoundException(user.getName()));
+        if (user == null || user.getName() == null) {
+            System.out.println("user = " + user);
+            throw new UsernameNotFoundException("NULL");
+        }
+
+        String name = user.getName();
+        return this.userRepository.findUserByUsername(name).orElseThrow(() -> new UsernameNotFoundException(user.getName()));
     }
 
 }

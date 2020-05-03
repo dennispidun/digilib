@@ -6,19 +6,19 @@
 <div class="page">
   <div class="navigation">
     <div class="user">
-      <div class="avatar"></div>
-      <div class="who">
-        <p>Angemeldet als: </p>
-        <p *ngIf="user" style="font-weight: bold;">{{user.username}}</p>
-        <a (click)="logout()" href="login">Logout</a>
-      </div>
+      <p>Angemeldet als: </p>
+      <p *ngIf="user" style="font-weight: bold;">
+        {{user.username}}
+        <a (click)="logout()" href="login">(Logout)</a>
+      </p>
     </div>
 
     <div class="section">
       <nav>
         <ul>
-          <li><a [routerLink]="'/dashboard'">Inventar</a></li>
-          <li><a [routerLink]="'/personen'">Personen</a></li>
+          <li routerLinkActive="active" [routerLink]="'/dashboard'"><a>Inventar</a></li>
+          <li routerLinkActive="active" [routerLink]="'/personen'"><a>Personen</a></li>
+          <li routerLinkActive="active" [routerLink]="'/benutzer'"><a>Benutzer</a></li>
         </ul>
       </nav>
     </div>
