@@ -58,6 +58,6 @@ export class AppService {
   }
 
   logout() {
-    localStorage.removeItem("credentials");
+    localStorage.removeItem("token");
   }
 }
