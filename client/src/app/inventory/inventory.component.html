@@ -3,9 +3,11 @@
     Willkommen, {{user.firstname}} {{user.lastname}}!
   </h1>
 
-  <label>
+  <div class="book-actions">
     <input type="text" class="form-control" placeholder="ISBN/Inventar-Nr." #search [disabled]="behind">
-  </label>
+    <button type="button" class="btn btn-outline-success" (click)="addBook()">Buch hinzufügen</button>
+  </div>
+
 
   <div class="table-actions">
     <nav class="pagecontroller">
@@ -14,7 +16,7 @@
           <a class="page-link" (click)="back()">Zurück</a>
         </li>
         <li class="page-item active">
-          <p class="page-link">{{ pageNo+1 }}</p>
+          <p class="page-link">{{ pageNo + 1 }}</p>
         </li>
         <li class="page-item" [ngClass]="nextBooks.length == 0 && 'disabled'">
           <a class="page-link" (click)="next()">Weiter</a>

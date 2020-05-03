@@ -3,7 +3,7 @@ export interface Book {
   isbn: string;
   title: string;
   author: string;
-  createdOn: number;
+  createdOn?: number;
   borrowedOn?: number;
   borrowerName?: string
   returnedOn?: number;

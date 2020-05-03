@@ -88,3 +88,11 @@ table {
 .tableAlign {
   vertical-align: middle;
 }
+
+.book-actions {
+  & > * {
+    float: left;
+    max-width: 400px;
+    margin-right: 20px;
+  }
+}

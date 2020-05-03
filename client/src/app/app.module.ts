@@ -16,6 +16,7 @@ import {BorrowerListComponent} from "./borrower-list/borrower-list.component";
 import {AppService} from "./app.service";
 import {AuthInterceptor} from "./http.interceptor";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import { AddBookComponent } from './add-book/add-book.component';
 
 @Injectable()
 export class XhrInterceptor implements HttpInterceptor {
@@ -36,7 +37,8 @@ export class XhrInterceptor implements HttpInterceptor {
     BorrowComponent,
     ContentComponent,
     LoginComponent,
-    BorrowerListComponent
+    BorrowerListComponent,
+    AddBookComponent
   ],
   imports: [
     NgbModule,

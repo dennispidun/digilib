@@ -1,0 +1,22 @@
+<div class="modal-header">
+  <h4 class="modal-title">Buch erstellen</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <input type="text" class="form-control" [ngClass]="error.title.length > 0 && 'is-invalid'" [(ngModel)]="book.title" placeholder="Titel">
+  <small *ngIf="error.title.length > 0" class="form-text text-danger">{{error.title}}</small>
+
+  <input type="text" class="form-control" [ngClass]="error.author.length > 0 && 'is-invalid'" [(ngModel)]="book.author" placeholder="Autor">
+  <small *ngIf="error.author.length > 0" class="form-text text-danger">{{error.author}}</small>
+
+  <input type="text" class="form-control" [ngClass]="error.isbn.length > 0 && 'is-invalid'" [(ngModel)]="book.isbn" placeholder="ISBN">
+  <small *ngIf="error.isbn.length > 0" class="form-text text-danger">{{error.isbn}}</small>
+
+  <input type="text" class="form-control" [ngClass]="error.invnr.length > 0 && 'is-invalid'" [(ngModel)]="book.invnr" placeholder="Inventar-Nummer">
+  <small *ngIf="error.invnr.length > 0" class="form-text text-danger">{{error.invnr}}</small>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-success" (click)="create()">Erstellen</button>
+</div>

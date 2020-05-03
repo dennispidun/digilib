@@ -6,6 +6,8 @@ import {Router} from "@angular/router";
 import {fromEvent} from "rxjs";
 import {debounceTime, distinctUntilChanged, filter, tap} from "rxjs/operators";
 import {AppService, User} from "../app.service";
+import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
+import {AddBookComponent} from "../add-book/add-book.component";
 
 @Component({
   selector: "app-inventory",
@@ -20,7 +22,7 @@ export class InventoryComponent implements OnInit {
   nextBooks: Book[] = [];
   behind = false;
 
-  searchCache: string = "";
+  searchCache = "";
 
   private PAGE_SIZE = 10;
 
@@ -28,7 +30,10 @@ export class InventoryComponent implements OnInit {
 
   user: User;
 
-  constructor(private app: AppService, private http: HttpClient, private router: Router) {
+  addingBook = false;
+
+  constructor(private app: AppService, private http: HttpClient, private router: Router,
+              private modalService: NgbModal) {
     this.updateBooks();
     this.app.user.subscribe(data => {
       this.user = data;
@@ -38,6 +43,7 @@ export class InventoryComponent implements OnInit {
   ngOnInit() {
   }
 
+  // tslint:disable-next-line:use-lifecycle-interface
   ngAfterViewInit() {
     // server-side search
     fromEvent(this.searchElement.nativeElement, "keyup")
@@ -94,7 +100,7 @@ export class InventoryComponent implements OnInit {
     this.updateBooks();
   }
 
-  private parseBooks(data: Object): Book[] {
+  private parseBooks(data: any): Book[] {
     return (data as Book[]).map(book => {
       book.createdOn = Date.parse(String(book.createdOn));
       book.borrowedOn = Date.parse(String(book.borrowedOn));
@@ -121,7 +127,7 @@ export class InventoryComponent implements OnInit {
   }
 
   private addSearchInput(text) {
-    if (!this.behind) {
+    if (!this.behind && !this.addingBook) {
       if (text.key !== "Enter") {
         this.searchCache += text.key;
       } else {
@@ -132,5 +138,15 @@ export class InventoryComponent implements OnInit {
         }
       }
     }
+  }
+
+  addBook() {
+    const modalRef: NgbModalRef = this.modalService.open(AddBookComponent);
+    this.addingBook = true;
+
+    modalRef.result.then(() => {
+      this.updateBooks();
+      this.addingBook = false;
+    });
   }
 }
