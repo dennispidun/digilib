@@ -5,6 +5,7 @@ import {Router} from "@angular/router";
 // tslint:disable-next-line:import-blacklist
 import {fromEvent} from "rxjs";
 import {debounceTime, distinctUntilChanged, filter, tap} from "rxjs/operators";
+import {AppService, User} from "../app.service";
 
 @Component({
   selector: "app-inventory",
@@ -25,8 +26,13 @@ export class InventoryComponent implements OnInit {
 
   pageNo = 0;
 
-  constructor(private http: HttpClient, private router: Router) {
+  user: User;
+
+  constructor(private app: AppService, private http: HttpClient, private router: Router) {
     this.updateBooks();
+    this.app.user.subscribe(data => {
+      this.user = data;
+    });
   }
 
   ngOnInit() {
