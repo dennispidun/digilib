@@ -2,35 +2,34 @@
   <h1 *ngIf="user">
     Willkommen, {{user.firstname}} {{user.lastname}}!
   </h1>
-
-  <div class="book-actions">
-    <input type="text" class="form-control" placeholder="ISBN/Inventar-Nr." #search [disabled]="behind">
-    <button type="button" class="btn btn-outline-success" (click)="addBook()">Buch hinzufügen</button>
-  </div>
-
-
-  <div class="table-actions">
-    <nav class="pagecontroller">
-      <ul class="pagination">
-        <li class="page-item" [ngClass]="pageNo == 0 && 'disabled'">
-          <a class="page-link" (click)="back()">Zurück</a>
-        </li>
-        <li class="page-item active">
-          <p class="page-link">{{ pageNo + 1 }}</p>
-        </li>
-        <li class="page-item" [ngClass]="nextBooks.length == 0 && 'disabled'">
-          <a class="page-link" (click)="next()">Weiter</a>
-        </li>
-      </ul>
-    </nav>
-
-    <div>
-      <input (change)="updateBehind()" ngbButton type="checkbox" [(ngModel)]="behind" id="behind"/>
-      <label for="behind">Nur Bücher im Verzug anzeigen</label>
-    </div>
-
-  </div>
   <table>
+    <tr class="table-actions">
+      <th>
+        <nav class="pagecontroller">
+          <ul class="pagination">
+            <li class="page-item" [ngClass]="pageNo == 0 && 'disabled'">
+              <a class="page-link" (click)="back()">Zurück</a>
+            </li>
+            <li class="page-item active">
+              <p class="page-link">{{ pageNo + 1 }}</p>
+            </li>
+            <li class="page-item" [ngClass]="nextBooks.length == 0 && 'disabled'">
+              <a class="page-link" (click)="next()">Weiter</a>
+            </li>
+          </ul>
+        </nav>
+      </th>
+      <th colspan="2">
+        <input type="text" class="form-control" style="max-width: 500px;" placeholder="ISBN/Inventar-Nr." #search [disabled]="behind">
+      </th>
+      <th>
+        <input (change)="updateBehind()" ngbButton type="checkbox" [(ngModel)]="behind" id="behind"/>
+        <label for="behind">Nur Bücher im Verzug anzeigen</label>
+      </th>
+      <th>
+        <button type="button" class="btn btn-outline-success" (click)="addBook()">Buch hinzufügen</button>
+      </th>
+    </tr>
     <tr class="header">
       <th style="width: 160px">Inventar-Nr</th>
       <th style="width: 180px">ISBN</th>
@@ -55,6 +54,9 @@
         <p *ngIf="book.borrowedOn && !book.returnedOn">{{ book.borrowedOn | date : 'dd.MM.yyyy'}}</p>
         <p *ngIf="!book.borrowedOn || book.returnedOn">-</p>
       </td>
+    </tr>
+    <tr *ngIf="books.length == 0" class="no-books">
+      <td style="text-align: center" colspan="5">Keine Bücher gefunden</td>
     </tr>
   </table>
 </div>
