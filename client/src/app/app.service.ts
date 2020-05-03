@@ -19,7 +19,12 @@ export class AppService {
   constructor(private http: HttpClient) {
     this.user = new Observable((observer) => {
       this.http.get("/api/user").subscribe(data => {
-        observer.next({firstname: data.firstname, lastname: data.lastname, username: data.username});
+        const userData = data as any;
+        observer.next({
+          firstname: userData.firstname,
+          lastname: userData.lastname,
+          username: userData.username
+        });
       });
     });
   }
