@@ -26,3 +26,14 @@ In order to output the Angular application correctly from the web server, it mus
 ```shell
 $ ./gradlew copy
 ```
+
+## Setup signing key:
+
+This application is secured by jwt-tokens, which is digitally signed by the server, thus he can verify the validity of the token. 
+In order for the application to issue a secure token, a secret must first be generated, you can get one by:
+
+```shell
+$ openssl rand -base64 172 | tr -d '\n'
+```
+
+After the secret has been created, it can be entered in the "application.yml". For this purpose, the key `jwt.secret` is created and provided with the generated value.
