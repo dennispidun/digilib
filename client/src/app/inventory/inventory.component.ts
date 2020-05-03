@@ -20,7 +20,7 @@ export class InventoryComponent implements OnInit {
   nextBooks: Book[] = [];
   behind = false;
 
-  searchCache: String = "";
+  searchCache: string = "";
 
   private PAGE_SIZE = 10;
 
