@@ -20,7 +20,7 @@
         </nav>
       </th>
       <th colspan="2">
-        <input type="text" class="form-control" style="max-width: 500px;" placeholder="ISBN/Inventar-Nr." #search [disabled]="behind">
+        <input type="text" class="form-control" style="max-width: 500px;" placeholder="Inventar-Nr./ISBN/Titel/Autor" #search [disabled]="behind">
       </th>
       <th>
         <input (change)="updateBehind()" ngbButton type="checkbox" [(ngModel)]="behind" id="behind"/>

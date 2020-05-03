@@ -47,7 +47,9 @@ public class BooksProvider {
 
         Pageable paging = PageRequest.of(pageNo, pageSize);
 
-        List<Book> foundBooks = repository.findBooksByInvnrContainingOrIsbnContaining(search, search, paging).toList();
+        List<Book> foundBooks = repository
+                .findBooksByInvnrContainingOrIsbnContainingOrTitleContainingOrAuthorContaining(
+                        search, search, search, search, paging).toList();
 
         return foundBooks.stream()
                 .distinct()
