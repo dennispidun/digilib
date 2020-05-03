@@ -11,10 +11,10 @@ import {HttpClient} from "@angular/common/http";
 export class AddBookComponent implements OnInit {
 
   book: Book = {
-    isbn: "asda",
-    invnr: "asdasd",
-    title: "asdad",
-    author: "asdadasdas"
+    isbn: "",
+    invnr: "",
+    title: "",
+    author: ""
   };
   error = {
     isbn: "",
