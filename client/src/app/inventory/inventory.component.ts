@@ -23,6 +23,7 @@ export class InventoryComponent implements OnInit {
   behind = false;
 
   searchCache = "";
+  lastTimeKeyEntered = 0;
 
   private PAGE_SIZE = 10;
 
@@ -31,6 +32,8 @@ export class InventoryComponent implements OnInit {
   user: User;
 
   addingBook = false;
+
+
 
   constructor(private app: AppService, private http: HttpClient, private router: Router,
               private modalService: NgbModal) {
@@ -127,9 +130,14 @@ export class InventoryComponent implements OnInit {
   }
 
   private addSearchInput(text) {
+    if (Date.now() - this.lastTimeKeyEntered > 50) {
+      this.searchCache = "";
+    }
+
     if (!this.behind && !this.addingBook) {
       if (text.key !== "Enter") {
         this.searchCache += text.key;
+        this.lastTimeKeyEntered = Date.now();
       } else {
         if (this.searchCache.length > 0) {
           this.searchElement.nativeElement.value = this.searchCache;
