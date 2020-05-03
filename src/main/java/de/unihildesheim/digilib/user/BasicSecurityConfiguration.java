@@ -50,7 +50,7 @@ public class BasicSecurityConfiguration extends WebSecurityConfigurerAdapter {
                         authorizeRequests
                                 .antMatchers("/api/**").hasAnyRole("USER")
                                 .anyRequest().permitAll()
-                )
+                ).antMatcher("/h2-console/**").headers().frameOptions().disable().and()
                 .httpBasic().realmName("Digilib")
                 .and()
                 .sessionManagement()
