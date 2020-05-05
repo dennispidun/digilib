@@ -52,7 +52,6 @@ export class UserComponent implements OnInit {
   }
 
   setEnabled(user: User) {
-    this.http.patch(`/api/users/${user.username}/enabled`, user.enabled)
-      .subscribe();
+    this.http.patch(`/api/users/${user.username}/enabled`, user.enabled).subscribe();
   }
 }
