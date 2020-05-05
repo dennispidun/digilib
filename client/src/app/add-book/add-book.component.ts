@@ -47,6 +47,18 @@ export class AddBookComponent implements OnInit {
       author: ""
     }
 
+    if (apierror) {
+      if (apierror.subErrors) {
+        for (const subError of apierror.subErrors) {
+          if (subError.field === "isbn") {
+            this.error.isbn = subError.message;
+          } else if (subError.field === "invnr") {
+            this.error.invnr = subError.message;
+          }
+        }
+      }
+    }
+
     if (this.book.title.length === 0) {
       this.error.title = "Der Buchtitel darf nicht leer sein.";
     }
@@ -58,19 +70,6 @@ export class AddBookComponent implements OnInit {
     }
     if (this.book.invnr.length === 0) {
       this.error.invnr = "Die Inventarnummer darf nicht leer sein.";
-    }
-
-    if (apierror) {
-
-      if (apierror.subErrors) {
-        for (const subError of apierror.subErrors) {
-          if (subError.field === "isbn") {
-            this.error.isbn = subError.message;
-          } else if (subError.field === "invnr") {
-            this.error.invnr = subError.message;
-          }
-        }
-      }
     }
   }
 }
