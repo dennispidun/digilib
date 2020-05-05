@@ -17,8 +17,8 @@ const routes: Routes = [
       {path: "book/:invnr", component: DetailsComponent},
       {path: "dashboard", component: InventoryComponent},
       {path: "personen", component: BorrowerListComponent},
-      {path: "import", component: ImportComponent},
       {path: "benutzer", component: UserComponent},
+      {path: "import", component: ImportComponent},
       {path: "", redirectTo: "/dashboard", pathMatch: "full"}
     ]
   },

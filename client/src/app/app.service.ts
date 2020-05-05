@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
-import {Observable, of} from "rxjs";
+import {Observable} from "rxjs";
 
 export interface User {
   username: string;
@@ -14,7 +14,6 @@ export interface User {
 export class AppService {
 
   user: Observable<User>;
-
 
   constructor(private http: HttpClient) {
     this.user = new Observable((observer) => {
@@ -54,7 +53,7 @@ export class AppService {
 
   authenticated(): boolean {
     const credentials = localStorage.getItem("token");
-    return credentials && credentials != null && credentials.length > 0;
+    return credentials && credentials.length > 0;
   }
 
   logout() {

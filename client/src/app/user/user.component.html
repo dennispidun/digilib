@@ -1,1 +1,43 @@
-<p>user works!</p>
+<div class="table-actions">
+
+  <nav class="pagecontroller">
+    <ul class="pagination">
+      <li class="page-item" [ngClass]="first && 'disabled'">
+        <a class="page-link" (click)="back()">Zurück</a>
+      </li>
+      <li class="page-item active">
+        <p class="page-link">{{ pageNo + 1 }}</p>
+      </li>
+      <li class="page-item" [ngClass]="last && 'disabled'">
+        <a class="page-link" (click)="next()">Weiter</a>
+      </li>
+    </ul>
+  </nav>
+  <table>
+    <tr class="header">
+      <th style="width: 160px">Username</th>
+      <th style="width: 180px">Vorname</th>
+      <th style="width: 300px">Nachname</th>
+      <th style="width: 250px">Aktiv?</th>
+    </tr>
+    <tr *ngFor="let user of users" class="tableAlign">
+      <td>
+        <p>{{ user.username}}</p>
+      </td>
+      <td>
+        <p>{{ user.firstname }}</p>
+      </td>
+      <td>
+        <p>{{ user.lastname }}</p>
+      </td>
+      <td>
+        <label class="switch">
+          <input type="checkbox" [(ngModel)]="user.enabled" [disabled]="user.username === 'admin'">
+          <span class="slider round" [ngClass]="user.username === 'admin' && 'locked'"></span>
+        </label>
+      </td>
+    </tr>
+  </table>
+
+</div>
+
