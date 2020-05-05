@@ -5,6 +5,8 @@ import de.unihildesheim.digilib.book.model.BookDto;
 import de.unihildesheim.digilib.book.model.BookModelMapper;
 import de.unihildesheim.digilib.book.model.ListBookDto;
 import de.unihildesheim.digilib.borrowing.BorrowingService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +35,7 @@ public class BookController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public List<ListBookDto> getBooks(@RequestParam(required = false) String search,
+    public Page<ListBookDto> getBooks(@RequestParam(required = false) String search,
                                       @RequestParam int pageNo,
                                       @RequestParam int pageSize,
                                       @RequestParam(required = false) Boolean behind) {

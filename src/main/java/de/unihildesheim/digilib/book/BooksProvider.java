@@ -5,6 +5,7 @@ import de.unihildesheim.digilib.book.model.BookDto;
 import de.unihildesheim.digilib.book.model.ListBookDto;
 import de.unihildesheim.digilib.borrowing.BorrowingRepository;
 import de.unihildesheim.digilib.utils.ISBNUtils;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -40,37 +41,24 @@ public class BooksProvider {
         return repository.save(book);
     }
 
-    public List<ListBookDto> searchForPaginated(String search, int pageNo, int pageSize) {
-
-        Pageable paging = PageRequest.of(pageNo, pageSize);
-
-        List<Book> foundBooks = repository
+    public Page<ListBookDto> searchForPaginated(String search, int pageNo, int pageSize) {
+        return repository
                 .findBooksByInvnrContainingOrIsbnContainingOrTitleContainingOrAuthorContaining(
-                        search, search, search, search, paging).toList();
-
-        return foundBooks.stream()
-                .distinct()
-                .map(book -> new ListBookDto(book, null))
-                .collect(Collectors.toList());
+                        search, search, search, search, PageRequest.of(pageNo, pageSize))
+                .map(book -> new ListBookDto(book, null));
     }
 
-    public List<ListBookDto> findPaginated(int pageNo, int pageSize) {
-        return repository.findAll(PageRequest.of(pageNo, pageSize)).toList()
-                .stream()
-                .distinct()
-                .map(book -> new ListBookDto(book, null))
-                .collect(Collectors.toList());
+    public Page<ListBookDto> findPaginated(int pageNo, int pageSize) {
+        return repository.findAll(PageRequest.of(pageNo, pageSize))
+                .map(book -> new ListBookDto(book, null));
     }
 
-    public List<ListBookDto> findBehindPaginated(int pageNo, int pageSize) {
+    public Page<ListBookDto> findBehindPaginated(int pageNo, int pageSize) {
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DAY_OF_MONTH, -BOOKS_BEHIND_DAYS);
         Date thendate = cal.getTime();
 
-        return borrowingRepository.findAllByBorrowedOnBeforeAndReturnedOnIsNull(PageRequest.of(pageNo, pageSize), thendate).toList()
-                .stream()
-                .map(borrowing -> new ListBookDto(borrowing.getBook(), borrowing.getBorrowedOn()))
-                .distinct()
-                .collect(Collectors.toList());
+        return borrowingRepository.findAllByBorrowedOnBeforeAndReturnedOnIsNull(PageRequest.of(pageNo, pageSize), thendate)
+                .map(borrowing -> new ListBookDto(borrowing.getBook(), borrowing.getBorrowedOn()));
     }
 }

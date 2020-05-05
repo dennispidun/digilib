@@ -7,13 +7,13 @@
       <th>
         <nav class="pagecontroller">
           <ul class="pagination">
-            <li class="page-item" [ngClass]="pageNo == 0 && 'disabled'">
+            <li class="page-item" [ngClass]="first && 'disabled'">
               <a class="page-link" (click)="back()">Zurück</a>
             </li>
             <li class="page-item active">
               <p class="page-link">{{ pageNo + 1 }}</p>
             </li>
-            <li class="page-item" [ngClass]="nextBooks.length == 0 && 'disabled'">
+            <li class="page-item" [ngClass]="last && 'disabled'">
               <a class="page-link" (click)="next()">Weiter</a>
             </li>
           </ul>

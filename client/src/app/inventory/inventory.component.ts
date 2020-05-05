@@ -19,7 +19,9 @@ export class InventoryComponent implements OnInit {
   @ViewChild("search") searchElement: ElementRef;
 
   books: Book[] = [];
-  nextBooks: Book[] = [];
+
+  first: boolean;
+  last: boolean;
   behind = false;
 
   searchCache = "";
@@ -79,28 +81,25 @@ export class InventoryComponent implements OnInit {
     }
 
     this.http.get(`/api/books?pageNo=${this.pageNo}&pageSize=${this.PAGE_SIZE}${searchOption}${behindOption}`)
-      .toPromise().then((data) => {
-      this.books = this.parseBooks(data);
-    });
-
-    this.http.get(`/api/books?pageNo=${this.pageNo + 1}&pageSize=${this.PAGE_SIZE}${searchOption}${behindOption}`)
-      .toPromise().then((data) => {
-      this.nextBooks = this.parseBooks(data);
+      .toPromise().then((data: any) => {
+      this.books = this.parseBooks(data.content);
+      this.first = data.first;
+      this.last = data.last;
     });
   }
 
   next() {
-    if (this.nextBooks.length > 0) {
+    if (!this.last) {
       this.pageNo++;
       this.updateBooks();
     }
   }
 
   back() {
-    if (this.pageNo > 0) {
+    if (!this.first) {
       this.pageNo--;
+      this.updateBooks();
     }
-    this.updateBooks();
   }
 
   private parseBooks(data: any): Book[] {
