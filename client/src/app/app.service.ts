@@ -6,6 +6,7 @@ export interface User {
   username: string;
   firstname: string;
   lastname: string;
+  enabled: boolean;
 }
 
 @Injectable({
@@ -22,7 +23,8 @@ export class AppService {
         observer.next({
           firstname: userData.firstname,
           lastname: userData.lastname,
-          username: userData.username
+          username: userData.username,
+          enabled: userData.enabled
         });
       });
     });

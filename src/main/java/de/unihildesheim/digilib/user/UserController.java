@@ -1,17 +1,15 @@
 package de.unihildesheim.digilib.user;
 
 
-import de.unihildesheim.digilib.book.model.ListBookDto;
+import de.unihildesheim.digilib.borrowing.BorrowerNotFoundException;
+import de.unihildesheim.digilib.borrowing.model.Borrower;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.List;
 
 @RestController
 public class UserController {
@@ -38,6 +36,19 @@ public class UserController {
                                @RequestParam int pageSize) {
         return this.userRepository
                 .findAll(PageRequest.of(pageNo, pageSize));
+    }
+
+    @PatchMapping(value = "/api/users/{username}/enabled", consumes = MediaType.TEXT_PLAIN_VALUE)
+    public User setEnabled(Principal loggedInUser, @PathVariable("username") String username, @RequestBody String enabled) {
+        if (loggedInUser.getName().equalsIgnoreCase(username)) {
+            throw new UserSelfEditException();
+        }
+
+        User user = userRepository.findUserByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException(username));
+
+        user.setEnabled(enabled.equals("true"));
+        return userRepository.save(user);
     }
 
 }

@@ -53,7 +53,9 @@ public class BorrowerController {
 
     @PatchMapping(value = "/{id}/teacher", consumes = MediaType.TEXT_PLAIN_VALUE)
     public Borrower setTeacher(@PathVariable("id") long id, @RequestBody String teacher) {
-        Borrower borrower = borrowerRepository.findById(id).orElseThrow(() -> new BorrowerNotFoundException(id));
+        Borrower borrower = borrowerRepository.findById(id)
+                .orElseThrow(() -> new BorrowerNotFoundException(id));
+
         borrower.setTeacher(teacher.equals("true"));
         return borrowerRepository.save(borrower);
     }

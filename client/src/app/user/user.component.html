@@ -22,7 +22,7 @@
     </tr>
     <tr *ngFor="let user of users" class="tableAlign">
       <td>
-        <p>{{ user.username}}</p>
+        <p>{{ user.username }}</p>
       </td>
       <td>
         <p>{{ user.firstname }}</p>
@@ -32,8 +32,8 @@
       </td>
       <td>
         <label class="switch">
-          <input type="checkbox" [(ngModel)]="user.enabled" [disabled]="user.username === 'admin'">
-          <span class="slider round" [ngClass]="user.username === 'admin' && 'locked'"></span>
+          <input (change)="setEnabled(user)" type="checkbox" [(ngModel)]="user.enabled" [disabled]="user.username === loggedInUser.username">
+          <span class="slider round" [ngClass]="user.username === loggedInUser.username && 'locked'"></span>
         </label>
       </td>
     </tr>

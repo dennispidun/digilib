@@ -1,12 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-
-interface User {
-  username: string;
-  firstname: string;
-  lastname: string;
-  enabled: boolean;
-}
+import {AppService, User} from "../app.service";
 
 @Component({
   selector: 'app-user',
@@ -15,15 +9,19 @@ interface User {
 })
 export class UserComponent implements OnInit {
 
-  readonly PAGESIZE: number = 1;
+  readonly PAGESIZE: number = 10;
 
   users: User[];
   pageNo = 0;
   first: boolean;
   last: boolean;
+  loggedInUser: User;
 
-  constructor(private http: HttpClient) {
+  constructor(private app: AppService, private http: HttpClient) {
     this.updateUsers();
+    this.app.user.subscribe(data => {
+      this.loggedInUser = data;
+    });
   }
 
   ngOnInit(): void {
@@ -51,5 +49,10 @@ export class UserComponent implements OnInit {
       this.pageNo++;
       this.updateUsers();
     }
+  }
+
+  setEnabled(user: User) {
+    this.http.patch(`/api/users/${user.username}/enabled`, user.enabled)
+      .subscribe();
   }
 }
