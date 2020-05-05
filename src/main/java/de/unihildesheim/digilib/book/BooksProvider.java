@@ -27,9 +27,6 @@ public class BooksProvider {
     }
 
     public Book create(BookDto createBook) {
-        ISBNUtils.validateIsbn13(createBook.getIsbn());
-
-
         Book book = new Book();
         book.setAuthor(createBook.getAuthor());
         book.setTitle(createBook.getTitle());

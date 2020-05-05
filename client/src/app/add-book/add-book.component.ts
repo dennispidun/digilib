@@ -61,8 +61,15 @@ export class AddBookComponent implements OnInit {
     }
 
     if (apierror) {
-      if (apierror.message === "ISBNNotValidException") {
-        this.error.isbn = "Bitte geben sie eine valide ISBN-13 an.";
+
+      if (apierror.subErrors) {
+        for (const subError of apierror.subErrors) {
+          if (subError.field === "isbn") {
+            this.error.isbn = subError.message;
+          } else if (subError.field === "invnr") {
+            this.error.invnr = subError.message;
+          }
+        }
       }
     }
   }

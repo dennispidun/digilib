@@ -1,6 +1,7 @@
 package de.unihildesheim.digilib.book.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import de.unihildesheim.digilib.book.ISBN;
 import de.unihildesheim.digilib.borrowing.model.Borrowing;
 import lombok.Data;
 
@@ -17,6 +18,8 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String invnr;
+
+    @ISBN
     private String isbn;
     private String title;
     private String author;
