@@ -24,6 +24,7 @@ public class UserInitializer {
         entity.setFirstname("Erika");
         entity.setLastname("Musterfrau");
         entity.setPassword(passwordEncoder.encode("password"));
+        entity.setRole(Role.ADMIN);
         repository.save(entity);
         User entity2 = new User();
         entity2.setEnabled(true);

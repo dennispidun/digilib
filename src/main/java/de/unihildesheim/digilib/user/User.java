@@ -10,7 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-@NoArgsConstructor
 @Data
 public class User {
 
@@ -28,4 +27,10 @@ public class User {
     private String password;
 
     private boolean enabled;
+
+    private Role role;
+
+    public User() {
+        this.role = Role.USER;
+    }
 }

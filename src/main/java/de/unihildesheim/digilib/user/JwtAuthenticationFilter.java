@@ -1,12 +1,8 @@
 package de.unihildesheim.digilib.user;
 
-import ch.qos.logback.core.util.ContentTypeUtil;
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.impl.DefaultClaims;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -17,10 +13,10 @@ import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -49,7 +45,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         Map<String, Object> claims = new HashMap<>();
 
-        claims.put("roles", Collections.singletonList("ROLE_USER"));
+        claims.put("roles", user.getAuthorities().stream().map(grantedAuthority ->
+                grantedAuthority.getAuthority()).collect(Collectors.toList()));
 
         String token = Jwts.builder()
                 .signWith(secretKey, SignatureAlgorithm.HS512)
@@ -58,7 +55,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .setAudience(jwtAudience)
                 .setSubject(user.getUsername())
                 .addClaims(claims)
-                .setExpiration(new Date(System.currentTimeMillis() + 864000000))
+                .setExpiration(new Date(System.currentTimeMillis() + 86400000))
                 .compact();
 
         response.getWriter().write("{\"token\": \"Bearer " + token + "\" }");

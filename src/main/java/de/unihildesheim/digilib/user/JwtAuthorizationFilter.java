@@ -25,17 +25,11 @@ import java.util.stream.Collectors;
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
     private String jwtSecret;
-    private String jwtIssuer;
-    private String jwtType;
-    private String jwtAudience;
 
     public JwtAuthorizationFilter(AuthenticationManager authenticationManager,
-                                  String jwtAudience, String jwtIssuer, String jwtSecret, String jwtType) {
+                                  String jwtSecret) {
         super(authenticationManager);
-        this.jwtAudience = jwtAudience;
-        this.jwtIssuer = jwtIssuer;
         this.jwtSecret = jwtSecret;
-        this.jwtType = jwtType;
     }
 
     private UsernamePasswordAuthenticationToken parseToken(HttpServletRequest request) {

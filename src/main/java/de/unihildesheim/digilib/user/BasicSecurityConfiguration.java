@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.sql.DataSource;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 @EnableWebSecurity
 public class BasicSecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -34,21 +36,26 @@ public class BasicSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     public UserDetailsService userDetailsService() {
         return new UserDetailsServiceImpl(userRepository);
-    };
+    }
+
+    ;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    };
+    }
+
+    ;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().headers().frameOptions().sameOrigin().and().csrf().disable()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwtAudience, jwtIssuer, jwtSecret, jwtType))
-                .addFilter(new JwtAuthorizationFilter(authenticationManager(), jwtAudience, jwtIssuer, jwtSecret, jwtType))
+                .addFilter(new JwtAuthorizationFilter(authenticationManager(), jwtSecret))
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
-                                .antMatchers("/api/**").hasAnyRole("USER")
+                                .antMatchers("/api/users**").hasAnyRole(Role.ADMIN.name())
+                                .antMatchers("/api/**").hasAnyRole(Role.getAllRoles())
                                 .anyRequest().permitAll()
                 )
                 .httpBasic().realmName("Digilib")

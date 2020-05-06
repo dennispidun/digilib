@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.Optional;
 
 @RestController
 public class UserController {
@@ -28,7 +29,14 @@ public class UserController {
         }
 
         String name = user.getName();
-        return this.userRepository.findUserByUsername(name).orElseThrow(() -> new UsernameNotFoundException(user.getName()));
+        User userByUsername = this.userRepository.findUserByUsername(name)
+                .orElseThrow(() -> new UsernameNotFoundException(user.getName()));
+
+        if (userByUsername.getRole() == null) {
+            userByUsername.setRole(Role.USER);
+        }
+
+        return userByUsername;
     }
 
     @GetMapping("/api/users")
