@@ -7,6 +7,7 @@ export interface User {
   firstname: string;
   lastname: string;
   enabled: boolean;
+  role: string;
 }
 
 @Injectable({
@@ -24,7 +25,8 @@ export class AppService {
           firstname: userData.firstname,
           lastname: userData.lastname,
           username: userData.username,
-          enabled: userData.enabled
+          enabled: userData.enabled,
+          role: userData.role
         });
       });
     });

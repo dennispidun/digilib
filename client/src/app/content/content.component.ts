@@ -16,6 +16,7 @@ export class ContentComponent implements OnInit {
     this.app.authenticate(undefined, undefined);
     this.app.user.subscribe(data => {
       this.user = data;
+      console.log(this.user);
     });
   }
 
