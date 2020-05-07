@@ -5,6 +5,8 @@ build/
 !**/src/main/**
 !**/src/test/**
 
+application-dev.yml
+
 ### STATIC ###
 src/main/resources/static
 
