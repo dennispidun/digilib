@@ -5,17 +5,22 @@
   </button>
 </div>
 <div class="modal-body">
-  <input type="text" class="form-control" [ngClass]="error.title.length > 0 && 'is-invalid'" [(ngModel)]="book.title" placeholder="Titel">
+  <input type="text" class="form-control" [class.is-invalid]="error.title.length > 0" [(ngModel)]="book.title" placeholder="Titel*">
   <small *ngIf="error.title.length > 0" class="form-text text-danger">{{error.title}}</small>
 
-  <input type="text" class="form-control" [ngClass]="error.author.length > 0 && 'is-invalid'" [(ngModel)]="book.author" placeholder="Autor">
+  <input type="text" class="form-control" [class.is-invalid]="error.author.length > 0" [(ngModel)]="book.author" placeholder="Autor*">
   <small *ngIf="error.author.length > 0" class="form-text text-danger">{{error.author}}</small>
 
-  <input type="text" class="form-control" [ngClass]="error.isbn.length > 0 && 'is-invalid'" [(ngModel)]="book.isbn" placeholder="ISBN">
+  <input type="text" class="form-control" [class.is-invalid]="error.isbn.length > 0" [(ngModel)]="book.isbn" placeholder="ISBN*">
   <small *ngIf="error.isbn.length > 0" class="form-text text-danger">{{error.isbn}}</small>
 
-  <input type="text" class="form-control" [ngClass]="error.invnr.length > 0 && 'is-invalid'" [(ngModel)]="book.invnr" placeholder="Inventar-Nummer">
+  <input type="text" class="form-control" [class.is-invalid]="error.invnr.length > 0" [(ngModel)]="book.invnr" placeholder="Inventar-Nummer*">
   <small *ngIf="error.invnr.length > 0" class="form-text text-danger">{{error.invnr}}</small>
+
+  <input id="typeahead-http" type="text" class="form-control"
+         [(ngModel)]="book.genre"
+         [ngbTypeahead]="genreSearch"
+         placeholder="Genre"/>
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-outline-success" (click)="create()">Erstellen</button>

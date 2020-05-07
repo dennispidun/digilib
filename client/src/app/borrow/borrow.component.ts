@@ -38,7 +38,7 @@ export class BorrowComponent implements OnInit {
       switchMap(term => this.findBorrower(term))
     );
 
-  findBorrower(term: string): Observable<String[]> {
+  findBorrower(term: string): Observable<string[]> {
     if (term === "") {
       return of([]);
     }

@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {Book} from "../inventory/book.model";
 import {HttpClient} from "@angular/common/http";
+import {Observable, of} from "rxjs";
+import {debounceTime, distinctUntilChanged, map, switchMap} from "rxjs/operators";
 
 @Component({
   selector: 'app-add-book',
@@ -22,6 +24,13 @@ export class AddBookComponent implements OnInit {
     title: "",
     author: ""
   };
+  genreSearchFailed: boolean;
+  genreSearch = (text$: Observable<string>) =>
+    text$.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap(term => this.findGenre(term))
+    );
 
   constructor(public activeModal: NgbActiveModal, private http: HttpClient) {
   }
@@ -71,5 +80,16 @@ export class AddBookComponent implements OnInit {
     if (this.book.invnr.length === 0) {
       this.error.invnr = "Die Inventarnummer darf nicht leer sein.";
     }
+  }
+
+  private findGenre(term: string): Observable<string[]> {
+    if (term === "") {
+      return of([]);
+    }
+
+    return this.http.get(`/api/genres?search=${term}`)
+      .pipe(
+        map(value => (value as []))
+      )
   }
 }
