@@ -24,5 +24,7 @@ public class BookDto {
     @NotEmpty
     private String author;
 
+    private String genre;
+
     private Date createdOn;
 }

@@ -7,8 +7,8 @@ spring:
     username: sa
     password:
     driver-class-name: org.h2.Driver
-    profiles:
-      active: dev
+  profiles:
+    active: dev
 
 jwt:
   secret: Rb8INhBzZEmXj5BOyZKpGj41/pt0KCir5DCcF6ROhXPaYkMYOufoUi7WtCuGFI8f2im0FTRLvzqVcKD/Uxhj4wUoFXPDwDo8uk2aOcGW0WpBE80I6aFgFr6AiqVCtSjiHVoMK7PYNWsNaaScuCb9ZfxK0aHMQ4Y+B7XlT2HPCCN+xNDcg0R8armg7RU8DlZjdly2pN8J/b6b7OJ7fieYG0P+Me46uSe2ZvScrQ==

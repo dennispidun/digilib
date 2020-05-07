@@ -3,6 +3,7 @@ package de.unihildesheim.digilib.book.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.unihildesheim.digilib.book.ISBN;
 import de.unihildesheim.digilib.borrowing.model.Borrowing;
+import de.unihildesheim.digilib.genre.Genre;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -29,6 +30,9 @@ public class Book {
     @OrderBy("borrowedOn DESC")
     @JsonIgnore
     public List<Borrowing> borrowings;
+
+    @ManyToOne
+    public Genre genre;
 
     @Override
     public boolean equals(Object o) {
