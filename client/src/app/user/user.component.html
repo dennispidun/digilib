@@ -18,6 +18,7 @@
       <th style="width: 160px">Username</th>
       <th style="width: 180px">Vorname</th>
       <th style="width: 300px">Nachname</th>
+      <th style="width: 300px">Rolle</th>
       <th style="width: 250px">Aktiv?</th>
     </tr>
     <tr *ngFor="let user of users" class="tableAlign">
@@ -29,6 +30,9 @@
       </td>
       <td>
         <p>{{ user.lastname }}</p>
+      </td>
+      <td>
+        <p>{{ user.role.toLowerCase() }}</p>
       </td>
       <td>
         <label class="switch">
