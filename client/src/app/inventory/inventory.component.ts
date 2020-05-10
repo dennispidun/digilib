@@ -22,6 +22,8 @@ export class InventoryComponent implements OnInit {
   beforeBooks: Book[] | undefined = undefined;
   nextBooks: Book[] | undefined = undefined;
 
+  booksCount = 0;
+
   first = true;
   last: boolean;
   behind = false;
@@ -87,6 +89,7 @@ export class InventoryComponent implements OnInit {
         this.books = this.parseBooks(data.content);
         this.first = data.first;
         this.last = data.last;
+        this.booksCount = data.totalElements;
 
         if(!this.last) {
           this.getBooks(pageNo + 1, searchOption, behindOption).then((books: any) => {

@@ -2,8 +2,12 @@
   <h1 *ngIf="user">
     Willkommen, {{user.firstname}} {{user.lastname}}!
   </h1>
+
   <table>
-    <tr class="table-actions">
+    <tr class="no-books">
+      <th class="booksCount" colspan="5">{{booksCount}} {{(booksCount > 0 || booksCount == 0) ? 'Bücher' : 'Buch'}} gefunden.</th>
+    </tr>
+    <tr class="table-actions no-books">
       <th>
         <nav class="pagecontroller">
           <ul class="pagination">
@@ -30,7 +34,7 @@
         <button type="button" class="btn btn-outline-success" (click)="addBook()">Buch hinzufügen</button>
       </th>
     </tr>
-    <tr class="header">
+    <tr class="header no-books">
       <th style="width: 160px">Inventar-Nr</th>
       <th style="width: 180px">ISBN</th>
       <th style="width: 300px">Titel</th>
