@@ -19,8 +19,10 @@ export class InventoryComponent implements OnInit {
   @ViewChild("search") searchElement: ElementRef;
 
   books: Book[] = [];
+  beforeBooks: Book[] | undefined = undefined;
+  nextBooks: Book[] | undefined = undefined;
 
-  first: boolean;
+  first = true;
   last: boolean;
   behind = false;
 
@@ -36,10 +38,9 @@ export class InventoryComponent implements OnInit {
   addingBook = false;
 
 
-
   constructor(private app: AppService, private http: HttpClient, private router: Router,
               private modalService: NgbModal) {
-    this.updateBooks();
+    this.updateBooks(this.pageNo);
     this.app.user.subscribe(data => {
       this.user = data;
     });
@@ -68,7 +69,7 @@ export class InventoryComponent implements OnInit {
       .subscribe();
   }
 
-  updateBooks() {
+  updateBooks(pageNo) {
     let searchOption = "";
     let behindOption = "";
 
@@ -80,25 +81,53 @@ export class InventoryComponent implements OnInit {
       behindOption = "&behind=true";
     }
 
-    this.http.get(`/api/books?pageNo=${this.pageNo}&pageSize=${this.PAGE_SIZE}${searchOption}${behindOption}`)
+
+    return this.http.get(`/api/books?pageNo=${pageNo}&pageSize=${this.PAGE_SIZE}${searchOption}${behindOption}`)
       .toPromise().then((data: any) => {
-      this.books = this.parseBooks(data.content);
-      this.first = data.first;
-      this.last = data.last;
-    });
+        this.books = this.parseBooks(data.content);
+        this.first = data.first;
+        this.last = data.last;
+
+        if(!this.last) {
+          this.getBooks(pageNo + 1, searchOption, behindOption).then((books: any) => {
+            this.nextBooks = this.parseBooks(books.content);
+          });
+        }
+
+        if(!this.first) {
+          this.getBooks(pageNo - 1, searchOption, behindOption).then((books: any) => {
+            this.beforeBooks = this.parseBooks(books.content);
+          });
+        }
+      });
+  }
+
+  private getBooks(pageNo: number, searchOption: string, behindOption: string) {
+    return this.http.get(`/api/books?pageNo=${pageNo}&pageSize=${this.PAGE_SIZE}${searchOption}${behindOption}`)
+      .toPromise();
   }
 
   next() {
     if (!this.last) {
+      if (this.nextBooks) {
+        console.log(this.nextBooks);
+        this.books = this.nextBooks;
+      }
       this.pageNo++;
-      this.updateBooks();
+
+      this.updateBooks(this.pageNo).then(() => {});
     }
   }
 
   back() {
     if (!this.first) {
+      if (this.beforeBooks) {
+        console.log("use beforeBooks");
+        this.books = this.beforeBooks;
+      }
       this.pageNo--;
-      this.updateBooks();
+
+      this.updateBooks(this.pageNo).then(() => {});
     }
   }
 
@@ -118,14 +147,16 @@ export class InventoryComponent implements OnInit {
   }
 
   searchBook() {
-    this.pageNo = 0;
-    this.updateBooks();
+    this.nextBooks = undefined;
+    this.beforeBooks = undefined;
+    this.updateBooks(0).then(() => this.pageNo = 0);
   }
 
   updateBehind() {
-    this.pageNo = 0;
+    this.nextBooks = undefined;
+    this.beforeBooks = undefined;
     this.searchElement.nativeElement.value = "";
-    this.updateBooks();
+    this.updateBooks(0).then(() => this.pageNo = 0);
   }
 
   private addSearchInput(text) {
@@ -152,7 +183,7 @@ export class InventoryComponent implements OnInit {
     this.addingBook = true;
 
     modalRef.result.then(() => {
-      this.updateBooks();
+      this.updateBooks(this.pageNo).then(() => {});
       this.addingBook = false;
     });
   }

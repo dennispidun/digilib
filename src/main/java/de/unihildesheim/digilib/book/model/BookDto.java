@@ -2,12 +2,16 @@ package de.unihildesheim.digilib.book.model;
 
 import de.unihildesheim.digilib.book.ISBN;
 import de.unihildesheim.digilib.book.UniqueInventoryNumber;
-import lombok.Data;
+import lombok.*;
+import org.springframework.beans.factory.annotation.Required;
 
 import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 
-@Data
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class BookDto {
 
     @NotEmpty
