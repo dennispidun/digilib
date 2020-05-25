@@ -1,5 +1,7 @@
-package de.unihildesheim.digilib.user;
+package de.unihildesheim.digilib.user.security;
 
+import de.unihildesheim.digilib.user.Role;
+import de.unihildesheim.digilib.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -12,8 +14,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.sql.DataSource;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 
 @EnableWebSecurity
 public class BasicSecurityConfiguration extends WebSecurityConfigurerAdapter {

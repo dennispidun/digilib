@@ -1,4 +1,6 @@
-package de.unihildesheim.digilib.book;
+package de.unihildesheim.digilib.book.model;
+
+import de.unihildesheim.digilib.book.BookRepository;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

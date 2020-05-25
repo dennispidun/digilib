@@ -1,14 +1,16 @@
 package de.unihildesheim.digilib.user;
 
 
-import de.unihildesheim.digilib.borrowing.BorrowerNotFoundException;
-import de.unihildesheim.digilib.borrowing.model.Borrower;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.Optional;
 
@@ -16,9 +18,11 @@ import java.util.Optional;
 public class UserController {
 
     private UserRepository userRepository;
+    private BCryptPasswordEncoder passwordEncoder;
 
-    public UserController(UserRepository userRepository) {
+    public UserController(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @RequestMapping("/api/user")
@@ -37,6 +41,20 @@ public class UserController {
         }
 
         return userByUsername;
+    }
+
+    @PostMapping("/api/users")
+    public ResponseEntity addUser(@RequestBody @Valid UserDto addUser) {
+        User entity = new User();
+        entity.setEnabled(true);
+        entity.setUsername(addUser.getUsername());
+        entity.setFirstname(addUser.getFirstname());
+        entity.setLastname(addUser.getLastname());
+        entity.setPassword(passwordEncoder.encode(addUser.getPassword()));
+        entity.setRole(addUser.getRole());
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(userRepository.save(entity));
     }
 
     @GetMapping("/api/users")

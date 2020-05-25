@@ -1,0 +1,20 @@
+<div class="modal-header">
+  <h4 class="modal-title">Benutzer/in erstellen</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <input type="text" class="form-control" [ngClass]="error.username.length > 0 && 'is-invalid'" [(ngModel)]="user.username" placeholder="Username">
+  <small *ngIf="error.username.length > 0" class="form-text text-danger">{{error.username}}</small>
+
+  <input type="text" class="form-control" [ngClass]="error.firstname.length > 0 && 'is-invalid'" [(ngModel)]="user.firstname" placeholder="Vorname">
+  <small *ngIf="error.firstname.length > 0" class="form-text text-danger">{{error.firstname}}</small>
+
+  <input type="text" class="form-control" [ngClass]="error.lastname.length > 0 && 'is-invalid'" [(ngModel)]="user.lastname" placeholder="Nachname">
+  <small *ngIf="error.lastname.length > 0" class="form-text text-danger">{{error.lastname}}</small>
+
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-success" (click)="create()">Erstellen</button>
+</div>

@@ -1,5 +1,7 @@
-package de.unihildesheim.digilib.user;
+package de.unihildesheim.digilib.user.security;
 
+import de.unihildesheim.digilib.user.User;
+import de.unihildesheim.digilib.user.UserRepository;
 import org.springframework.security.core.userdetails.User.UserBuilder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

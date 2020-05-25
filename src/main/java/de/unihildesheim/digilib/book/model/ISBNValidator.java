@@ -1,4 +1,4 @@
-package de.unihildesheim.digilib.book;
+package de.unihildesheim.digilib.book.model;
 
 import de.unihildesheim.digilib.utils.ISBNNotValidException;
 import de.unihildesheim.digilib.utils.ISBNUtils;

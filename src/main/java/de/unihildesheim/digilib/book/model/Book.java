@@ -1,7 +1,6 @@
 package de.unihildesheim.digilib.book.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import de.unihildesheim.digilib.book.ISBN;
 import de.unihildesheim.digilib.borrowing.model.Borrowing;
 import de.unihildesheim.digilib.genre.Genre;
 import lombok.Data;

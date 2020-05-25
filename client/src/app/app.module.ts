@@ -18,6 +18,7 @@ import {AuthInterceptor} from "./http.interceptor";
 import {ImportComponent} from "./import/import.component";
 import { AddBookComponent } from './add-book/add-book.component';
 import { UserComponent } from './user/user.component';
+import { AddUserComponent } from './add-user/add-user.component';
 
 @Injectable()
 export class XhrInterceptor implements HttpInterceptor {
@@ -41,7 +42,8 @@ export class XhrInterceptor implements HttpInterceptor {
     BorrowerListComponent,
     AddBookComponent,
     ImportComponent,
-    UserComponent
+    UserComponent,
+    AddUserComponent
   ],
   imports: [
     NgbModule,

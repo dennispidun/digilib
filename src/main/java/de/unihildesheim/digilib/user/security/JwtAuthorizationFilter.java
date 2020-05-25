@@ -1,4 +1,4 @@
-package de.unihildesheim.digilib.user;
+package de.unihildesheim.digilib.user.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
