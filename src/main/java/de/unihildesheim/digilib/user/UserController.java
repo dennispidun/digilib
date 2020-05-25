@@ -44,7 +44,7 @@ public class UserController {
     }
 
     @PostMapping("/api/users")
-    public ResponseEntity addUser(@RequestBody @Valid UserDto addUser) {
+    public ResponseEntity<User> addUser(@RequestBody @Valid UserDto addUser) {
         User entity = new User();
         entity.setEnabled(true);
         entity.setUsername(addUser.getUsername());
