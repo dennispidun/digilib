@@ -14,6 +14,13 @@
   <input type="text" class="form-control" [ngClass]="error.lastname.length > 0 && 'is-invalid'" [(ngModel)]="user.lastname" placeholder="Nachname">
   <small *ngIf="error.lastname.length > 0" class="form-text text-danger">{{error.lastname}}</small>
 
+  <input type="text" class="form-control" [ngClass]="error.password.length > 0 && 'is-invalid'" [(ngModel)]="user.password" placeholder="Passwort">
+  <small *ngIf="error.password.length > 0" class="form-text text-danger">{{error.password}}</small>
+
+  <select class="form-control" [(ngModel)]="user.role">
+    <option value="USER">User</option>
+    <option value="ADMIN">Admin</option>
+  </select>
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-outline-success" (click)="create()">Erstellen</button>

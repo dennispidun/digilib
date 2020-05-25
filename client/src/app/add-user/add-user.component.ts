@@ -14,12 +14,14 @@ export class AddUserComponent implements OnInit {
     username: "",
     firstname: "",
     lastname: "",
-    role: ""
+    password:"",
+    role: "USER"
   };
   error = {
     username: "",
     firstname: "",
-    lastname: ""
+    lastname: "",
+    password:""
   };
 
   constructor(public activeModal: NgbActiveModal, private http: HttpClient) { }
@@ -41,7 +43,8 @@ export class AddUserComponent implements OnInit {
     this.error = {
       username: "",
       firstname: "",
-      lastname: ""
+      lastname: "",
+      password:"",
     }
     if (this.user.username.length === 0) {
       this.error.username = "Der Username darf nicht leer sein.";
@@ -51,6 +54,9 @@ export class AddUserComponent implements OnInit {
     }
     if (this.user.lastname.length === 0) {
       this.error.lastname = "Der Nachname darf nicht leer sein.";
+    }
+    if (this.user.password.length === 0) {
+      this.error.password = "Das Passwort darf nicht leer sein.";
     }
   }
 
