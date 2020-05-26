@@ -20,10 +20,12 @@ export class ImportComponent implements OnInit {
 
   uploadFile(file) {
     const formData = new FormData();
+    formData.append("Test: ", "test1");
     formData.append('filekey', file.data);
     file.inProgress = true;
-    // this.uploadService.upload(formData); solange der endpoint noch nicht da ist, nur zu Testzwecken
     console.log(this.files[0].data);
+    this.uploadService.upload(formData);
+
   }
 
   private uploadFiles() {
