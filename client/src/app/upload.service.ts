@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class UploadService {
-  SERVER_URL = "TODO";
+  SERVER_URL = "/api/books/import";
   constructor(private httpClient: HttpClient) { }
 
   public upload(formData) {

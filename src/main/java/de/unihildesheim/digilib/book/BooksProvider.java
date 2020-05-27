@@ -11,8 +11,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 @Service
 public class BooksProvider {
@@ -66,5 +72,34 @@ public class BooksProvider {
 
         return borrowingRepository.findAllByBorrowedOnBeforeAndReturnedOnIsNull(PageRequest.of(pageNo, pageSize), thendate)
                 .map(borrowing -> new ListBookDto(borrowing.getBook(), borrowing.getBorrowedOn()));
+    }
+
+    public void importCSV(InputStream input) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(input, "Cp1252"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                importBook(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void importBook(String input) {
+        String[] parts = input.split(Pattern.quote("|"));
+        BookDto dto = new BookDto();
+        dto.setAuthor(parts[0].isBlank() ? "Marvin Game" : parts[0]);
+        dto.setTitle(parts[1].isBlank() ? "How To Act Like You Care" : parts[1]);
+        dto.setInvnr(Long.toString(System.currentTimeMillis()));
+        //dto.setInvnr(parts[2].isBlank() ? Long.toString(System.currentTimeMillis()) : parts[2]);
+        //deren Invnrs haben forward slashs
+        try {
+            dto.setGenre(parts[3]);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            dto.setGenre("Thriller");
+        }
+        dto.setIsbn("9788826068244");
+        dto.setCreatedOn(new Date());
+        create(dto);
     }
 }

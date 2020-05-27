@@ -1,16 +1,22 @@
 package de.unihildesheim.digilib.book;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import de.unihildesheim.digilib.book.model.Book;
 import de.unihildesheim.digilib.book.model.BookDto;
 import de.unihildesheim.digilib.book.model.BookModelMapper;
 import de.unihildesheim.digilib.book.model.ListBookDto;
 import de.unihildesheim.digilib.borrowing.BorrowingService;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -62,6 +68,16 @@ public class BookController {
         Book book = repository.findBookByInvnr(invnr).orElseThrow(() -> new BookNotFoundException(invnr));
         ListBookDto bookDto = bookModelMapper.mapToListBook(book);
         return ResponseEntity.ok().body(borrowingService.addBorrowHistory(bookDto));
+    }
+
+    @PostMapping("/import")
+    public ResponseEntity importBooks(@RequestParam("file") MultipartFile file) {
+        try {
+            this.booksProvider.importCSV(file.getInputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }
