@@ -18,6 +18,7 @@ export class AppService {
           firstname: userData.firstname,
           lastname: userData.lastname,
           username: userData.username,
+          password: userData.password,
           enabled: userData.enabled,
           role: userData.role
         });
