@@ -5,9 +5,10 @@ import {Router} from "@angular/router";
 // tslint:disable-next-line:import-blacklist
 import {fromEvent} from "rxjs";
 import {debounceTime, distinctUntilChanged, filter, tap} from "rxjs/operators";
-import {AppService, User} from "../app.service";
+import {AppService} from "../app.service";
 import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
 import {AddBookComponent} from "../add-book/add-book.component";
+import {User} from "../user/user.model";
 
 @Component({
   selector: "app-inventory",

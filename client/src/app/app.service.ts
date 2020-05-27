@@ -19,7 +19,7 @@ export class AppService {
           lastname: userData.lastname,
           username: userData.username,
           enabled: userData.enabled,
-          role: userData.role
+          role: userData.role,
         });
       });
     });

@@ -1,7 +1,8 @@
-import { Component, OnInit } from "@angular/core";
-import {AppService, User} from "../app.service";
+import {Component, OnInit} from "@angular/core";
+import {AppService} from "../app.service";
 import {Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
+import {User} from "../user/user.model";
 
 @Component({
   selector: "app-content",
