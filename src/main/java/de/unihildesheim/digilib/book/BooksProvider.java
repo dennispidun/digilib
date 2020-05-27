@@ -90,16 +90,14 @@ public class BooksProvider {
         BookDto dto = new BookDto();
         dto.setAuthor(parts[0].isBlank() ? "Marvin Game" : parts[0]);
         dto.setTitle(parts[1].isBlank() ? "How To Act Like You Care" : parts[1]);
-        dto.setInvnr(Long.toString(System.currentTimeMillis()));
-        //dto.setInvnr(parts[2].isBlank() ? Long.toString(System.currentTimeMillis()) : parts[2]);
+        //dto.setInvnr(Long.toString(System.currentTimeMillis()).substring(6));
+        dto.setInvnr(parts[2].isBlank() ? Long.toString(System.currentTimeMillis()).substring(6) : parts[2].replace("/", "-"));
         //deren Invnrs haben forward slashs
         try {
             dto.setGenre(parts[3]);
         } catch (ArrayIndexOutOfBoundsException e) {
             dto.setGenre("Thriller");
         }
-        dto.setIsbn("9788826068244");
-        dto.setCreatedOn(new Date());
         create(dto);
     }
 }

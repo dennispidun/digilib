@@ -9,6 +9,7 @@ import de.unihildesheim.digilib.borrowing.BorrowingService;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.function.Function;
@@ -65,7 +67,8 @@ public class BookController {
 
     @RequestMapping(value = "/{invnr}", method = RequestMethod.GET)
     public ResponseEntity<ListBookDto> getBook(@PathVariable("invnr") String invnr) {
-        Book book = repository.findBookByInvnr(invnr).orElseThrow(() -> new BookNotFoundException(invnr));
+        String decInvnr = URLDecoder.decode(invnr, StandardCharsets.UTF_8);
+        Book book = repository.findBookByInvnr(decInvnr).orElseThrow(() -> new BookNotFoundException(decInvnr));
         ListBookDto bookDto = bookModelMapper.mapToListBook(book);
         return ResponseEntity.ok().body(borrowingService.addBorrowHistory(bookDto));
     }
@@ -76,8 +79,9 @@ public class BookController {
             this.booksProvider.importCSV(file.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
         }
-        return null;
+        return ResponseEntity.ok().build();
     }
 
 }

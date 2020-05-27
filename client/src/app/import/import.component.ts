@@ -1,6 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {UploadService} from "../upload.service";
+import {formatNumber} from "@angular/common";
 
 @Component({
   selector: 'app-import',
@@ -10,9 +11,8 @@ import {UploadService} from "../upload.service";
 export class ImportComponent implements OnInit {
   @ViewChild("fileUpload", {static: false}) fileUpload: ElementRef;
   files = [];
-  uploadService: UploadService;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private uploadService: UploadService) {
   }
 
   ngOnInit(): void {
@@ -20,32 +20,18 @@ export class ImportComponent implements OnInit {
 
   uploadFile(file) {
     const formData = new FormData();
-    formData.append("Test: ", "test1");
-    formData.append('filekey', file.data);
+    formData.append("file", file.data);
     file.inProgress = true;
-    console.log(this.files[0].data);
-    this.uploadService.upload(formData);
+    this.uploadService.upload(formData).subscribe();
 
   }
-
-  private uploadFiles() {
-    this.fileUpload.nativeElement.value = '';
-    this.files.forEach(
-      file => {
-        this.uploadFile(file);
-      }
-    );
-  }
-
 
   onClick() {
     const fileUpload = this.fileUpload.nativeElement;
     fileUpload.onchange = () => {
-      for (let index = 0; index < fileUpload.files.length; index++) {
-        const file = fileUpload.files[index];
-        this.files.push({data: file, inProgress: false, progress: 0});
+      for (const file of fileUpload.files) {
+        this.uploadFile({data: file, inProgress: false, progress: 0});
       }
-      this.uploadFiles();
     };
     fileUpload.click();
   }

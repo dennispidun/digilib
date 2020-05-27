@@ -147,7 +147,7 @@ export class InventoryComponent implements OnInit {
   }
 
   view(book: Book) {
-    return this.router.navigate(["book/" + book.invnr]);
+    return this.router.navigate(["book/" + encodeURIComponent(book.invnr)]);
   }
 
   searchBook() {
