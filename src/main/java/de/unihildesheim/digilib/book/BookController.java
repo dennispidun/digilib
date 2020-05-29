@@ -1,10 +1,7 @@
 package de.unihildesheim.digilib.book;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import de.unihildesheim.digilib.book.model.Book;
-import de.unihildesheim.digilib.book.model.BookDto;
-import de.unihildesheim.digilib.book.model.BookModelMapper;
-import de.unihildesheim.digilib.book.model.ListBookDto;
+import de.unihildesheim.digilib.book.model.*;
 import de.unihildesheim.digilib.borrowing.BorrowingService;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.data.domain.Page;
@@ -35,11 +32,14 @@ public class BookController {
 
     final BookModelMapper bookModelMapper;
 
-    public BookController(BookRepository repository, BorrowingService borrowingService, BooksProvider booksProvider, BookModelMapper bookModelMapper) {
+    final ImportHandler importHandler;
+
+    public BookController(BookRepository repository, BorrowingService borrowingService, BooksProvider booksProvider, BookModelMapper bookModelMapper, ImportHandler importHandler) {
         this.repository = repository;
         this.borrowingService = borrowingService;
         this.booksProvider = booksProvider;
         this.bookModelMapper = bookModelMapper;
+        this.importHandler = importHandler;
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
@@ -76,7 +76,7 @@ public class BookController {
     @PostMapping("/import")
     public ResponseEntity importBooks(@RequestParam("file") MultipartFile file) {
         try {
-            this.booksProvider.importCSV(file.getInputStream());
+            this.importHandler.importCSV(file.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();

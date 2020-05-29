@@ -74,30 +74,4 @@ public class BooksProvider {
                 .map(borrowing -> new ListBookDto(borrowing.getBook(), borrowing.getBorrowedOn()));
     }
 
-    public void importCSV(InputStream input) {
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(input, "Cp1252"))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                importBook(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void importBook(String input) {
-        String[] parts = input.split(Pattern.quote("|"));
-        BookDto dto = new BookDto();
-        dto.setAuthor(parts[0].isBlank() ? "Marvin Game" : parts[0]);
-        dto.setTitle(parts[1].isBlank() ? "How To Act Like You Care" : parts[1]);
-        //dto.setInvnr(Long.toString(System.currentTimeMillis()).substring(6));
-        dto.setInvnr(parts[2].isBlank() ? Long.toString(System.currentTimeMillis()).substring(6) : parts[2].replace("/", "-"));
-        //deren Invnrs haben forward slashs
-        try {
-            dto.setGenre(parts[3]);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            dto.setGenre("Thriller");
-        }
-        create(dto);
-    }
 }
