@@ -11,6 +11,7 @@ import {formatNumber} from "@angular/common";
 export class ImportComponent implements OnInit {
   @ViewChild("fileUpload", {static: false}) fileUpload: ElementRef;
   files = [];
+  delimiter: string;
 
   constructor(private http: HttpClient, private uploadService: UploadService) {
   }
@@ -20,10 +21,10 @@ export class ImportComponent implements OnInit {
 
   uploadFile(file) {
     const formData = new FormData();
+    formData.append("delimiter", this.delimiter)
     formData.append("file", file.data);
     file.inProgress = true;
     this.uploadService.upload(formData).subscribe();
-
   }
 
   onClick() {

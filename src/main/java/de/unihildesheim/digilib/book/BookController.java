@@ -74,9 +74,10 @@ public class BookController {
     }
 
     @PostMapping("/import")
-    public ResponseEntity importBooks(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity importBooks(@RequestParam("file") MultipartFile file, @RequestParam("delimiter") char d) {
         try {
-            this.importHandler.importCSV(file.getInputStream());
+            System.out.println(d);
+            this.importHandler.importCSV(file.getInputStream(), d);
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
