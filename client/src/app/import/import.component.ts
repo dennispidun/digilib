@@ -1,7 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {UploadService} from "../upload.service";
-import {formatNumber} from "@angular/common";
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-import',
@@ -13,15 +13,32 @@ export class ImportComponent implements OnInit {
   files = [];
   delimiter: string;
 
+  columns = [
+    'Author',
+    'Titel',
+    'Inventur-Nummer',
+    'Buchart',
+    'Neupreis',
+    'nicht anwesend'
+  ];
+
+  pos = [0, 1, 2, 3, 4, 5];
+
   constructor(private http: HttpClient, private uploadService: UploadService) {
   }
 
   ngOnInit(): void {
   }
 
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.columns, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.pos, event.previousIndex, event.currentIndex);
+  }
+
   uploadFile(file) {
     const formData = new FormData();
-    formData.append("delimiter", this.delimiter)
+    formData.append("delimiter", this.delimiter);
+    formData.append("pos", this.pos.toString());
     formData.append("file", file.data);
     file.inProgress = true;
     this.uploadService.upload(formData).subscribe();

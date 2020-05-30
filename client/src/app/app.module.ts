@@ -19,6 +19,7 @@ import {ImportComponent} from "./import/import.component";
 import { AddBookComponent } from './add-book/add-book.component';
 import { UserComponent } from './user/user.component';
 import { AddUserComponent } from './add-user/add-user.component';
+import {DragDropModule} from "@angular/cdk/drag-drop";
 
 @Injectable()
 export class XhrInterceptor implements HttpInterceptor {
@@ -45,14 +46,15 @@ export class XhrInterceptor implements HttpInterceptor {
     UserComponent,
     AddUserComponent
   ],
-  imports: [
-    NgbModule,
-    BrowserModule,
-    AppRoutingModule,
-    FormsModule,
-    HttpClientModule,
-    NgbTypeaheadModule
-  ],
+    imports: [
+        NgbModule,
+        BrowserModule,
+        AppRoutingModule,
+        FormsModule,
+        HttpClientModule,
+        NgbTypeaheadModule,
+        DragDropModule
+    ],
   providers: [NgbButtonLabel,
     {provide: HTTP_INTERCEPTORS, useClass: XhrInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},

@@ -16,12 +16,15 @@ public class ImportHandler {
 
     String delimiter;
 
+    String pos;
+
     public ImportHandler(BooksProvider booksProvider) {
         this.booksProvider = booksProvider;
     }
 
-    public void importCSV(InputStream input, char d) {
+    public void importCSV(InputStream input, char d, String pos) {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(input, "Cp1252"))) {
+            this.pos = pos;
             String line;
             delimiter = String.valueOf(d);
             while ((line = br.readLine()) != null) {
@@ -35,13 +38,13 @@ public class ImportHandler {
     private void importBook(String input) {
         String[] parts = splitString(input);
         BookDto dto = new BookDto();
-        dto.setAuthor(parts[0].equals(delimiter) ? "Musterautor" : parts[0].substring(0, parts[0].length() - 1));
-        dto.setTitle(parts[1].equals(delimiter) ? "Mustertitel" : parts[1].substring(0, parts[1].length() - 1));
+        dto.setAuthor(parts[pos.indexOf('0')].equals(delimiter) ? "Musterautor" : parts[pos.indexOf('0')].substring(0, parts[pos.indexOf('0')].length() - 1));
+        dto.setTitle(parts[pos.indexOf('1')].equals(delimiter) ? "Mustertitel" : parts[pos.indexOf('1')].substring(0, parts[pos.indexOf('1')].length() - 1));
         //dto.setInvnr(Long.toString(System.currentTimeMillis()).substring(6));
-        dto.setInvnr(parts[2].isBlank() ? Long.toString(System.currentTimeMillis()).substring(6) : parts[2].substring(0, parts[2].length() - 1).replace("/", "-"));
+        dto.setInvnr(parts[pos.indexOf('2')].isBlank() ? Long.toString(System.currentTimeMillis()).substring(6) : parts[pos.indexOf('2')].substring(0, parts[pos.indexOf('2')].length() - 1).replace("/", "-"));
         //deren Invnrs haben forward slashs
         try {
-            dto.setGenre(parts[3].substring(0, parts[3].length() - 1));
+            dto.setGenre(parts[pos.indexOf('3')].substring(0, parts[pos.indexOf('3')].length() - 1));
         } catch (ArrayIndexOutOfBoundsException e) {
             dto.setGenre("Thriller");
         }

@@ -16,6 +16,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -74,10 +75,9 @@ public class BookController {
     }
 
     @PostMapping("/import")
-    public ResponseEntity importBooks(@RequestParam("file") MultipartFile file, @RequestParam("delimiter") char d) {
+    public ResponseEntity importBooks(@RequestParam("file") MultipartFile file, @RequestParam("delimiter") char d, @RequestParam("pos") String pos) {
         try {
-            System.out.println(d);
-            this.importHandler.importCSV(file.getInputStream(), d);
+            this.importHandler.importCSV(file.getInputStream(), d, pos.replace(",", ""));
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();

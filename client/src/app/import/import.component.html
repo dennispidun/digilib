@@ -6,17 +6,25 @@
 </head>
 <body>
 
-  <h1>Die CSV-Datei muss einem konkreten Format entsprechen!</h1>
-  <p>Reihenfolge: "Author", "Titel", "Inventur-Nummer", "Buchart"</p>
+  <h1>Format:</h1>
+  <div id="dnd-div">
+    <div cdkDropList cdkDropListOrientation="horizontal" class="dnd-list" (cdkDropListDropped)="drop($event)">
+      <div class="dnd-box" *ngFor="let column of columns" cdkDrag>{{column}}</div>
+    </div>
+  </div>
   <div class="form-group">
     <input type="file"
            #fileUpload
            id="fileUpload"
            name="fileUpload"
            multiple="multiple" >
-    <textarea id="delimiter" name="delimiter" [(ngModel)]="delimiter">|</textarea>
+    <p>Trennzeichen:</p>
+    <textarea id="delimiter" name="delimiter" [(ngModel)]="delimiter" maxlength="1" cols="2">|</textarea>
+    <section>
+      <div class="ng-button">
+        <button class="button" type="button" (click)="onClick()">Hochladen!</button>
+      </div>
+    </section>
   </div>
-  <button type="button" (click)="onClick()">Datei auswählen</button>
-
 </body>
 </html>
