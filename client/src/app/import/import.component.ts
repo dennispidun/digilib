@@ -54,4 +54,11 @@ export class ImportComponent implements OnInit {
     };
     fileUpload.click();
   }
+
+  onClick2() {
+    const formData = new FormData();
+    formData.append("delimiter", this.delimiter);
+    formData.append("pos", this.pos.toString());
+    this.uploadService.importLocal(formData).subscribe();
+  }
 }

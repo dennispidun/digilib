@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -72,6 +75,18 @@ public class BookController {
         Book book = repository.findBookByInvnr(decInvnr).orElseThrow(() -> new BookNotFoundException(decInvnr));
         ListBookDto bookDto = bookModelMapper.mapToListBook(book);
         return ResponseEntity.ok().body(borrowingService.addBorrowHistory(bookDto));
+    }
+
+    @PostMapping("/localimport")
+    public ResponseEntity importBooks(@RequestParam("delimiter") char d, @RequestParam("pos") String pos) {
+        try {
+            this.importHandler.setPos(pos.replace(",", ""));
+            this.importHandler.importCSV(new FileInputStream(new File("./importfolder/testcsv.csv")), d);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
+        }
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/import")

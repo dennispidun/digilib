@@ -10,6 +10,7 @@ import java.io.File;
 public class Application {
 
     public static void main(String[] args) {
+        System.out.println(new File("./importfolder").mkdirs());
         SpringApplication.run(Application.class, args);
     }
 }

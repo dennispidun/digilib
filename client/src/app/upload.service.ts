@@ -15,4 +15,12 @@ export class UploadService {
       observe: 'events'
     });
   }
+
+  public importLocal(formData) {
+
+    return this.httpClient.post<any>("/api/books/localimport", formData, {
+      reportProgress: true,
+      observe: 'events'
+    });
+  }
 }

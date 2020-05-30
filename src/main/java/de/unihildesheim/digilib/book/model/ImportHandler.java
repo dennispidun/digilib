@@ -38,11 +38,11 @@ public class ImportHandler {
     }
 
     private BookDto importBook(String input) {
-        //System.out.println(new File("./importfolder").getAbsolutePath());
         String[] parts = splitString(input);
         BookDto dto = new BookDto();
         if (parts != null) {
-            dto.setAuthor(parts[p[0]].equals(delimiter) ? "Musterautor" : parts[p[0]].substring(0, parts[p[0]].length() - 1));        dto.setTitle(parts[p[1]].equals(delimiter) ? "Mustertitel" : parts[p[1]].substring(0, parts[p[1]].length() - 1));
+            dto.setAuthor(parts[p[0]].equals(delimiter) ? "Musterautor" : parts[p[0]].substring(0, parts[p[0]].length() - 1));
+            dto.setTitle(parts[p[1]].equals(delimiter) ? "Mustertitel" : parts[p[1]].substring(0, parts[p[1]].length() - 1));
             dto.setInvnr(parts[p[2]].isBlank() ? Long.toString(System.currentTimeMillis()).substring(6) : parts[p[2]].substring(0, parts[p[2]].length() - 1).replace("/", "-"));
             try {
                 dto.setGenre(parts[p[3]].substring(0, parts[p[3]].length() - 1));
