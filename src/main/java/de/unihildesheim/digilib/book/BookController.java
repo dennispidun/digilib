@@ -77,7 +77,8 @@ public class BookController {
     @PostMapping("/import")
     public ResponseEntity importBooks(@RequestParam("file") MultipartFile file, @RequestParam("delimiter") char d, @RequestParam("pos") String pos) {
         try {
-            this.importHandler.importCSV(file.getInputStream(), d, pos.replace(",", ""));
+            this.importHandler.setPos(pos.replace(",", ""));
+            this.importHandler.importCSV(file.getInputStream(), d);
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();

@@ -28,6 +28,7 @@ export class ImportComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.delimiter = "|";
   }
 
   drop(event: CdkDragDrop<string[]>) {
