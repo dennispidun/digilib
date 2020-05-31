@@ -1,8 +1,10 @@
 <div *ngIf="book">
   <div class="details">
     <h1>
-      {{book.title}} <span class="small">#{{book.invnr}}</span>
+      {{book.title}}
     </h1>
+    <p><span style="font-weight: 900">#</span>{{book.invnr}}</p>
+
     <dl>
       <dt>ISBN:</dt>
       <dd>{{book.isbn}}</dd>
