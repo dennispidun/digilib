@@ -78,10 +78,10 @@ public class BookController {
     }
 
     @PostMapping("/localimport")
-    public ResponseEntity importBooks(@RequestParam("delimiter") char d, @RequestParam("pos") String pos) {
+    public ResponseEntity importBooks(@RequestParam("delimiter") char d, @RequestParam("pos") String pos, @RequestParam("path") String path) {
         try {
-            this.importHandler.setPos(pos.replace(",", ""));
-            this.importHandler.importCSV(new FileInputStream(new File("./importfolder/testcsv.csv")), d);
+            this.importHandler.setPos(pos);
+            this.importHandler.importCSV(new FileInputStream(new File("." + path + "testcsv.csv")), d);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
@@ -92,7 +92,7 @@ public class BookController {
     @PostMapping("/import")
     public ResponseEntity importBooks(@RequestParam("file") MultipartFile file, @RequestParam("delimiter") char d, @RequestParam("pos") String pos) {
         try {
-            this.importHandler.setPos(pos.replace(",", ""));
+            this.importHandler.setPos(pos);
             this.importHandler.importCSV(file.getInputStream(), d);
         } catch (IOException e) {
             e.printStackTrace();

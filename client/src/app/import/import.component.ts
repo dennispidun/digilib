@@ -23,12 +23,14 @@ export class ImportComponent implements OnInit {
   ];
 
   pos = [0, 1, 2, 3, 4, 5];
+  path: string;
 
   constructor(private http: HttpClient, private uploadService: UploadService) {
   }
 
   ngOnInit(): void {
     this.delimiter = "|";
+    this.path = "/importfolder/";
   }
 
   drop(event: CdkDragDrop<string[]>) {
@@ -39,7 +41,7 @@ export class ImportComponent implements OnInit {
   uploadFile(file) {
     const formData = new FormData();
     formData.append("delimiter", this.delimiter);
-    formData.append("pos", this.pos.toString());
+    formData.append("pos", this.pos.toString().replace(/,/g, ''));
     formData.append("file", file.data);
     file.inProgress = true;
     this.uploadService.upload(formData).subscribe();
@@ -58,7 +60,8 @@ export class ImportComponent implements OnInit {
   onClick2() {
     const formData = new FormData();
     formData.append("delimiter", this.delimiter);
-    formData.append("pos", this.pos.toString());
+    formData.append("pos", this.pos.toString().replace(/,/g, ''));
+    formData.append("path", this.path)
     this.uploadService.importLocal(formData).subscribe();
   }
 }

@@ -18,16 +18,19 @@
            id="fileUpload"
            name="fileUpload"
            multiple="multiple" >
-    <p>Trennzeichen:</p>
-    <textarea id="delimiter" name="delimiter" [(ngModel)]="delimiter" maxlength="1" cols="2">|</textarea>
+    <label for="delimiter">Trennzeichen:</label>
     <section>
+      <input class="form-control" id="delimiter" name="delimiter" [(ngModel)]="delimiter" maxlength="1" placeholder="|" size="1">
       <div class="ng-button">
-        <button class="button" type="button" (click)="onClick()">Hochladen!</button>
+        <button class="btn btn-outline-primary" type="button" (click)="onClick()">Hochladen!</button>
       </div>
     </section>
+    <hr/>
+    <label for="path">Lokaler Ordner:</label>
     <section>
+      <input class="form-control" id="path" name="path" [(ngModel)]="path" placeholder="/importfolder/">
       <div class="ng-button">
-        <button class="button" type="button" (click)="onClick2()">Lokaler Import</button>
+        <button class="btn btn-outline-primary" type="button" (click)="onClick2()">Lokaler Import</button>
       </div>
     </section>
   </div>
