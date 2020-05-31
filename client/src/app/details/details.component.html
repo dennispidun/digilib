@@ -1,66 +1,63 @@
-<div class="page">
-  <div class="container-fluid" *ngIf="book">
-    <div class="container">
-      <div class="row">
-        <div class="col">
-          <h1>
-            {{book.title}}
-          </h1>
-          <div class="details">
-            <h2>
-              Inventar-Nummer: {{book.invnr}}
-            </h2>
-            <h2>
-              ISBN: {{book.isbn}}
-            </h2>
+<div *ngIf="book">
+  <div class="details">
+    <h1>
+      {{book.title}}
+    </h1>
+    <p><span style="font-weight: 900">#</span>{{book.invnr}}</p>
 
-            <p>
-              Autor(en): {{book.author}}
-            </p>
+    <dl>
+      <dt>ISBN:</dt>
+      <dd>{{book.isbn}}</dd>
 
-            <p>
-              Erstellt am {{book.createdOn | date : 'dd.MM.yyyy'}}
-            </p>
+      <dt>Autor(en):</dt>
+      <dd>{{book.author}}</dd>
 
-            <p *ngIf="book.borrowedOn && !book.returnedOn">
-              Verliehen am {{book.borrowedOn | date : 'dd.MM.yyyy'}} an {{book.borrowerName}}
-            </p>
+      <p>Erstellt am {{book.createdOn | date : 'dd.MM.yyyy'}}</p>
 
-            <p *ngIf="!book.borrowedOn || book.returnedOn">
-              Aktuell nicht verliehen.
-            </p>
-          </div>
+      <p *ngIf="book.borrowedOn && !book.returnedOn">
+        Verliehen am
+        {{book.borrowedOn | date : 'dd.MM.yyyy'}}
+        an <span style="font-weight: 900">{{book.borrowerName}}</span>
+      </p>
 
-          <div class="actions">
-            <button *ngIf="!book.borrowedOn || book.returnedOn" type="button" class="btn btn-success" (click)="borrow()">Verleihen</button>
-            <button *ngIf="book.borrowedOn && !book.returnedOn" type="button" class="btn btn-primary" (click)="cancel()">Zurücknehmen</button>
-          </div>
-        </div>
-        <div class="col"  *ngIf="history.length != 0">
-          <div class="history">
+      <p *ngIf="!book.borrowedOn || book.returnedOn">
+        Aktuell nicht verliehen.
+      </p>
+    </dl>
 
-            <h2>
-              Ausleihhistorie
-            </h2>
-
-            <table>
-              <tr class="header">
-                <th style="width: 160px">Nachname</th>
-                <th style="width: 160px">Vorname</th>
-                <th style="width: 160px">Ausgeliehen am</th>
-                <th style="width: 160px">Zurückgegeben am</th>
-              </tr>
-              <tr *ngFor="let item of history">
-                <td>{{item.borrower.lastname}}</td>
-                <td>{{item.borrower.firstname}}</td>
-                <td>{{item.borrowedOn | date : 'dd.MM.yyyy'}}</td>
-                <td>{{item.returnedOn | date : 'dd.MM.yyyy'}}</td>
-              </tr>
-            </table>
-
-          </div>
-        </div>
-      </div>
+    <div class="actions">
+      <button *ngIf="!book.borrowedOn || book.returnedOn" type="button" class="btn btn-success" (click)="borrow()">
+        Verleihen
+      </button>
+      <button *ngIf="book.borrowedOn && !book.returnedOn" type="button" class="btn btn-primary" (click)="cancel()">
+        Zurücknehmen
+      </button>
     </div>
+  </div>
+  <hr/>
+  <div class="history">
+
+    <h2>
+      Ausleihhistorie
+    </h2>
+
+    <table *ngIf="history.length != 0">
+      <tr class="header">
+        <th style="width: 160px">Vorname</th>
+        <th style="width: 160px">Nachname</th>
+        <th style="width: 160px">Ausgeliehen am</th>
+        <th style="width: 160px">Zurückgegeben am</th>
+      </tr>
+      <tr *ngFor="let item of history">
+        <td>{{item.borrower.firstname}}</td>
+        <td>{{item.borrower.lastname}}</td>
+        <td>{{item.borrowedOn | date : 'dd.MM.yyyy'}}</td>
+        <td>{{item.returnedOn | date : 'dd.MM.yyyy'}}</td>
+      </tr>
+    </table>
+    <p *ngIf="history.length == 0">
+      Dieses Buch wurde bisher noch nie verliehen.
+    </p>
+
   </div>
 </div>

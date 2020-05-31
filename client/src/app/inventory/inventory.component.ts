@@ -29,6 +29,8 @@ export class InventoryComponent implements OnInit {
   last: boolean;
   behind = false;
 
+  loading = false;
+
   searchCache = "";
   lastTimeKeyEntered = 0;
 
@@ -75,6 +77,7 @@ export class InventoryComponent implements OnInit {
   updateBooks(pageNo) {
     let searchOption = "";
     let behindOption = "";
+    this.loading = true;
 
     if (this.searchElement && this.searchElement.nativeElement.value && this.searchElement.nativeElement.value.length >= 0) {
       searchOption = "&search=" + this.searchElement.nativeElement.value;
@@ -95,12 +98,14 @@ export class InventoryComponent implements OnInit {
         if(!this.last) {
           this.getBooks(pageNo + 1, searchOption, behindOption).then((books: any) => {
             this.nextBooks = this.parseBooks(books.content);
+            this.loading = false;
           });
         }
 
         if(!this.first) {
           this.getBooks(pageNo - 1, searchOption, behindOption).then((books: any) => {
             this.beforeBooks = this.parseBooks(books.content);
+            this.loading = false;
           });
         }
       });
