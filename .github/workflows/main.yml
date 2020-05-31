@@ -30,3 +30,17 @@ jobs:
         with:
           name: frontend
           path: client/dist
+  build-backend:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [11]
+    steps:
+      - uses: actions/download-artifact@master
+        with:
+          name: frontend
+          path: client-frontend
+      - run: cat client-frontend
+      - uses: actions/setup-java@v1
+          with:
+            java-version: ${{ matrix.java }}
