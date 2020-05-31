@@ -1,5 +1,5 @@
 on: push
-name: Build Angular
+name: Build App
 jobs:
   build-frontend:
     runs-on: ubuntu-latest
@@ -37,11 +37,20 @@ jobs:
       matrix:
         java: [11]
     steps:
+      - uses: actions/checkout@v1
       - uses: actions/download-artifact@master
         with:
           name: frontend
           path: client-frontend
-      - run: cat client-frontend
+      - run: |
+          mkdir src/main/resources/static
+          cp client-frontend/** src/main/resources/static
       - uses: actions/setup-java@v1
         with:
           java-version: ${{ matrix.java }}
+      - run: |
+          ./gradlew bootJar
+      - uses: actions/upload-artifact@master
+        with:
+          name: app
+          path: build/libs/digilib-*.jar
