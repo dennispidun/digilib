@@ -13,7 +13,7 @@ jobs:
       - name: Cache node modules
         uses: actions/cache@v1
         with:
-          path: ~/.npm
+          path: client/node-moduless
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
