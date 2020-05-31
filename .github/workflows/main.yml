@@ -44,12 +44,11 @@ jobs:
           path: client-frontend
       - run: |
           mkdir src/main/resources/static
-          cp client-frontend/** src/main/resources/static
+          cp -r client-frontend/** src/main/resources/static
       - uses: actions/setup-java@v1
         with:
           java-version: ${{ matrix.java }}
-      - run: |
-          ./gradlew bootJar
+      - run: ./gradlew bootJar
       - uses: actions/upload-artifact@master
         with:
           name: app
