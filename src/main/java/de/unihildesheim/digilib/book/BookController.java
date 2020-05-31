@@ -1,13 +1,9 @@
 package de.unihildesheim.digilib.book;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import de.unihildesheim.digilib.book.model.*;
 import de.unihildesheim.digilib.borrowing.BorrowingService;
-import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,10 +15,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/books")
@@ -51,6 +43,10 @@ public class BookController {
                                       @RequestParam int pageNo,
                                       @RequestParam int pageSize,
                                       @RequestParam(required = false) Boolean behind) {
+        if (pageNo < 0) {
+            throw new PageNoBelowZeroException(pageNo);
+        }
+
         behind = behind != null ? behind : false;
 
         if (!behind) {
