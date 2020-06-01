@@ -13,4 +13,7 @@ export interface Borrow {
 
   borrower: Borrower;
 
+  lenderFirstname: string;
+  lenderLastname: string;
+
 }
