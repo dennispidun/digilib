@@ -18,6 +18,10 @@ public class ISBNValidator implements ConstraintValidator<ISBN, String> {
         boolean validISBN13 = true;
         boolean validISBN10 = true;
 
+        if (value.isEmpty()) {
+            return true;
+        }
+
         try {
             ISBNUtils.validateIsbn13(value);
         } catch (ISBNNotValidException e) {

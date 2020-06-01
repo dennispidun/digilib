@@ -5,9 +5,10 @@ import {Router} from "@angular/router";
 // tslint:disable-next-line:import-blacklist
 import {fromEvent} from "rxjs";
 import {debounceTime, distinctUntilChanged, filter, tap} from "rxjs/operators";
-import {AppService, User} from "../app.service";
+import {AppService} from "../app.service";
 import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
 import {AddBookComponent} from "../add-book/add-book.component";
+import {User} from "../user/user.model";
 
 @Component({
   selector: "app-inventory",
@@ -27,6 +28,8 @@ export class InventoryComponent implements OnInit {
   first = true;
   last: boolean;
   behind = false;
+
+  loading = false;
 
   searchCache = "";
   lastTimeKeyEntered = 0;
@@ -74,6 +77,7 @@ export class InventoryComponent implements OnInit {
   updateBooks(pageNo) {
     let searchOption = "";
     let behindOption = "";
+    this.loading = true;
 
     if (this.searchElement && this.searchElement.nativeElement.value && this.searchElement.nativeElement.value.length >= 0) {
       searchOption = "&search=" + this.searchElement.nativeElement.value;
@@ -94,12 +98,14 @@ export class InventoryComponent implements OnInit {
         if(!this.last) {
           this.getBooks(pageNo + 1, searchOption, behindOption).then((books: any) => {
             this.nextBooks = this.parseBooks(books.content);
+            this.loading = false;
           });
         }
 
         if(!this.first) {
           this.getBooks(pageNo - 1, searchOption, behindOption).then((books: any) => {
             this.beforeBooks = this.parseBooks(books.content);
+            this.loading = false;
           });
         }
       });
@@ -146,7 +152,7 @@ export class InventoryComponent implements OnInit {
   }
 
   view(book: Book) {
-    return this.router.navigate(["book/" + book.invnr]);
+    return this.router.navigate(["book/" + encodeURIComponent(book.invnr)]);
   }
 
   searchBook() {

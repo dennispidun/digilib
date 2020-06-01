@@ -20,7 +20,7 @@ export class AppService {
           username: userData.username,
           password: userData.password,
           enabled: userData.enabled,
-          role: userData.role
+          role: userData.role,
         });
       });
     });

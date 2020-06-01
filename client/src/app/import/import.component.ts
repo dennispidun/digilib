@@ -1,6 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {UploadService} from "../upload.service";
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-import',
@@ -10,41 +11,57 @@ import {UploadService} from "../upload.service";
 export class ImportComponent implements OnInit {
   @ViewChild("fileUpload", {static: false}) fileUpload: ElementRef;
   files = [];
-  uploadService: UploadService;
+  delimiter: string;
 
-  constructor(private http: HttpClient) {
+  columns = [
+    'Author',
+    'Titel',
+    'Inventur-Nummer',
+    'Buchart',
+    'Neupreis',
+    'nicht anwesend'
+  ];
+
+  pos = [0, 1, 2, 3, 4, 5];
+  path: string;
+
+  constructor(private http: HttpClient, private uploadService: UploadService) {
   }
 
   ngOnInit(): void {
+    this.delimiter = "|";
+    this.path = "/importfolder/";
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.columns, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.pos, event.previousIndex, event.currentIndex);
   }
 
   uploadFile(file) {
     const formData = new FormData();
-    formData.append('filekey', file.data);
+    formData.append("delimiter", this.delimiter);
+    formData.append("pos", this.pos.toString().replace(/,/g, ''));
+    formData.append("file", file.data);
     file.inProgress = true;
-    // this.uploadService.upload(formData); solange der endpoint noch nicht da ist, nur zu Testzwecken
-    console.log(this.files[0].data);
+    this.uploadService.upload(formData).subscribe();
   }
-
-  private uploadFiles() {
-    this.fileUpload.nativeElement.value = '';
-    this.files.forEach(
-      file => {
-        this.uploadFile(file);
-      }
-    );
-  }
-
 
   onClick() {
     const fileUpload = this.fileUpload.nativeElement;
     fileUpload.onchange = () => {
-      for (let index = 0; index < fileUpload.files.length; index++) {
-        const file = fileUpload.files[index];
-        this.files.push({data: file, inProgress: false, progress: 0});
+      for (const file of fileUpload.files) {
+        this.uploadFile({data: file, inProgress: false, progress: 0});
       }
-      this.uploadFiles();
     };
     fileUpload.click();
+  }
+
+  onClick2() {
+    const formData = new FormData();
+    formData.append("delimiter", this.delimiter);
+    formData.append("pos", this.pos.toString().replace(/,/g, ''));
+    formData.append("path", this.path)
+    this.uploadService.importLocal(formData).subscribe();
   }
 }

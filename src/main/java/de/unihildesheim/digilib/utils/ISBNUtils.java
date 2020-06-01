@@ -71,7 +71,10 @@ public class ISBNUtils {
 
 
     public static String regenerateISBN(String isbn) {
-        String newISBN = isbn.replaceAll("-", "");
+        if (isbn == null) {
+            return "";
+        }
+        String newISBN = isbn.replaceAll("-", "").strip();
         return newISBN;
     }
 
