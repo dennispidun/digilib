@@ -5,6 +5,6 @@ import org.springframework.http.HttpStatus;
 
 public class UserSelfEditException extends ApplicationRuntimeException {
     public UserSelfEditException() {
-        super("You cannot edit your own account", HttpStatus.NOT_FOUND);
+        super("Du kannst nicht deinen eigenen Benutzer bearbeiten.", HttpStatus.NOT_FOUND);
     }
 }

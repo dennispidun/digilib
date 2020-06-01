@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.Optional;
 
 @RestController
 public class UserController {
@@ -46,16 +45,35 @@ public class UserController {
 
 
     @PostMapping("/api/users")
-    public ResponseEntity<User> editUser(@RequestBody @Valid UserDto editUser) {
+    public ResponseEntity<User> addUser(@RequestBody @Valid UserDto addUser) {
         User entity = new User();
         entity.setEnabled(true);
-        entity.setUsername(editUser.getUsername());
-        entity.setFirstname(editUser.getFirstname());
-        entity.setLastname(editUser.getLastname());
-        entity.setPassword(passwordEncoder.encode(editUser.getPassword()));
-        entity.setRole(editUser.getRole());
+        entity.setUsername(addUser.getUsername());
+        entity.setFirstname(addUser.getFirstname());
+        entity.setLastname(addUser.getLastname());
+        entity.setPassword(passwordEncoder.encode(addUser.getPassword()));
+        entity.setRole(addUser.getRole());
         return ResponseEntity
                 .status(HttpStatus.CREATED)
+                .body(userRepository.save(entity));
+    }
+
+    @PatchMapping("/api/users")
+    public ResponseEntity<User> editUser(Principal user, @RequestBody UserDto editUser) {
+        User entity = this.userRepository.findUserByUsername(editUser.getUsername())
+                .orElseThrow(() -> new UserNotFoundException(editUser.getUsername()));
+        entity.setFirstname(editUser.getFirstname());
+        entity.setLastname(editUser.getLastname());
+        if (editUser.getPassword() != null && !editUser.getPassword().isBlank()) {
+            entity.setPassword(passwordEncoder.encode(editUser.getPassword()));
+        }
+
+        if (!user.getName().equalsIgnoreCase(editUser.getUsername())) {
+            entity.setRole(editUser.getRole());
+        }
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
                 .body(userRepository.save(entity));
     }
 

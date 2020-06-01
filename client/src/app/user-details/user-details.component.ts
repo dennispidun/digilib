@@ -39,14 +39,22 @@ export class UserDetailsComponent implements OnInit {
     }
   }
 
-  create() {
+  createOrEdit() {
     this.validate();
 
-    this.http.post("/api/users", this.user).subscribe((success) => {
-      this.activeModal.close();
-    }, error => {
-      this.validate(error.error.apierror);
-    });
+    if (!this.editUser) {
+      this.http.post("/api/users", this.user).subscribe((success) => {
+        this.activeModal.close();
+      }, error => {
+        this.validate(error.error.apierror);
+      });
+    } else {
+      this.http.patch("/api/users", this.user).subscribe((success) => {
+        this.activeModal.close();
+      }, error => {
+        this.validate(error.error.apierror);
+      });
+    }
   }
 
   private validate(apierror?: any) {
@@ -56,6 +64,17 @@ export class UserDetailsComponent implements OnInit {
       lastname: "",
       password: "",
     }
+
+    if (apierror) {
+      if (apierror.subErrors) {
+        for (const subError of apierror.subErrors) {
+          if (subError.field === "username") {
+            this.error.username = subError.message;
+          }
+        }
+      }
+    }
+
     if (!this.user.username || this.user.username.length === 0) {
       this.error.username = "Der Username darf nicht leer sein.";
     }
@@ -65,7 +84,7 @@ export class UserDetailsComponent implements OnInit {
     if (!this.user.lastname || this.user.lastname.length === 0) {
       this.error.lastname = "Der Nachname darf nicht leer sein.";
     }
-    if (!this.user.password || this.user.password.length === 0) {
+    if (!this.editUser && (!this.user.password || this.user.password.length === 0)) {
       this.error.password = "Das Passwort darf nicht leer sein.";
     }
   }

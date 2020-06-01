@@ -14,10 +14,8 @@ export class ContentComponent implements OnInit {
   user: User;
 
   constructor(private app: AppService, private http: HttpClient, private router: Router) {
-    this.app.authenticate(undefined, undefined);
-    this.app.user.subscribe(data => {
+    this.app.getUser().subscribe(data => {
       this.user = data;
-      console.log(this.user);
     });
   }
 

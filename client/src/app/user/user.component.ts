@@ -22,13 +22,15 @@ export class UserComponent implements OnInit {
   addingUser = false;
 
   constructor(private app: AppService, private http: HttpClient, private modalService: NgbModal) {
-    this.updateUsers();
-    this.app.user.subscribe(data => {
-      this.loggedInUser = data;
-    });
+    this.ngOnInit();
   }
 
   ngOnInit(): void {
+    this.updateUsers();
+    // this.loggedInUser = this.app.getLoggedInUser();
+    this.app.getUser().subscribe(user => {
+      this.loggedInUser = user;
+    });
   }
 
   updateUsers() {

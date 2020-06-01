@@ -57,8 +57,7 @@ export class XhrInterceptor implements HttpInterceptor {
     ],
   providers: [NgbButtonLabel,
     {provide: HTTP_INTERCEPTORS, useClass: XhrInterceptor, multi: true},
-    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
-    AppService],
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
   bootstrap: [AppComponent]
 })
 export class AppModule {
