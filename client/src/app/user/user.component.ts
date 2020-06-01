@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {AppService} from "../app.service";
 import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
-import {AddUserComponent} from "../add-user/add-user.component";
+import {UserDetailsComponent} from "../user-details/user-details.component";
 import {User} from "./user.model";
 
 @Component({
@@ -22,13 +22,15 @@ export class UserComponent implements OnInit {
   addingUser = false;
 
   constructor(private app: AppService, private http: HttpClient, private modalService: NgbModal) {
-    this.updateUsers();
-    this.app.user.subscribe(data => {
-      this.loggedInUser = data;
-    });
+    this.ngOnInit();
   }
 
   ngOnInit(): void {
+    this.updateUsers();
+    // this.loggedInUser = this.app.getLoggedInUser();
+    this.app.getUser().subscribe(user => {
+      this.loggedInUser = user;
+    });
   }
 
   updateUsers() {
@@ -59,7 +61,8 @@ export class UserComponent implements OnInit {
   }
 
   addUser() {
-    const modalRef: NgbModalRef = this.modalService.open(AddUserComponent);
+    const modalRef: NgbModalRef = this.modalService.open(UserDetailsComponent);
+
     this.addingUser = true;
 
     modalRef.result.then(() => {

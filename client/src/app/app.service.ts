@@ -1,28 +1,55 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {BehaviorSubject, Observable, Subject} from "rxjs";
 import {User} from "./user/user.model";
+import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
+import {UserDetailsComponent} from "./user-details/user-details.component";
 
 @Injectable({
   providedIn: "root"
 })
 export class AppService {
 
-  user: Observable<User>;
+  loggedinUser: User;
 
-  constructor(private http: HttpClient) {
-    this.user = new Observable((observer) => {
-      this.http.get("/api/user").subscribe(data => {
-        const userData = data as any;
-        observer.next({
-          firstname: userData.firstname,
-          lastname: userData.lastname,
-          username: userData.username,
-          enabled: userData.enabled,
-          role: userData.role,
-        });
+  private user: BehaviorSubject<User>;
+
+  constructor(private http: HttpClient, private modalService: NgbModal) {
+    this.user = new BehaviorSubject(null);
+
+    if (this.authenticated()) {
+      this.updateUser();
+    }
+  }
+
+  public getUser(): Subject<User> {
+    return this.user;
+  }
+
+  private updateUser() {
+    this.http.get("/api/user").toPromise().then(user => {
+      this.loggedinUser = user as User;
+      this.user.next({
+        firstname: this.loggedinUser.firstname,
+        lastname: this.loggedinUser.lastname,
+        username: this.loggedinUser.username,
+        password: this.loggedinUser.password,
+        enabled: this.loggedinUser.enabled,
+        role: this.loggedinUser.role,
       });
     });
+  }
+
+  editUser(user: User, roleEditable?: boolean): Promise<any> {
+    const modalRef: NgbModalRef = this.modalService.open(UserDetailsComponent);
+    const editUserModal: UserDetailsComponent = modalRef.componentInstance;
+    editUserModal.editUser = {...user};
+    editUserModal.roleEditable = roleEditable;
+
+    return modalRef.result.then(() => {
+      this.updateUser();
+    }).catch((err) => {
+    })
   }
 
   authenticate(credentials, callback) {
@@ -39,7 +66,7 @@ export class AppService {
           return callback && callback({status: "unauthenticated"});
         }
 
-
+        this.updateUser();
         return callback && callback({status: "authenticated"});
       },
       error => {

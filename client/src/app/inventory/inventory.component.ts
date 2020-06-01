@@ -46,7 +46,7 @@ export class InventoryComponent implements OnInit {
   constructor(private app: AppService, private http: HttpClient, private router: Router,
               private modalService: NgbModal) {
     this.updateBooks(this.pageNo);
-    this.app.user.subscribe(data => {
+    this.app.getUser().subscribe(data => {
       this.user = data;
     });
   }
