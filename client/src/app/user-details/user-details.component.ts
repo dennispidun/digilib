@@ -1,32 +1,40 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {HttpClient} from "@angular/common/http";
 import {User} from "../user/user.model";
 
 @Component({
   selector: 'app-add-user',
-  templateUrl: './add-user.component.html',
-  styleUrls: ['./add-user.component.scss']
+  templateUrl: './user-details.component.html',
+  styleUrls: ['./user-details.component.scss']
 })
-export class AddUserComponent implements OnInit {
+export class UserDetailsComponent implements OnInit {
 
   user: User = {
     username: "",
     firstname: "",
     lastname: "",
-    password:"",
+    password: "",
     role: "USER"
   };
   error = {
     username: "",
     firstname: "",
     lastname: "",
-    password:""
+    password: ""
   };
 
-  constructor(public activeModal: NgbActiveModal, private http: HttpClient) { }
+  editUser: User;
+
+  action = "erstellen";
+
+  constructor(public activeModal: NgbActiveModal, private http: HttpClient) {
+  }
 
   ngOnInit(): void {
+    if (this.editUser) {
+      this.action = "bearbeiten";
+    }
   }
 
   create() {
@@ -44,7 +52,7 @@ export class AddUserComponent implements OnInit {
       username: "",
       firstname: "",
       lastname: "",
-      password:"",
+      password: "",
     }
     if (this.user.username.length === 0) {
       this.error.username = "Der Username darf nicht leer sein.";

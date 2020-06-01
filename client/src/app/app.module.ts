@@ -16,9 +16,9 @@ import {BorrowerListComponent} from "./borrower-list/borrower-list.component";
 import {AppService} from "./app.service";
 import {AuthInterceptor} from "./http.interceptor";
 import {ImportComponent} from "./import/import.component";
-import { AddBookComponent } from './add-book/add-book.component';
-import { UserComponent } from './user/user.component';
-import { AddUserComponent } from './add-user/add-user.component';
+import {AddBookComponent} from './add-book/add-book.component';
+import {UserComponent} from './user/user.component';
+import {UserDetailsComponent} from './user-details/user-details.component';
 import {DragDropModule} from "@angular/cdk/drag-drop";
 
 @Injectable()
@@ -44,7 +44,7 @@ export class XhrInterceptor implements HttpInterceptor {
     AddBookComponent,
     ImportComponent,
     UserComponent,
-    AddUserComponent
+    UserDetailsComponent
   ],
     imports: [
         NgbModule,
@@ -58,7 +58,7 @@ export class XhrInterceptor implements HttpInterceptor {
   providers: [NgbButtonLabel,
     {provide: HTTP_INTERCEPTORS, useClass: XhrInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
-  AppService],
+    AppService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

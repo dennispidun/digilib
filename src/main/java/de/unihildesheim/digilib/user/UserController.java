@@ -43,15 +43,17 @@ public class UserController {
         return userByUsername;
     }
 
+
+
     @PostMapping("/api/users")
-    public ResponseEntity<User> addUser(@RequestBody @Valid UserDto addUser) {
+    public ResponseEntity<User> editUser(@RequestBody @Valid UserDto editUser) {
         User entity = new User();
         entity.setEnabled(true);
-        entity.setUsername(addUser.getUsername());
-        entity.setFirstname(addUser.getFirstname());
-        entity.setLastname(addUser.getLastname());
-        entity.setPassword(passwordEncoder.encode(addUser.getPassword()));
-        entity.setRole(addUser.getRole());
+        entity.setUsername(editUser.getUsername());
+        entity.setFirstname(editUser.getFirstname());
+        entity.setLastname(editUser.getLastname());
+        entity.setPassword(passwordEncoder.encode(editUser.getPassword()));
+        entity.setRole(editUser.getRole());
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(userRepository.save(entity));
