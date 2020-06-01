@@ -2,10 +2,14 @@ package de.unihildesheim.digilib.borrowing;
 
 import de.unihildesheim.digilib.borrowing.model.BorrowingDto;
 import de.unihildesheim.digilib.borrowing.model.CreateBorrowingDto;
+import de.unihildesheim.digilib.user.User;
+import de.unihildesheim.digilib.user.UserNotFoundException;
+import de.unihildesheim.digilib.user.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,13 +21,20 @@ class BorrowingController {
 
     private BorrowingService service;
 
-    public BorrowingController(BorrowingService service) {
+    private UserRepository userRepository;
+
+    public BorrowingController(BorrowingService service, UserRepository userRepository) {
         this.service = service;
+        this.userRepository = userRepository;
     }
 
     @RequestMapping(value = "/borrowings", method = RequestMethod.POST)
-    private ResponseEntity addBorrowing(@PathVariable("invnr") String invnr, @RequestBody CreateBorrowingDto createBorrowingDto) throws BookAlreadyBorrowedException {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.borrow(createBorrowingDto, invnr));
+    private ResponseEntity addBorrowing(Principal user, @PathVariable("invnr") String invnr, @RequestBody CreateBorrowingDto createBorrowingDto) throws BookAlreadyBorrowedException {
+        User loggedInUser = this.userRepository.findUserByUsername(user.getName())
+                .orElseThrow(() -> new UserNotFoundException(user.getName()));
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(service.borrow(createBorrowingDto, invnr, loggedInUser));
     }
 
     @RequestMapping(value = "/borrowings", method = RequestMethod.GET)

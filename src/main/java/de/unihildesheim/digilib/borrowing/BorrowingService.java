@@ -5,6 +5,7 @@ import de.unihildesheim.digilib.book.BookNotFoundException;
 import de.unihildesheim.digilib.book.model.Book;
 import de.unihildesheim.digilib.book.model.ListBookDto;
 import de.unihildesheim.digilib.borrowing.model.*;
+import de.unihildesheim.digilib.user.User;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -31,7 +32,7 @@ class BorrowingService {
         this.borrowingModelMapper = borrowingModelMapper;
     }
 
-    public Borrowing borrow(CreateBorrowingDto createBorrowing, String invnr) throws BookAlreadyBorrowedException,
+    public Borrowing borrow(CreateBorrowingDto createBorrowing, String invnr, User lender) throws BookAlreadyBorrowedException,
             StudentCannotBorrowMultipleBooks {
         checkIfBorrowed(invnr);
 
@@ -49,6 +50,7 @@ class BorrowingService {
         Borrowing borrowing = new Borrowing();
         borrowing.setBorrowedOn(new Date());
         borrowing.setBook(book);
+        borrowing.setLender(lender);
 
         byFirstnameAndLastname.ifPresentOrElse(
                 (borrower) -> {

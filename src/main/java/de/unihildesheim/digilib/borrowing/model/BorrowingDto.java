@@ -8,6 +8,9 @@ import java.util.Date;
 public class BorrowingDto {
 
     private Borrower borrower;
+
+    private String lenderFirstname;
+    private String lenderLastname;
     private Date borrowedOn;
     private Date returnedOn;
 }

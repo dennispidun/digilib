@@ -10,6 +10,10 @@ public class BorrowingModelMapper {
         borrowingDto.setBorrower(borrowing.getBorrower());
         borrowingDto.setBorrowedOn(borrowing.getBorrowedOn());
         borrowingDto.setReturnedOn(borrowing.getReturnedOn());
+        if (borrowing.getLender() != null) {
+            borrowingDto.setLenderFirstname(borrowing.getLender().getFirstname());
+            borrowingDto.setLenderLastname(borrowing.getLender().getLastname());
+        }
         return borrowingDto;
     }
 }
