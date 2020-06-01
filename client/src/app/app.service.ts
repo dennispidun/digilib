@@ -2,6 +2,8 @@ import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {User} from "./user/user.model";
+import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
+import {UserDetailsComponent} from "./user-details/user-details.component";
 
 @Injectable({
   providedIn: "root"
@@ -10,7 +12,7 @@ export class AppService {
 
   user: Observable<User>;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private modalService: NgbModal) {
     this.user = new Observable((observer) => {
       this.http.get("/api/user").subscribe(data => {
         const userData = data as any;
@@ -24,6 +26,15 @@ export class AppService {
         });
       });
     });
+  }
+
+  editUser(user: User, roleEditable?: boolean): Promise<any> {
+    const modalRef: NgbModalRef = this.modalService.open(UserDetailsComponent, {});
+    const editUserModal: UserDetailsComponent = modalRef.componentInstance;
+    editUserModal.editUser = {...user};
+    editUserModal.roleEditable = roleEditable;
+
+    return modalRef.result;
   }
 
   authenticate(credentials, callback) {

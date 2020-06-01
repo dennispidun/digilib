@@ -5,7 +5,7 @@
   </button>
 </div>
 <div class="modal-body">
-  <input type="text" class="form-control" [ngClass]="error.username.length > 0 && 'is-invalid'" [(ngModel)]="user.username" placeholder="Username">
+  <input [disabled]="editUser" type="text" class="form-control" [ngClass]="error.username.length > 0 && 'is-invalid'" [(ngModel)]="user.username" placeholder="Username">
   <small *ngIf="error.username.length > 0" class="form-text text-danger">{{error.username}}</small>
 
   <input type="text" class="form-control" [ngClass]="error.firstname.length > 0 && 'is-invalid'" [(ngModel)]="user.firstname" placeholder="Vorname">
@@ -17,11 +17,11 @@
   <input type="text" class="form-control" [ngClass]="error.password.length > 0 && 'is-invalid'" [(ngModel)]="user.password" placeholder="Passwort">
   <small *ngIf="error.password.length > 0" class="form-text text-danger">{{error.password}}</small>
 
-  <select class="form-control" [(ngModel)]="user.role">
+  <select [disabled]="!roleEditable" class="form-control" [(ngModel)]="user.role">
     <option value="USER">User</option>
     <option value="ADMIN">Admin</option>
   </select>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-outline-success" (click)="create()">Erstellen</button>
+  <button type="button" class="btn btn-outline-success" (click)="create()">{{action}}</button>
 </div>

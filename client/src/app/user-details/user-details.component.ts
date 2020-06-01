@@ -27,6 +27,7 @@ export class UserDetailsComponent implements OnInit {
   editUser: User;
 
   action = "erstellen";
+  roleEditable = true;
 
   constructor(public activeModal: NgbActiveModal, private http: HttpClient) {
   }
@@ -34,6 +35,7 @@ export class UserDetailsComponent implements OnInit {
   ngOnInit(): void {
     if (this.editUser) {
       this.action = "bearbeiten";
+      this.user = {...this.editUser};
     }
   }
 
@@ -54,16 +56,16 @@ export class UserDetailsComponent implements OnInit {
       lastname: "",
       password: "",
     }
-    if (this.user.username.length === 0) {
+    if (!this.user.username || this.user.username.length === 0) {
       this.error.username = "Der Username darf nicht leer sein.";
     }
-    if (this.user.firstname.length === 0) {
+    if (!this.user.firstname || this.user.firstname.length === 0) {
       this.error.firstname = "Der Vorname darf nicht leer sein.";
     }
-    if (this.user.lastname.length === 0) {
+    if (!this.user.lastname || this.user.lastname.length === 0) {
       this.error.lastname = "Der Nachname darf nicht leer sein.";
     }
-    if (this.user.password.length === 0) {
+    if (!this.user.password || this.user.password.length === 0) {
       this.error.password = "Das Passwort darf nicht leer sein.";
     }
   }
