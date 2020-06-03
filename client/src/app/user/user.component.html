@@ -24,7 +24,7 @@
       <th style="width: 300px">Rolle</th>
       <th style="width: 250px">Aktiv?</th>
     </tr>
-    <tr *ngFor="let user of users" class="tableAlign">
+    <tr *ngFor="let user of users" class="tableAlign" (click)="edit(user)">
       <td>
         <p>{{ user.username }}</p>
       </td>
