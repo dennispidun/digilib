@@ -4,7 +4,6 @@ import {AppService} from "../app.service";
 import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
 import {UserDetailsComponent} from "../user-details/user-details.component";
 import {User} from "./user.model";
-import {Book} from "../inventory/book.model";
 import {Router} from "@angular/router";
 
 @Component({
@@ -22,7 +21,7 @@ export class UserComponent implements OnInit {
   last: boolean;
   loggedInUser: User;
   addingUser = false;
-  editUser = false;
+  editUser: User;
 
   constructor(private app: AppService, private http: HttpClient,private router: Router, private modalService: NgbModal) {
     this.ngOnInit();
@@ -63,15 +62,11 @@ export class UserComponent implements OnInit {
     this.http.patch(`/api/users/${user.username}/enabled`, user.enabled).subscribe();
   }
 
-  edit(user: User) {
-    const modalRef: NgbModalRef = this.modalService.open(UserDetailsComponent);
-
-    this.editUser = true;
-
-    modalRef.result.then(() => {
+  edit() {
+    this.app.editUser(this.editUser, false).then(() => {
       this.updateUsers();
-      this.editUser = false;
-    });
+    }).catch((err) => {
+    })
   }
 
   addUser() {
