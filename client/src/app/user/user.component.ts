@@ -21,7 +21,6 @@ export class UserComponent implements OnInit {
   last: boolean;
   loggedInUser: User;
   addingUser = false;
-  editUser: User;
 
   constructor(private app: AppService, private http: HttpClient,private router: Router, private modalService: NgbModal) {
     this.ngOnInit();
@@ -62,8 +61,8 @@ export class UserComponent implements OnInit {
     this.http.patch(`/api/users/${user.username}/enabled`, user.enabled).subscribe();
   }
 
-  edit() {
-    this.app.editUser(this.editUser, false).then(() => {
+  edit(user: User) {
+    this.app.editUser(user, false).then(() => {
       this.updateUsers();
     }).catch((err) => {
     })
