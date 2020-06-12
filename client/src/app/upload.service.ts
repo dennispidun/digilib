@@ -7,9 +7,9 @@ import { HttpClient } from '@angular/common/http';
 export class UploadService {
   constructor(private httpClient: HttpClient) { }
 
-  public upload(formData, url: string) {
+  public upload(formData) {
 
-    return this.httpClient.post<any>(url, formData, {
+    return this.httpClient.post<any>("/api/books/import", formData, {
       reportProgress: true,
       observe: 'events'
     });

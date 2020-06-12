@@ -15,6 +15,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/books")
@@ -73,26 +74,20 @@ public class BookController {
         return ResponseEntity.ok().body(borrowingService.addBorrowHistory(bookDto));
     }
 
-    @PostMapping("/localimport")
-    public ResponseEntity importBooks(@RequestParam("delimiter") char d, @RequestParam("pos") String pos, @RequestParam("path") String path) {
-        try {
-            this.importHandler.setPos(pos);
-            this.importHandler.importCSV(new FileInputStream(new File("." + path + "testcsv.csv")), d);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
-        }
-        return ResponseEntity.ok().build();
-    }
-
     @PostMapping("/import")
-    public ResponseEntity importBooks(@RequestParam("file") MultipartFile file, @RequestParam("delimiter") char d, @RequestParam("pos") String pos) {
+    public ResponseEntity importBooks(@RequestParam("file") Optional<MultipartFile> file,
+                                      @RequestParam("delimiter") char d, @RequestParam("pos") String pos,
+                                      @RequestParam("path") Optional<String> path) {
+        this.importHandler.setPos(pos);
         try {
-            this.importHandler.setPos(pos);
-            this.importHandler.importCSV(file.getInputStream(), d);
+            if (file.isPresent()) {
+                this.importHandler.importCSV(file.get().getInputStream(), d);
+            } else {
+                this.importHandler.importCSV(new FileInputStream(new File("." + path.get() + "testcsv.csv")), d);
+            }
         } catch (IOException e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         return ResponseEntity.ok().build();
     }

@@ -57,7 +57,7 @@ export class ImportComponent implements OnInit {
 
   uploadFile(file) {
     file.inProgress = true;
-    this.uploadService.upload(this.createData(file), "/api/books/import").pipe(
+    this.uploadService.upload(this.createData(file)).pipe(
       map(event => {
         switch (event.type) {
           case HttpEventType.UploadProgress:
@@ -96,6 +96,6 @@ export class ImportComponent implements OnInit {
   }
 
   startLocal() {
-    this.uploadService.upload(this.createData(null), "/api/books/localimport").subscribe();
+    this.uploadService.upload(this.createData(null)).subscribe();
   }
 }
