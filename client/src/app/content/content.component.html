@@ -1,19 +1,17 @@
 <div class="header">
-  <p>
+  <p class="title">
     Digitale Bibliothek der Grundschule auf der Höhe
   </p>
+  <div class="user">
+    <p>Angemeldet als: </p>
+    <p *ngIf="user">
+      <a (click)="edit()">{{user.username}}</a>
+      <a (click)="logout()">(Logout)</a>
+    </p>
+  </div>
 </div>
 <div class="page">
   <div class="navigation">
-    <div class="user">
-      <p>Angemeldet als: </p>
-      <p *ngIf="user" style="font-weight: bold;">
-        {{user.username}}
-        <a (click)="logout()" href="login">(Logout)</a>
-        <a (click)="edit()">(Bearbeiten)</a>
-      </p>
-    </div>
-
     <div class="section">
       <nav>
         <ul>
