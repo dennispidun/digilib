@@ -3,7 +3,7 @@ import {HttpClient, HttpErrorResponse, HttpEventType} from "@angular/common/http
 import {UploadService} from "../upload.service";
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {catchError, map} from "rxjs/operators";
-import {of} from "rxjs";
+import {of} from "rxjs"
 
 @Component({
   selector: 'app-import',
@@ -57,7 +57,7 @@ export class ImportComponent implements OnInit {
 
   uploadFile(file) {
     file.inProgress = true;
-    this.uploadService.upload(this.createData(file)).pipe(
+    this.uploadService.upload(this.createData(file), "/api/books/import").pipe(
       map(event => {
         switch (event.type) {
           case HttpEventType.UploadProgress:
@@ -85,9 +85,9 @@ export class ImportComponent implements OnInit {
   }
 
   startUpload() {
-    this.progress = 0;
     const fileUpload = this.fileUpload.nativeElement;
     fileUpload.onchange = () => {
+      this.progress = 0;
       for (const file of fileUpload.files) {
         this.uploadFile({data: file, inProgress: false, progress: 0});
       }
@@ -96,6 +96,6 @@ export class ImportComponent implements OnInit {
   }
 
   startLocal() {
-    this.uploadService.importLocal(this.createData(null)).subscribe();
+    this.uploadService.upload(this.createData(null), "/api/books/localimport").subscribe();
   }
 }

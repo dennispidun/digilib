@@ -24,7 +24,12 @@
       <div class="ng-button">
         <button class="btn btn-outline-primary" type="button" (click)="startUpload()">Hochladen!</button>
       </div>
-      <div *ngIf="progress != undefined" role="progressbar">Fortschritt: {{progress}}%</div>
+      <div *ngIf="progress != undefined" class="progress">
+        <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="75" [style.width.%]="progress"
+             class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar">
+          {{progress}}%
+        </div>
+      </div>
     </section>
     <hr/>
     <label for="path">Lokaler Ordner:</label>

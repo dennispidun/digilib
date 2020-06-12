@@ -5,20 +5,11 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class UploadService {
-  SERVER_URL = "/api/books/import";
   constructor(private httpClient: HttpClient) { }
 
-  public upload(formData) {
+  public upload(formData, url: string) {
 
-    return this.httpClient.post<any>(this.SERVER_URL, formData, {
-      reportProgress: true,
-      observe: 'events'
-    });
-  }
-
-  public importLocal(formData) {
-
-    return this.httpClient.post<any>("/api/books/localimport", formData, {
+    return this.httpClient.post<any>(url, formData, {
       reportProgress: true,
       observe: 'events'
     });
