@@ -3,8 +3,14 @@ package de.unihildesheim.digilib.book.model;
 import de.unihildesheim.digilib.book.BooksProvider;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Optional;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Component
 public class ImportHandler {
@@ -13,10 +19,25 @@ public class ImportHandler {
 
     String delimiter;
 
-    int[] p = new int[5];
+    int[] p = {0, 1, 2, 3, 4};
 
     public ImportHandler(BooksProvider booksProvider) {
         this.booksProvider = booksProvider;
+    }
+
+    @PostConstruct
+    public void checkLocal() {
+        try {
+            importLocal("/importfolder", '|');
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void importLocal(String path, char d) throws IOException {
+        for (File fileP : Files.walk(Paths.get("."+ path)).filter(Files::isRegularFile).map(Path::toFile).collect(Collectors.toList())) {
+            importCSV(new FileInputStream(fileP), d);
+        }
     }
 
     public void importCSV(InputStream input, char d) {

@@ -50,20 +50,23 @@ export class ImportComponent implements OnInit {
     if (file === null) {
       formData.append("path", this.path);
     } else {
+      file.inProgress = true;
       formData.append("file", file.data);
+      file.inProgress = false;
     }
     return formData
   }
 
   uploadFile(file) {
-    file.inProgress = true;
     this.uploadService.upload(this.createData(file)).pipe(
       map(event => {
         switch (event.type) {
           case HttpEventType.UploadProgress:
             this.progress = Math.round(event.loaded * 100 / event.total);
+            this.result += "Fortschritt: " + this.progress + "\n";
             return { status: 'progress', message: this.progress };
           case HttpEventType.Response:
+            this.result += "Server-Antwort: " + event.body + "\n";
             return event;
           case HttpEventType.Sent:
             this.result += "Die Datei wurde abgeschickt.\n";
@@ -74,14 +77,13 @@ export class ImportComponent implements OnInit {
         }
       }),
       catchError((error: HttpErrorResponse) => {
-        this.result += "Beim Upload ist etwas schiefgegangen." + error.status + " " + error.error + " " + error.message;
+        this.result += "Beim Upload ist etwas schiefgegangen." + error.status + " " + error.message;
         return of(`${file.data.name} upload failed.`);
       })).subscribe((event: any) => {
       if (typeof (event) === 'object') {
         this.result += "Event: " + event.body + "\n";
       }
     });
-    file.inProgress = false;
   }
 
   startUpload() {
@@ -96,6 +98,6 @@ export class ImportComponent implements OnInit {
   }
 
   startLocal() {
-    this.uploadService.upload(this.createData(null)).subscribe();
+    this.uploadFile(null);
   }
 }
