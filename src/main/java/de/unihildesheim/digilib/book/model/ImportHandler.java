@@ -35,20 +35,18 @@ public class ImportHandler {
     }
 
     public void importLocal(String path, char d) throws IOException {
-        for (File fileP : Files.walk(Paths.get("."+ path)).filter(Files::isRegularFile).map(Path::toFile).collect(Collectors.toList())) {
+        for (File fileP : Files.walk(Paths.get("."+ path)).filter(p -> p.toString().endsWith(".csv") &&
+                Files.isRegularFile(p) && Files.isReadable(p)).map(Path::toFile).collect(Collectors.toList())) {
             importCSV(new FileInputStream(fileP), d);
         }
     }
 
-    public void importCSV(InputStream input, char d) {
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(input, "Cp1252"))) {
-            String line;
-            delimiter = String.valueOf(d);
-            while ((line = br.readLine()) != null) {
-                booksProvider.create(importBook(line));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+    public void importCSV(InputStream input, char d) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(input, "Cp1252"));
+        String line;
+        delimiter = String.valueOf(d);
+        while ((line = br.readLine()) != null) {
+            booksProvider.create(importBook(line));
         }
     }
 
