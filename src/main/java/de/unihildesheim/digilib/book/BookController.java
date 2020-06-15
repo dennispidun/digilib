@@ -91,7 +91,7 @@ public class BookController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("{\"message\": \"Die Datei wurde erfolgreich importiert.\"}");
     }
 
 }

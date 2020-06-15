@@ -67,23 +67,29 @@ export class ImportComponent implements OnInit {
             return { status: 'progress', message: this.progress };
           case HttpEventType.Response:
             this.result += "Server-Antwort: " + event.body + "\n";
+            console.log(event);
             return event;
           case HttpEventType.Sent:
             this.result += "Die Datei wurde abgeschickt.\n";
             break;
           default:
+            console.log(event);
             this.result += "Folgender unbehandelter Fehler ist aufgetreten: " + event.type + "\n";
             return `Unhandled event: ${event.type}`;
         }
       }),
       catchError((error: HttpErrorResponse) => {
-        this.result += "Beim Upload ist etwas schiefgegangen." + error.status + " " + error.message;
+        console.log(error);
+        this.result += "Beim Upload ist etwas schiefgegangen. " + error.status + " " + error.message;
         return of(`${file.data.name} upload failed.`);
       })).subscribe((event: any) => {
       if (typeof (event) === 'object') {
+        console.log(event);
         this.result += "Event: " + event.body + "\n";
       }
-    });
+    }, (error => {
+      console.log(error);
+    }));
   }
 
   startUpload() {
@@ -91,13 +97,13 @@ export class ImportComponent implements OnInit {
     fileUpload.onchange = () => {
       this.progress = 0;
       for (const file of fileUpload.files) {
-        this.uploadFile({data: file, inProgress: false, progress: 0});
+        console.log("upload: " + this.uploadFile({data: file, inProgress: false, progress: 0}));
       }
     };
     fileUpload.click();
   }
 
   startLocal() {
-    this.uploadFile(null);
+    console.log("local import: " + this.uploadFile(null));
   }
 }
