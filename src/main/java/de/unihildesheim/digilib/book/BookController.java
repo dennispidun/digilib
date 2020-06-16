@@ -1,5 +1,6 @@
 package de.unihildesheim.digilib.book;
 
+import de.unihildesheim.digilib.book.imports.ImportHandler;
 import de.unihildesheim.digilib.book.model.*;
 import de.unihildesheim.digilib.borrowing.BorrowingService;
 import org.springframework.data.domain.Page;
@@ -12,12 +13,7 @@ import javax.validation.Valid;
 import java.io.*;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/api/books")
