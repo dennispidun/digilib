@@ -9,12 +9,15 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/api/books")
@@ -73,28 +76,22 @@ public class BookController {
         return ResponseEntity.ok().body(borrowingService.addBorrowHistory(bookDto));
     }
 
-    @PostMapping("/localimport")
-    public ResponseEntity importBooks(@RequestParam("delimiter") char d, @RequestParam("pos") String pos, @RequestParam("path") String path) {
-        try {
-            this.importHandler.setPos(pos);
-            this.importHandler.importCSV(new FileInputStream(new File("." + path + "testcsv.csv")), d);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
-        }
-        return ResponseEntity.ok().build();
-    }
-
     @PostMapping("/import")
-    public ResponseEntity importBooks(@RequestParam("file") MultipartFile file, @RequestParam("delimiter") char d, @RequestParam("pos") String pos) {
+    public ResponseEntity importBooks(@RequestParam("file") Optional<MultipartFile> file,
+                                      @RequestParam("delimiter") char d, @RequestParam("pos") String pos,
+                                      @RequestParam("path") Optional<String> path) {
+        this.importHandler.setPos(pos);
         try {
-            this.importHandler.setPos(pos);
-            this.importHandler.importCSV(file.getInputStream(), d);
+            if (file.isPresent()) {
+                this.importHandler.importCSV(file.get().getInputStream(), d);
+            } else {
+                this.importHandler.importLocal(path.get(), d);
+            }
         } catch (IOException e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("{\"message\": \"Die Datei wurde erfolgreich importiert.\"}");
     }
 
 }

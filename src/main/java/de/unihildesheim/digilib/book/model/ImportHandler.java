@@ -1,33 +1,58 @@
 package de.unihildesheim.digilib.book.model;
 
+import de.unihildesheim.digilib.book.BookRepository;
 import de.unihildesheim.digilib.book.BooksProvider;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Optional;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Component
 public class ImportHandler {
 
     final BooksProvider booksProvider;
+    private BookRepository repository;
 
     String delimiter;
 
-    int[] p = new int[5];
+    int[] p = {0, 1, 2, 3, 4};
 
     public ImportHandler(BooksProvider booksProvider) {
         this.booksProvider = booksProvider;
     }
 
-    public void importCSV(InputStream input, char d) {
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(input, "Cp1252"))) {
-            String line;
-            delimiter = String.valueOf(d);
-            while ((line = br.readLine()) != null) {
-                booksProvider.create(importBook(line));
-            }
+    @PostConstruct
+    public void checkLocal() {
+        try {
+            importLocal("/importfolder", '|');
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (DataIntegrityViolationException i) {
+            i.printStackTrace();
+        }
+    }
+
+    public void importLocal(String path, char d) throws IOException, DataIntegrityViolationException {
+        for (File fileP : Files.walk(Paths.get("."+ path)).filter(p -> p.toString().endsWith(".csv") &&
+                Files.isRegularFile(p) && Files.isReadable(p)).map(Path::toFile).collect(Collectors.toList())) {
+            importCSV(new FileInputStream(fileP), d);
+        }
+    }
+
+    public void importCSV(InputStream input, char d) throws IOException, DataIntegrityViolationException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(input, "Cp1252"));
+        String line;
+        delimiter = String.valueOf(d);
+        while ((line = br.readLine()) != null) {
+            booksProvider.create(importBook(line));
+
         }
     }
 

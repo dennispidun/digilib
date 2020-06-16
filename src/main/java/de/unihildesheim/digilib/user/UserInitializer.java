@@ -17,6 +17,7 @@ public class UserInitializer {
 
     @PostConstruct
     public void init(){
+
         if (!repository.findUserByUsername("admin").isPresent()) {
             User entity = new User();
             entity.setEnabled(true);
@@ -27,7 +28,6 @@ public class UserInitializer {
             entity.setRole(Role.ADMIN);
             repository.save(entity);
         }
-
         if (!repository.findUserByUsername("user").isPresent()) {
             User entity2 = new User();
             entity2.setEnabled(true);
@@ -37,7 +37,5 @@ public class UserInitializer {
             entity2.setPassword(passwordEncoder.encode("1234"));
             repository.save(entity2);
         }
-
-
     }
 }
