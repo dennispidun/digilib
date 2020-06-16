@@ -1,5 +1,4 @@
 <div class="table-actions">
-
   <nav class="pagecontroller">
     <ul class="pagination">
       <li class="page-item" [ngClass]="first && 'disabled'">
@@ -13,10 +12,12 @@
       </li>
     </ul>
   </nav>
+  <div>
+    <button type="button" class="btn btn-outline-success" (click)="addUser()">Benutzer/in hinzufügen</button>
+  </div>
+</div>
+<div>
   <table>
-    <th>
-      <button type="button" class="btn btn-outline-success" (click)="addUser()">Benutzer/in hinzufügen</button>
-    </th>
     <tr class="header">
       <th style="width: 160px">Username</th>
       <th style="width: 180px">Vorname</th>
@@ -25,26 +26,26 @@
       <th style="width: 250px">Aktiv?</th>
     </tr>
     <tr *ngFor="let user of users" class="tableAlign">
-      <td>
+      <td (click)="edit(user)">
         <p>{{ user.username }}</p>
       </td>
-      <td>
+      <td (click)="edit(user)">
         <p>{{ user.firstname }}</p>
       </td>
-      <td>
+      <td (click)="edit(user)">
         <p>{{ user.lastname }}</p>
       </td>
-      <td>
+      <td (click)="edit(user)">
         <p>{{ user.role.toLowerCase() }}</p>
       </td>
       <td>
         <label class="switch">
-          <input (change)="setEnabled(user)" type="checkbox" [(ngModel)]="user.enabled" [disabled]="user.username === loggedInUser.username">
+          <input (change)="setEnabled(user)" type="checkbox" [(ngModel)]="user.enabled"
+                 [disabled]="user.username === loggedInUser.username">
           <span class="slider round" [ngClass]="user.username === loggedInUser.username && 'locked'"></span>
         </label>
       </td>
     </tr>
   </table>
-
 </div>
 
