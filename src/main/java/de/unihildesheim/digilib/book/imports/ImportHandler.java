@@ -1,9 +1,7 @@
 package de.unihildesheim.digilib.book.imports;
 
-import de.unihildesheim.digilib.book.BookRepository;
 import de.unihildesheim.digilib.book.BooksProvider;
 import de.unihildesheim.digilib.book.model.BookDto;
-import org.aspectj.weaver.ast.Not;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +18,6 @@ import java.util.stream.Collectors;
 public class ImportHandler {
 
     final BooksProvider booksProvider;
-    private BookRepository repository;
 
     String delimiter;
 

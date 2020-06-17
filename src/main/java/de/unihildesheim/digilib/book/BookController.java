@@ -1,6 +1,7 @@
 package de.unihildesheim.digilib.book;
 
 import de.unihildesheim.digilib.book.imports.ImportHandler;
+import de.unihildesheim.digilib.book.imports.ImportResultDto;
 import de.unihildesheim.digilib.book.model.*;
 import de.unihildesheim.digilib.borrowing.BorrowingService;
 import org.springframework.data.domain.Page;
@@ -74,8 +75,8 @@ public class BookController {
 
     @PostMapping("/import")
     public ResponseEntity importBooks(@RequestParam("file") Optional<MultipartFile> file,
-                                      @RequestParam("delimiter") char d, @RequestParam("pos") String pos,
-                                      @RequestParam("path") Optional<String> path) {
+                                                       @RequestParam("delimiter") char d, @RequestParam("pos") String pos,
+                                                       @RequestParam("path") Optional<String> path) {
         this.importHandler.setPos(pos);
         try {
             if (file.isPresent()) {
