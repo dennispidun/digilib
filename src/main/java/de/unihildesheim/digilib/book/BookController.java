@@ -77,12 +77,12 @@ public class BookController {
     public ResponseEntity<ImportResultDto> importBooks(@RequestParam("file") Optional<MultipartFile> file,
                                                        @RequestParam("delimiter") char d, @RequestParam("pos") String pos,
                                                        @RequestParam("path") Optional<String> path) {
-        this.importHandler.setPos(pos);
+        //this.importHandler.setPos(pos);
         try {
             if (file.isPresent()) {
-                return this.importHandler.importCSV(file.get().getInputStream(), d).report();
+                return this.importHandler.importCSV(file.get().getInputStream(), d, pos).report();
             } else if (path.isPresent()){
-                return this.importHandler.importLocal(path.get(), d).report();
+                return this.importHandler.importLocal(path.get(), d, pos).report();
             } else {
                 return new ImportResultDto("Es wurde nichts zum Importieren übergeben.").report();
             }

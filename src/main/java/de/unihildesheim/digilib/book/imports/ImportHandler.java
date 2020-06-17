@@ -19,9 +19,7 @@ public class ImportHandler {
 
     final BooksProvider booksProvider;
 
-    String delimiter;
-
-    int[] p;
+    //int[] p;
 
     public ImportHandler(BooksProvider booksProvider) {
         this.booksProvider = booksProvider;
@@ -29,11 +27,10 @@ public class ImportHandler {
 
     @PostConstruct
     public void checkLocal() {
-        p = new int[]{0, 1, 2, 3, 4};
-        importLocal("/importfolder", '|');
+        importLocal("/importfolder", '|', "01234");
     }
 
-    public ImportResultDto importLocal(String path, char d) {
+    public ImportResultDto importLocal(String path, char d, String pos) {
         ImportResultDto result = new ImportResultDto();
         if (new File(path).mkdirs()) {
             result.addErr(ImportError.FOLDEREMPTY, path);
@@ -42,7 +39,7 @@ public class ImportHandler {
                 for (File fileP : Files.walk(Paths.get("."+ path)).filter(p -> p.toString().endsWith(".csv") &&
                         Files.isRegularFile(p) && Files.isReadable(p)).map(Path::toFile).collect(Collectors.toList())) {
                     try {
-                        result.addDto(importCSV(new FileInputStream(fileP), d));
+                        result.addDto(importCSV(new FileInputStream(fileP), d, pos));
                     } catch (FileNotFoundException e) {
                         result.addErr(ImportError.FILENOTFOUND, fileP);
                     }
@@ -54,17 +51,16 @@ public class ImportHandler {
         return result;
     }
 
-    public ImportResultDto importCSV(InputStream input, char d) {
+    public ImportResultDto importCSV(InputStream input, char d, String p) {
         ImportResultDto result = new ImportResultDto();
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(input, "Cp1252"));
             String line;
-            delimiter = String.valueOf(d);
             try {
                 while ((line = br.readLine()) != null) {
                     if (line.length() > 4) {
                         try {
-                            BookDto dto = importBook(line);
+                            BookDto dto = importBook(line, String.valueOf(d), setPos(p));
                             try {
                                 booksProvider.create(dto);
                                 result.incSuccess();
@@ -92,15 +88,16 @@ public class ImportHandler {
         return result;
     }
 
-    public void setPos(String pos) {
-        p = new int[5];
+    public int[] setPos(String pos) {
+        int[] p = new int[5];
         for (int i = 0; i < 5; i++) {
             p[i] = pos.indexOf(String.valueOf(i));
         }
+        return p;
     }
 
-    private BookDto importBook(String input) throws DelimiterNotFoundException{
-        String[] parts = splitString(input);
+    private BookDto importBook(String input, String d, int[] p) throws DelimiterNotFoundException{
+        String[] parts = splitString(input, d);
         BookDto dto;
         try {
             dto = new BookDto();
@@ -122,11 +119,11 @@ public class ImportHandler {
         return dto;
     }
 
-    private String[] splitString(String input) {
-        if (input.contains(delimiter)) {
-            return input.split(Pattern.quote(delimiter), -1);
+    private String[] splitString(String input, String d) {
+        if (input.contains(d)) {
+            return input.split(Pattern.quote(d), -1);
         } else {
-            throw new DelimiterNotFoundException(delimiter, input);
+            throw new DelimiterNotFoundException(d, input);
         }
     }
 
