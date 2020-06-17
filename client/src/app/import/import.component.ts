@@ -4,6 +4,9 @@ import {UploadService} from "../upload.service";
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {catchError, map} from "rxjs/operators";
 import {of} from "rxjs"
+import {ImportResult} from "./importresult.model";
+import {ImportError} from "./importerror";
+import {Book} from "../inventory/book.model";
 
 @Component({
   selector: 'app-import',
@@ -28,6 +31,7 @@ export class ImportComponent implements OnInit {
   path: string;
   progress: number;
   result: string;
+  report: ImportResult;
 
   constructor(private http: HttpClient, private uploadService: UploadService) {
   }
@@ -57,39 +61,55 @@ export class ImportComponent implements OnInit {
     return formData
   }
 
+  printReport() {
+    this.result += new Date().toLocaleString() + "\n";
+    if (this.report.successfull > 0) {
+      this.result += "Es wurde" + (this.report.successfull > 1 ? "n " + this.report.successfull + " Bücher" : " ein Buch")
+        + " korrekt importiert.\n";
+    }
+    if (this.report.failed > 0) {
+      this.result += "Es konnte" + (this.report.failed > 1 ? "n " + this.report.failed + " Bücher" : " ein Buch")
+        + " nicht korrekt importiert werden.\n";
+    }
+    if (this.report.emptyLines > 0) {
+      this.result += (this.report.emptyLines > 1 ? this.report.emptyLines + " Zeilen" : "Eine Zeile") + " wurde als leer interpretiert.\n";
+    }
+    for (let [key, value] of Object.entries(this.report.errs)) {
+      const arr: object[] = value as object[];
+      switch (key) {
+        case "ALREADYEX":
+          this.result += (arr.length > 1 ? arr.length + " Bücher existieren" : "Ein Buch existiert") + " bereits:\n";
+          arr.forEach((element: Book) => {
+            this.result += "#" + element.invnr + " von " + element.author + " mit dem Titel \"" + element.title + "\"\n";
+          })
+          break;
+        case "DELIMITERERR":
+          arr.forEach((element) => {
+            this.result += element + "\n";
+          })
+      }
+    }
+  }
+
   uploadFile(file) {
     this.uploadService.upload(this.createData(file)).pipe(
       map(event => {
-        switch (event.type) {
-          case HttpEventType.UploadProgress:
-            this.progress = Math.round(event.loaded * 100 / event.total);
-            this.result += "Fortschritt: " + this.progress + "\n";
-            return { status: 'progress', message: this.progress };
-          case HttpEventType.Response:
-            this.result += "Server-Antwort: " + event.body + "\n";
-            console.log(event);
-            return event;
-          case HttpEventType.Sent:
-            this.result += "Die Datei wurde abgeschickt.\n";
-            break;
-          default:
-            console.log(event);
-            this.result += "Folgender unbehandelter Fehler ist aufgetreten: " + event.type + "\n";
-            return `Unhandled event: ${event.type}`;
+        if (event.type === HttpEventType.UploadProgress) {
+          this.progress = Math.round(event.loaded * 100 / event.total);
+        } else if (event.type === HttpEventType.Response) {
+          console.log(event.body);
+          this.report = event.body as ImportResult;
+          console.log(this.report);
+          this.printReport()
         }
       }),
       catchError((error: HttpErrorResponse) => {
-        console.log(error);
-        this.result += "Beim Upload ist etwas schiefgegangen. " + error.status + " " + error.message;
+        console.log(error.error);
+        this.report = error.error as ImportResult;
+        console.log(this.report);
+        this.printReport()
         return of(`${file.data.name} upload failed.`);
-      })).subscribe((event: any) => {
-      if (typeof (event) === 'object') {
-        console.log(event);
-        this.result += "Event: " + event.body + "\n";
-      }
-    }, (error => {
-      console.log(error);
-    }));
+      })).subscribe();
   }
 
   startUpload() {
@@ -97,13 +117,13 @@ export class ImportComponent implements OnInit {
     fileUpload.onchange = () => {
       this.progress = 0;
       for (const file of fileUpload.files) {
-        console.log("upload: " + this.uploadFile({data: file, inProgress: false, progress: 0}));
+        this.uploadFile({data: file, inProgress: false, progress: 0});
       }
     };
     fileUpload.click();
   }
 
   startLocal() {
-    console.log("local import: " + this.uploadFile(null));
+    this.uploadFile(null);
   }
 }
