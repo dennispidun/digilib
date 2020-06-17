@@ -10,6 +10,8 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -27,7 +29,7 @@ public class ImportHandler {
 
     @PostConstruct
     public void checkLocal() {
-        importLocal("/importfolder", '|', "01234");
+        importLocal("./importfolder", '|', "01234");
     }
 
     public ImportResultDto importLocal(String path, char d, String pos) {
@@ -36,10 +38,19 @@ public class ImportHandler {
             result.addErr(ImportError.FOLDEREMPTY, path);
         } else {
             try {
-                for (File fileP : Files.walk(Paths.get("."+ path)).filter(p -> p.toString().endsWith(".csv") &&
+                for (File fileP : Files.walk(Paths.get(path)).filter(p -> p.toString().endsWith(".csv") &&
                         Files.isRegularFile(p) && Files.isReadable(p)).map(Path::toFile).collect(Collectors.toList())) {
                     try {
-                        result.addDto(importCSV(new FileInputStream(fileP), d, pos));
+                        FileInputStream fs = new FileInputStream(fileP);
+                        result.addDto(importCSV(fs, d, pos));
+                        fs.close();
+                        if (result.getRealErrs() == 0) {
+                            File mv = new File("./imported");
+                            mv.mkdirs();
+                            Files.move(fileP.toPath(), Paths.get(mv.toPath() + "/" + "imported"
+                                    + DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss").format(LocalDateTime.now())
+                                    + fileP.getName()));
+                        }
                     } catch (FileNotFoundException e) {
                         result.addErr(ImportError.FILENOTFOUND, fileP);
                     }

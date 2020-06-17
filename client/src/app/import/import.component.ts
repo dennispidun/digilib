@@ -34,7 +34,7 @@ export class ImportComponent implements OnInit {
 
   ngOnInit(): void {
     this.delimiter = "|";
-    this.path = "/importfolder/";
+    this.path = "./importfolder/";
     this.result = "";
   }
 
