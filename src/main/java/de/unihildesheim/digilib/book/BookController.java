@@ -74,7 +74,7 @@ public class BookController {
     }
 
     @PostMapping("/import")
-    public ResponseEntity importBooks(@RequestParam("file") Optional<MultipartFile> file,
+    public ResponseEntity<ImportResultDto> importBooks(@RequestParam("file") Optional<MultipartFile> file,
                                                        @RequestParam("delimiter") char d, @RequestParam("pos") String pos,
                                                        @RequestParam("path") Optional<String> path) {
         this.importHandler.setPos(pos);
@@ -85,10 +85,8 @@ public class BookController {
                 return this.importHandler.importLocal(path.get(), d).report();
             }
         } catch (IOException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return new ImportResultDto(e.getMessage()).report();
         }
-        // return ResponseEntity.ok("{\"message\": \"Die Datei wurde erfolgreich importiert.\"}");
     }
 
 }

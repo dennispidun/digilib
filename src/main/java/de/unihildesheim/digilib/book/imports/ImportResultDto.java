@@ -30,6 +30,10 @@ public class ImportResultDto {
     public void addFileNotFound(String msg) { fileNotFoundErr += msg + System.lineSeparator(); }
     public void addFolderEmpty(String msg) { folderEmpty += msg + System.lineSeparator(); }
 
+    public ImportResultDto(String ioex) {
+        this.addIoerr(ioex);
+    }
+
     public void addDto(ImportResultDto dto) {
         successfull += dto.getSuccessfull();
         failed += dto.getFailed();
@@ -43,7 +47,7 @@ public class ImportResultDto {
         folderEmpty += dto.getFolderEmpty();
     }
 
-    public ResponseEntity report() {
+    public ResponseEntity<ImportResultDto> report() {
         if (failed > 0 || !(encodingErr.equals("")) || !(ioerr.equals("")) || !(fileNotFoundErr.equals("")) || !(folderEmpty.equals(""))) {
             return ResponseEntity.badRequest().body(this);
         } else {
