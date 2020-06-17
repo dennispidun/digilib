@@ -81,8 +81,10 @@ public class BookController {
         try {
             if (file.isPresent()) {
                 return this.importHandler.importCSV(file.get().getInputStream(), d).report();
-            } else {
+            } else if (path.isPresent()){
                 return this.importHandler.importLocal(path.get(), d).report();
+            } else {
+                return new ImportResultDto("Es wurde nichts zum Importieren übergeben.").report();
             }
         } catch (IOException e) {
             return new ImportResultDto(e.getMessage()).report();

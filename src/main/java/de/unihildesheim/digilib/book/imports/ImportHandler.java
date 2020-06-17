@@ -36,8 +36,7 @@ public class ImportHandler {
     public ImportResultDto importLocal(String path, char d) {
         ImportResultDto result = new ImportResultDto();
         if (new File(path).mkdirs()) {
-            result.addFolderEmpty("Der Dateipfad " + path + " existierte noch nicht und demnach konnte nichts" +
-                    "importiert werden. Der Pfad wurde nun erstellt.");
+            result.addErr(ImportError.FOLDEREMPTY, path);
         } else {
             try {
                 for (File fileP : Files.walk(Paths.get("."+ path)).filter(p -> p.toString().endsWith(".csv") &&
@@ -45,11 +44,11 @@ public class ImportHandler {
                     try {
                         result.addDto(importCSV(new FileInputStream(fileP), d));
                     } catch (FileNotFoundException e) {
-                        result.addFileNotFound(e.getMessage());
+                        result.addErr(ImportError.FILENOTFOUND, fileP);
                     }
                 }
             } catch (IOException ex) {
-                result.addIoerr(ex.getMessage());
+                result.addErr(ImportError.IOEX, ex.getMessage());
             }
         }
         return result;
@@ -70,26 +69,25 @@ public class ImportHandler {
                                 booksProvider.create(dto);
                                 result.incSuccess();
                             } catch (DataIntegrityViolationException de) {
-                                result.addAlreadyExists(de.getMessage());
+                                result.addErr(ImportError.ALREADYEX, dto);
                                 result.incFailed();
                             }
                         } catch (DelimiterNotFoundException dex) {
-                            result.addDelErr(dex.getMessage());
+                            result.addErr(ImportError.DELIMITERERR, dex.getMessage());
                             result.incFailed();
                         } catch (NotEnoughInformationException ne) {
-                            result.addNotEnoughInfo(ne.getMessage());
+                            result.addErr(ImportError.NOTENOUGHINF, ne.getMessage());
                             result.incFailed();
                         }
                     } else {
                         result.incEmptyLines();
-                        result.incFailed();
                     }
                 }
             } catch (IOException ie) {
-                result.addIoerr(ie.getMessage());
+                result.addErr(ImportError.IOEX, ie.getMessage());
             }
         } catch (UnsupportedEncodingException e) {
-            result.addEncodingErr(e.getMessage());
+            result.addErr(ImportError.ENCODINGERR, e.getMessage());
         }
         return result;
     }
