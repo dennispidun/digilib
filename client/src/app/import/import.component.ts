@@ -71,10 +71,12 @@ export class ImportComponent implements OnInit {
       this.result += "Es konnte" + (this.report.failed > 1 ? "n " + this.report.failed + " Bücher" : " ein Buch")
         + " nicht korrekt importiert werden.\n";
     }
+    this.result += "\n";
     if (this.report.emptyLines > 0) {
-      this.result += (this.report.emptyLines > 1 ? this.report.emptyLines + " Zeilen" : "Eine Zeile") + " wurde als leer interpretiert.\n";
+      this.result += (this.report.emptyLines > 1 ? this.report.emptyLines + " Zeilen" : "Eine Zeile") +
+        " wurde als leer interpretiert.\n\n";
     }
-    for (let [key, value] of Object.entries(this.report.errs)) {
+    for (const [key, value] of Object.entries(this.report.errs)) {
       const arr: object[] = value as object[];
       switch (key) {
         case "ALREADYEX":
@@ -82,11 +84,56 @@ export class ImportComponent implements OnInit {
           arr.forEach((element: Book) => {
             this.result += "#" + element.invnr + " von " + element.author + " mit dem Titel \"" + element.title + "\"\n";
           })
+          this.result += "\n";
           break;
         case "DELIMITERERR":
+          this.result += "In " + (arr.length > 1 ? arr.length + " Büchern" : "einem Buch") + " konnte das Trennzeichen nicht richtig verarbeitet werden:\n";
           arr.forEach((element) => {
             this.result += element + "\n";
           })
+          this.result += "\n";
+          break;
+        case "NOTENOUGHINF":
+          this.result += "Bei " + (arr.length > 1 ? arr.length + " Büchern" : "einem Buch") + " wurden nicht genügeng Daten bereitgestellt, um es zu importieren:\n";
+          arr.forEach((element) => {
+            this.result += element + "\n";
+          })
+          this.result += "Es wird immer mindestens ein Titel, ein Autor und eine Inventurnummer gefordert.\n";
+          break;
+        case "ENCODINGERR":
+          this.result += "Folgende Probleme wurden mit der Kodierung der Datei(en) festgestellt:\n";
+          arr.forEach((element => {
+            this.result += element + "\n";
+          }))
+          this.result += "\n";
+          break;
+        case "IOEX":
+          this.result += "Folgende Probleme wurden beim Lesen/Schreiben der Datei(en) festgestellt:\n";
+          arr.forEach((element => {
+            this.result += element + "\n";
+          }))
+          this.result += "\n";
+          break;
+        case "FILENOTFOUND":
+          this.result += (arr.length > 1 ? arr.length + " Dateien" : "Eine Datei") + " konnte nicht gefunden werden:\n";
+          arr.forEach((element => {
+            const f: File = element as File;
+            this.result += f.name;
+          }))
+          this.result += "\n";
+          break;
+        case "FOLDEREMPTY":
+          this.result += (arr.length > 1 ? arr.length + " Dateipfade existierten" : "Ein Dateipfad existierte")
+          + "noch nicht, daher konnte dort nichts importiert werden:\n"
+          arr.forEach((element => {
+            this.result += element + "\n";
+          }))
+          this.result += "\n";
+          break;
+        default:
+          this.result += "Ein unbekannter Fehler ist aufgetreten, siehe Konsole für mehr Informationen."
+          console.log(key);
+          console.log(value);
       }
     }
   }
