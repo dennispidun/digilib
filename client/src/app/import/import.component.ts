@@ -87,32 +87,21 @@ export class ImportComponent implements OnInit {
           this.result += "\n";
           break;
         case "DELIMITERERR":
-          this.result += "In " + (arr.length > 1 ? arr.length + " Büchern" : "einem Buch") + " konnte das Trennzeichen nicht richtig verarbeitet werden:\n";
-          arr.forEach((element) => {
-            this.result += element + "\n";
-          })
-          this.result += "\n";
+          this.result += (arr.length > 1 ? arr.length + " Bücher" : "Ein Buch") + " beinhaltete ein Trennzeichen, welches nicht korrekt verarbeitet werden konnte:\n";
+          this.addArr(arr);
           break;
         case "NOTENOUGHINF":
-          this.result += "Bei " + (arr.length > 1 ? arr.length + " Büchern" : "einem Buch") + " wurden nicht genügeng Daten bereitgestellt, um es zu importieren:\n";
-          arr.forEach((element) => {
-            this.result += element + "\n";
-          })
-          this.result += "Es wird immer mindestens ein Titel, ein Autor und eine Inventurnummer gefordert.\n";
+          this.result += "Bei " + (arr.length > 1 ? arr.length + " Büchern" : "einem Buch") + " wurden nicht genügeng Daten bereitgestellt, um es zu importieren"
+          + " (es werden immer mindestens ein Autor, ein Titel und eine Inventurnummer gefordert):\n";
+          this.addArr(arr);
           break;
         case "ENCODINGERR":
           this.result += "Folgende Probleme wurden mit der Kodierung der Datei(en) festgestellt:\n";
-          arr.forEach((element => {
-            this.result += element + "\n";
-          }))
-          this.result += "\n";
+          this.addArr(arr);
           break;
         case "IOEX":
           this.result += "Folgende Probleme wurden beim Lesen/Schreiben der Datei(en) festgestellt:\n";
-          arr.forEach((element => {
-            this.result += element + "\n";
-          }))
-          this.result += "\n";
+          this.addArr(arr);
           break;
         case "FILENOTFOUND":
           this.result += (arr.length > 1 ? arr.length + " Dateien" : "Eine Datei") + " konnte nicht gefunden werden:\n";
@@ -124,11 +113,8 @@ export class ImportComponent implements OnInit {
           break;
         case "FOLDEREMPTY":
           this.result += (arr.length > 1 ? arr.length + " Dateipfade existierten" : "Ein Dateipfad existierte")
-          + "noch nicht, daher konnte dort nichts importiert werden:\n"
-          arr.forEach((element => {
-            this.result += element + "\n";
-          }))
-          this.result += "\n";
+          + "noch nicht, daher konnte dort nichts importiert werden. Der Dateipfad wurde nun erstellt:\n"
+          this.addArr(arr);
           break;
         default:
           this.result += "Ein unbekannter Fehler ist aufgetreten, siehe Konsole für mehr Informationen."
@@ -138,22 +124,25 @@ export class ImportComponent implements OnInit {
     }
   }
 
+  addArr(arr: object[]) {
+    arr.forEach((element => {
+      this.result += element + "\n";
+    }))
+    this.result += "\n";
+}
+
   uploadFile(file) {
     this.uploadService.upload(this.createData(file)).pipe(
       map(event => {
         if (event.type === HttpEventType.UploadProgress) {
           this.progress = Math.round(event.loaded * 100 / event.total);
         } else if (event.type === HttpEventType.Response) {
-          console.log(event.body);
           this.report = event.body as ImportResult;
-          console.log(this.report);
           this.printReport()
         }
       }),
       catchError((error: HttpErrorResponse) => {
-        console.log(error.error);
         this.report = error.error as ImportResult;
-        console.log(this.report);
         this.printReport()
         return of(`${file.data.name} upload failed.`);
       })).subscribe();

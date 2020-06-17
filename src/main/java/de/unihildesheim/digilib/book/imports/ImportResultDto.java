@@ -37,7 +37,11 @@ public class ImportResultDto {
         successfull += dto.getSuccessfull();
         failed += dto.getFailed();
         emptyLines += dto.getEmptyLines();
-        errs.putAll(dto.getErrs());
+        dto.getErrs().forEach((ImportError err, List<Object> list) -> {
+            list.forEach(o -> {
+                addErr(err, o);
+            });
+        });
     }
 
     public void addErr(ImportError err, Object o) {
