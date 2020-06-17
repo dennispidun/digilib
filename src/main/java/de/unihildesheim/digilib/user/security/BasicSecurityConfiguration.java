@@ -54,6 +54,7 @@ public class BasicSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .addFilter(new JwtAuthorizationFilter(authenticationManager(), jwtSecret))
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
+                                .antMatchers("/api/import").hasAnyRole(Role.ADMIN.name())
                                 .antMatchers("/api/users**").hasAnyRole(Role.ADMIN.name())
                                 .antMatchers("/api/**").hasAnyRole(Role.getAllRoles())
                                 .anyRequest().permitAll()
