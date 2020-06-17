@@ -42,11 +42,10 @@ public class ImportResultDto {
     }
 
     public void addErr(ImportError err, Object o) {
-        Optional<List<Object>> list = Optional.ofNullable(errs.get(err));
-        List<Object> nList = new ArrayList<>();
-        list.ifPresent(nList::addAll);
-        nList.add(o);
-        errs.put(err, nList);
+        if (!(errs.containsKey(err))) {
+            errs.put(err, new ArrayList<>());
+        }
+        errs.get(err).add(o);
     }
 
     public ResponseEntity<ImportResultDto> report() {
