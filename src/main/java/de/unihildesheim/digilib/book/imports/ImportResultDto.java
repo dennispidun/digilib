@@ -21,6 +21,7 @@ public class ImportResultDto {
     private String encodingErr = "";
     private String ioerr = "";
     private String fileNotFoundErr = "";
+    private String folderEmpty = "";
 
     public void addAlreadyExists(String msg) { alreadyExist += msg + System.lineSeparator(); }
     public void incSuccess() { successfull++; }
@@ -31,6 +32,7 @@ public class ImportResultDto {
     public void addEncodingErr(String msg) { encodingErr += msg + System.lineSeparator(); }
     public void addIoerr(String msg) { ioerr += msg + System.lineSeparator(); }
     public void addFileNotFound(String msg) { fileNotFoundErr += msg + System.lineSeparator(); }
+    public void addFolderEmpty(String msg) { folderEmpty += msg + System.lineSeparator(); }
 
     public void addDto(ImportResultDto dto) {
         successfull += dto.getSuccessfull();
@@ -42,10 +44,11 @@ public class ImportResultDto {
         encodingErr += dto.getEncodingErr();
         ioerr += dto.getIoerr();
         fileNotFoundErr += dto.getFileNotFoundErr();
+        folderEmpty += dto.getFolderEmpty();
     }
 
     public ResponseEntity report() {
-        if (failed > 0 || !(encodingErr.equals("")) || !(ioerr.equals("")) || !(fileNotFoundErr.equals(""))) {
+        if (failed > 0 || !(encodingErr.equals("")) || !(ioerr.equals("")) || !(fileNotFoundErr.equals("")) || !(folderEmpty.equals(""))) {
             return ResponseEntity.badRequest().body(this);
         } else {
             return ResponseEntity.ok(this);

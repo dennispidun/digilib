@@ -32,25 +32,28 @@ public class ImportHandler {
 
     @PostConstruct
     public void checkLocal() {
-        if (!(new File("/importfolder").mkdirs())) {
-            p = new int[]{0, 1, 2, 3, 4};
-            importLocal("/importfolder", '|');
-        }
+        p = new int[]{0, 1, 2, 3, 4};
+        importLocal("/importfolder", '|');
     }
 
     public ImportResultDto importLocal(String path, char d) {
         ImportResultDto result = new ImportResultDto();
-        try {
-            for (File fileP : Files.walk(Paths.get("."+ path)).filter(p -> p.toString().endsWith(".csv") &&
-                    Files.isRegularFile(p) && Files.isReadable(p)).map(Path::toFile).collect(Collectors.toList())) {
-                try {
-                    result.addDto(importCSV(new FileInputStream(fileP), d));
-                } catch (FileNotFoundException e) {
-                    result.addFileNotFound(e.getMessage());
+        if (new File(path).mkdirs()) {
+            result.addFolderEmpty("Der Dateipfad " + path + " existierte noch nicht und demnach konnte nichts" +
+                    "importiert werden. Der Pfad wurde nun erstellt.");
+        } else {
+            try {
+                for (File fileP : Files.walk(Paths.get("."+ path)).filter(p -> p.toString().endsWith(".csv") &&
+                        Files.isRegularFile(p) && Files.isReadable(p)).map(Path::toFile).collect(Collectors.toList())) {
+                    try {
+                        result.addDto(importCSV(new FileInputStream(fileP), d));
+                    } catch (FileNotFoundException e) {
+                        result.addFileNotFound(e.getMessage());
+                    }
                 }
+            } catch (IOException ex) {
+                result.addIoerr(ex.getMessage());
             }
-        } catch (IOException ex) {
-            result.addIoerr(ex.getMessage());
         }
         return result;
     }

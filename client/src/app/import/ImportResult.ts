@@ -10,4 +10,5 @@ export interface ImportResult {
   encodingErr: string;
   ioerr: string;
   fileNotFoundErr: string;
+  folderEmpty: string;
 }
