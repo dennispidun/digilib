@@ -18,7 +18,7 @@
           <li routerLinkActive="active" [routerLink]="'/dashboard'"><a>Inventar</a></li>
           <li routerLinkActive="active" [routerLink]="'/personen'"><a>Personen</a></li>
           <li *ngIf="user && user.role === 'ADMIN'" routerLinkActive="active" [routerLink]="'/benutzer'"><a>Benutzer</a></li>
-          <li routerLinkActive="active" [routerLink]="'/import'"><a>CSV-Import</a></li>
+          <li *ngIf="user && user.role === 'ADMIN'" routerLinkActive="active" [routerLink]="'/import'"><a>CSV-Import</a></li>
         </ul>
       </nav>
     </div>
