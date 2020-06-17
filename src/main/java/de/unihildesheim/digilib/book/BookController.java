@@ -79,15 +79,15 @@ public class BookController {
         this.importHandler.setPos(pos);
         try {
             if (file.isPresent()) {
-                this.importHandler.importCSV(file.get().getInputStream(), d);
+                return this.importHandler.importCSV(file.get().getInputStream(), d).report();
             } else {
-                this.importHandler.importLocal(path.get(), d);
+                return this.importHandler.importLocal(path.get(), d).report();
             }
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
-        return ResponseEntity.ok("{\"message\": \"Die Datei wurde erfolgreich importiert.\"}");
+        // return ResponseEntity.ok("{\"message\": \"Die Datei wurde erfolgreich importiert.\"}");
     }
 
 }

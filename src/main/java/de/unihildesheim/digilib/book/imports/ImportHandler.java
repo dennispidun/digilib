@@ -32,29 +32,66 @@ public class ImportHandler {
 
     @PostConstruct
     public void checkLocal() {
-        try {
+        if (!(new File("/importfolder").mkdirs())) {
             p = new int[]{0, 1, 2, 3, 4};
             importLocal("/importfolder", '|');
-        } catch (IOException | DataIntegrityViolationException | DelimiterNotFoundException e) {
-            e.printStackTrace();
         }
     }
 
-    public void importLocal(String path, char d) throws IOException, DataIntegrityViolationException, DelimiterNotFoundException {
-        for (File fileP : Files.walk(Paths.get("."+ path)).filter(p -> p.toString().endsWith(".csv") &&
-                Files.isRegularFile(p) && Files.isReadable(p)).map(Path::toFile).collect(Collectors.toList())) {
-            importCSV(new FileInputStream(fileP), d);
+    public ImportResultDto importLocal(String path, char d) {
+        ImportResultDto result = new ImportResultDto();
+        try {
+            for (File fileP : Files.walk(Paths.get("."+ path)).filter(p -> p.toString().endsWith(".csv") &&
+                    Files.isRegularFile(p) && Files.isReadable(p)).map(Path::toFile).collect(Collectors.toList())) {
+                try {
+                    result.addDto(importCSV(new FileInputStream(fileP), d));
+                } catch (FileNotFoundException e) {
+                    result.addFileNotFound(e.getMessage());
+                }
+            }
+        } catch (IOException ex) {
+            result.addIoerr(ex.getMessage());
         }
+        return result;
     }
 
-    public void importCSV(InputStream input, char d) throws IOException, DataIntegrityViolationException,
-            DelimiterNotFoundException, NotEnoughInformationException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(input, "Cp1252"));
-        String line;
-        delimiter = String.valueOf(d);
-        while ((line = br.readLine()) != null) {
-            booksProvider.create(importBook(line));
+    public ImportResultDto importCSV(InputStream input, char d) {
+        ImportResultDto result = new ImportResultDto();
+        try {
+            BufferedReader br = new BufferedReader(new InputStreamReader(input, "Cp1252"));
+            String line;
+            delimiter = String.valueOf(d);
+            try {
+                while ((line = br.readLine()) != null) {
+                    if (line.length() > 4) {
+                        try {
+                            BookDto dto = importBook(line);
+                            try {
+                                booksProvider.create(dto);
+                                result.incSuccess();
+                            } catch (DataIntegrityViolationException de) {
+                                result.addAlreadyExists(de.getMessage());
+                                result.incFailed();
+                            }
+                        } catch (DelimiterNotFoundException dex) {
+                            result.addDelErr(dex.getMessage());
+                            result.incFailed();
+                        } catch (NotEnoughInformationException ne) {
+                            result.addNotEnoughInfo(ne.getMessage());
+                            result.incFailed();
+                        }
+                    } else {
+                        result.incEmptyLines();
+                        result.incFailed();
+                    }
+                }
+            } catch (IOException ie) {
+                result.addIoerr(ie.getMessage());
+            }
+        } catch (UnsupportedEncodingException e) {
+            result.addEncodingErr(e.getMessage());
         }
+        return result;
     }
 
     public void setPos(String pos) {
