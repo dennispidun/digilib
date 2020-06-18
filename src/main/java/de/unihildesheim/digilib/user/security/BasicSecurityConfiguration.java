@@ -19,9 +19,6 @@ import javax.sql.DataSource;
 public class BasicSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private DataSource dataSource;
-
-    @Autowired
     private UserRepository userRepository;
 
     @Value("${jwt.secret}")
@@ -38,14 +35,10 @@ public class BasicSecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new UserDetailsServiceImpl(userRepository);
     }
 
-    ;
-
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-    ;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
