@@ -2,15 +2,18 @@ package de.unihildesheim.digilib.user;
 
 import lombok.Data;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Data
 public class UserDto {
 
     @NotEmpty
     @UniqueUsername
-    @Min(value = 5, message = "Der Username muss mindestens 5 Zeichen haben.")
-    @Max(value = 12, message = "Der Username darf maximal 12 Zeichen haben.")
+    @Size(min = 5, message = "Der Username muss mindestens 5 Zeichen haben.")
+    @Size(max = 12, message = "Der Username darf maximal 12 Zeichen haben.")
     private String username;
 
     @NotBlank
