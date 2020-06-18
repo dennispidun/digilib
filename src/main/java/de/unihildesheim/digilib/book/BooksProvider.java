@@ -46,6 +46,8 @@ public class BooksProvider {
         book.setInvnr(createBook.getInvnr());
         book.setIsbn(ISBNUtils.regenerateISBN(createBook.getIsbn()));
         book.setGenre(genreProvider.getOrSave(createBook.getGenre()));
+        book.setType(createBook.getType());
+        book.setComment(createBook.getComment());
 
         book.setCreatedOn(createBook.getCreatedOn());
         if (createBook.getCreatedOn() == null) {

@@ -8,4 +8,6 @@ export interface Book {
   borrowedOn?: number;
   borrowerName?: string
   returnedOn?: number;
+  type: string;
+  comment: string;
 }

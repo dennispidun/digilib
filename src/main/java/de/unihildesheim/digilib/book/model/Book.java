@@ -26,6 +26,9 @@ public class Book {
     private String author;
     private Date createdOn;
 
+    private String type;
+    private String comment;
+
     @OneToMany(targetEntity = Borrowing.class, mappedBy = "book", fetch = FetchType.LAZY)
     @OrderBy("borrowedOn DESC")
     @JsonIgnore

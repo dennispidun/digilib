@@ -21,6 +21,9 @@
          [(ngModel)]="book.genre"
          [ngbTypeahead]="genreSearch"
          placeholder="Genre"/>
+
+  <input type="text" class="form-control" [(ngModel)]="book.type" placeholder="Buchart">
+
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-outline-success" (click)="create()">Erstellen</button>

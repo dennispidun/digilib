@@ -15,6 +15,9 @@
       <dt>Genre:</dt>
       <dd>{{book.genre}}</dd>
 
+      <dt>Buchart:</dt>
+      <dd>{{book.type}}</dd>
+
       <p>Erstellt am {{book.createdOn | date : 'dd.MM.yyyy'}}</p>
 
       <p *ngIf="book.borrowedOn && !book.returnedOn">

@@ -28,4 +28,7 @@ public class BookDto {
     private String genre;
 
     private Date createdOn;
+
+    private String type;
+    private String comment;
 }
