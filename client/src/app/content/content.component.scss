@@ -1,43 +1,44 @@
 .header {
   position: fixed;
   top: 0;
-  height: 70px;
+  height: 6vh;
   width:100%;
   background-color: #A7C407;
   z-index: 100;
   display: grid;
-  grid-template-columns: auto 170px 20px;
-  grid-column-gap: 10px;
+  grid-template-columns: 90% 9%;
+  grid-column-gap: 0.3rem;
   color: white;
+  padding-left: 0.3rem;
+  padding-right: 0.3rem;
+  line-height: 5.5vh;
+  grid-template-rows: 6vh;
 
   .title {
     grid-column: 1;
-    font-size: 25px;
-    line-height: 70px;
-    margin-left: 20px;
-    display: inline-block;
-    vertical-align: middle;
+    font-size: 3vh;
   }
 
   .user {
     grid-column: 2;
-    align-self: end;
-    float: right;
-    height: 51px;
-    width: 200px;
-    p {
-      font-size: 1.05em;
-      a {
-        &:hover {
-          cursor: pointer;
-          text-decoration: underline;
-        }
-        font-weight: 900;
-        color: #006fe3;
-        margin-left: 10px;
+    align-self: center;
+    #account {
+      line-height: 1rem;
+      float: right;
+      p {
+        font-size: 1.05em;
+        a {
+          &:hover {
+            cursor: pointer;
+            text-decoration: underline;
+          }
+          font-weight: 900;
+          color: #006fe3;
+          margin-left: 10px;
 
-        &:first-child {
-          margin-left: 0;
+          &:first-child {
+            margin-left: 0;
+          }
         }
       }
     }
@@ -46,10 +47,10 @@
 
 .navigation {
   position: fixed;
-  width: 240px;
+  width: 11rem;
   height: calc(100vh - 70px);
 
-  margin-top: 70px;
+  margin-top: 6vh;
   background-color: white;
   color: gray;
 
@@ -107,7 +108,7 @@
 
 .page {
   display: grid;
-  grid-template-columns: 260px auto;
+  grid-template-columns: 11rem auto;
 
 }
 
@@ -116,6 +117,8 @@
   grid-column-end: 2;
 
   background-color: #ffffff;
-  margin: 90px 20px;
+  margin: 9vh 20px;
   padding: 20px 40px;
+
+  border-radius: 0.4rem;
 }
