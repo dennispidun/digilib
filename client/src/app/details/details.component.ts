@@ -62,4 +62,8 @@ export class DetailsComponent implements OnInit {
       this.updateHistory();
     });
   }
+
+  edit() {
+
+  }
 }
