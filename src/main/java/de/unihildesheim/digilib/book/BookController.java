@@ -2,10 +2,7 @@ package de.unihildesheim.digilib.book;
 
 import de.unihildesheim.digilib.book.imports.ImportHandler;
 import de.unihildesheim.digilib.book.imports.ImportResultDto;
-import de.unihildesheim.digilib.book.model.Book;
-import de.unihildesheim.digilib.book.model.BookDto;
-import de.unihildesheim.digilib.book.model.BookModelMapper;
-import de.unihildesheim.digilib.book.model.ListBookDto;
+import de.unihildesheim.digilib.book.model.*;
 import de.unihildesheim.digilib.borrowing.BorrowingService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -75,8 +72,8 @@ public class BookController {
         return ResponseEntity.ok().body(borrowingService.addBorrowHistory(bookDto));
     }
 
-    @PatchMapping("/{invnr")
-    public ResponseEntity<Book> modifyBook(@PathVariable("invnr") String invnr, @Valid @RequestBody BookDto dto) {
+    @PatchMapping("/{invnr}")
+    public ResponseEntity<Book> modifyBook(@PathVariable("invnr") String invnr, @Valid @RequestBody UpdateBookDto dto) {
         Book book = repository.findBookByInvnr(invnr).orElseThrow(() -> new BookNotFoundException(invnr));
         book.setPrice(dto.getPrice());
         book.setComment(dto.getComment());
@@ -84,6 +81,7 @@ public class BookController {
         book.setAuthor(dto.getAuthor());
         book.setGenre(dto.getGenre());
         book.setIsbn(dto.getIsbn());
+        book.setTitle(dto.getTitle());
         return ResponseEntity.ok(repository.save(book));
     }
 
