@@ -23,10 +23,12 @@ export class ImportComponent implements OnInit {
     'Inventur-Nummer',
     'Buchart',
     'Neupreis',
-    'nicht anwesend'
+    'Genre',
+    'ISBN',
+    'Kommentar'
   ];
 
-  pos = [0, 1, 2, 3, 4, 5];
+  pos = [0, 1, 2, 3, 4, 5, 6, 7];
   path: string;
   progress: number;
   result: string;

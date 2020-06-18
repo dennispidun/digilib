@@ -2,6 +2,8 @@ package de.unihildesheim.digilib.book.imports;
 
 import de.unihildesheim.digilib.book.BooksProvider;
 import de.unihildesheim.digilib.book.model.BookDto;
+import de.unihildesheim.digilib.genre.Genre;
+import de.unihildesheim.digilib.genre.GenreProvider;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
@@ -20,16 +22,16 @@ import java.util.stream.Collectors;
 public class ImportHandler {
 
     final BooksProvider booksProvider;
+    final GenreProvider genreProvider;
 
-    //int[] p;
-
-    public ImportHandler(BooksProvider booksProvider) {
+    public ImportHandler(BooksProvider booksProvider, GenreProvider genreProvider) {
         this.booksProvider = booksProvider;
+        this.genreProvider = genreProvider;
     }
 
     @PostConstruct
     public void checkLocal() {
-        importLocal("./importfolder", '|', "01234");
+        importLocal("./importfolder", '|', "01234567");
     }
 
     public ImportResultDto importLocal(String path, char d, String pos) {
@@ -100,8 +102,8 @@ public class ImportHandler {
     }
 
     public int[] setPos(String pos) {
-        int[] p = new int[5];
-        for (int i = 0; i < 5; i++) {
+        int[] p = new int[pos.length()];
+        for (int i = 0; i < pos.length(); i++) {
             p[i] = pos.indexOf(String.valueOf(i));
         }
         return p;
@@ -118,15 +120,15 @@ public class ImportHandler {
         } catch (ArrayIndexOutOfBoundsException e) {
             throw new NotEnoughInformationException(input);
         }
-        if (parts.length < 5) {
-            String[] tmp = Arrays.copyOf(parts, 5);
-            for (int i = parts.length; i < 5; i++) {
+        if (parts.length < 8) {
+            String[] tmp = Arrays.copyOf(parts, 8);
+            for (int i = parts.length; i < 8; i++) {
                 tmp[i] = "";
             }
             parts = tmp;
         }
-        //dto.setGenre(parts[p[3]].isBlank() ? "Musterbuchart" : parts[p[3]]);
-        //dto.setPrize(parts[p[4]].isBlank() ? "Musterpreis" : parts[p[4]]);
+        dto.setGenre(genreProvider.getOrSave(parts[p[5]].isBlank() ? new Genre("Mustergenre") : new Genre(parts[p[3]])));
+        dto.setPrice(parts[p[4]].isBlank() ? "Musterpreis" : parts[p[4]]);
         return dto;
     }
 
