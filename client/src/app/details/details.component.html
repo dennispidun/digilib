@@ -44,6 +44,9 @@
       <button *ngIf="book.borrowedOn && !book.returnedOn" type="button" class="btn btn-primary" (click)="cancel()">
         Zurücknehmen
       </button>
+      <button type="button" class="btn btn-info" (click)="edit()">
+        Buch bearbeiten
+      </button>
     </div>
   </div>
   <hr/>
