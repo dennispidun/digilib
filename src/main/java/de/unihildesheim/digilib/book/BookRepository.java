@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,8 +17,10 @@ public interface BookRepository extends PagingAndSortingRepository<Book, Long> {
 
     Optional<Book> findBookByInvnr(String invnr);
 
-    Page<Book> findBooksByInvnrContainingOrIsbnContainingOrTitleContainingOrAuthorContaining(String invnr, String isbn, String title, String author, Pageable pageable);
+    Page<Book> findBooksByInvnrContainingOrIsbnContainingOrTitleContainingOrAuthorContainingIgnoreCaseAndDeletedOnIsNull(String invnr, String isbn, String title, String author, Pageable pageable);
 
     Page<Book> findAll(Pageable pageable);
+
+    Page<Book> findBooksByDeletedOn(Date deletedOn, Pageable pageable);
 
 }

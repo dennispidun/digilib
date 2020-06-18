@@ -51,13 +51,13 @@ public class BooksProvider {
 
     public Page<ListBookDto> searchForPaginated(String search, @Min(1) int pageNo, int pageSize) {
         return repository
-                .findBooksByInvnrContainingOrIsbnContainingOrTitleContainingOrAuthorContaining(
+                .findBooksByInvnrContainingOrIsbnContainingOrTitleContainingOrAuthorContainingIgnoreCaseAndDeletedOnIsNull(
                         search, search, search, search, PageRequest.of(pageNo, pageSize))
                 .map(book -> new ListBookDto(book, null));
     }
 
     public Page<ListBookDto> findPaginated(@Min(1) int pageNo, int pageSize) {
-        return repository.findAll(PageRequest.of(pageNo, pageSize))
+        return repository.findBooksByDeletedOn(null, PageRequest.of(pageNo, pageSize))
                 .map(book -> new ListBookDto(book, null));
     }
 

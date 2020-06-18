@@ -36,4 +36,5 @@ public class BookDto {
     private String type;
     private String comment;
     private String price;
+    private Date deletedOn;
 }

@@ -13,4 +13,5 @@ export interface Book {
   type: string;
   comment: string;
   price: string;
+  deletedOn: Date;
 }

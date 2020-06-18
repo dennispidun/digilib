@@ -127,8 +127,11 @@ public class ImportHandler {
             }
             parts = tmp;
         }
+        dto.setPrice(parts[p[4]].isBlank() ? "nicht bekannt" : parts[p[4]]);
         dto.setGenre(genreProvider.getOrSave(parts[p[5]].isBlank() ? new Genre("Mustergenre") : new Genre(parts[p[3]])));
-        dto.setPrice(parts[p[4]].isBlank() ? "Musterpreis" : parts[p[4]]);
+        dto.setIsbn(parts[p[6]].isBlank() ? "-" : parts[p[6]]);
+        dto.setComment(parts[p[7]].isBlank() ? "" : parts[p[7]]);
+        dto.setDeletedOn(null);
         return dto;
     }
 

@@ -16,6 +16,7 @@ public class BookModelMapper {
         bookDto.setType(book.getType());
         bookDto.setComment(book.getComment());
         bookDto.setPrice(book.getPrice());
+        bookDto.setDeletedOn(book.getDeletedOn());
         return bookDto;
     }
 }
