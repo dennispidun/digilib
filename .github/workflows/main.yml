@@ -64,9 +64,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@master
-          with:
-            name: app
-            path: app
+        with:
+          name: app
+          path: app
       - name: Copy file via scp
         uses: appleboy/scp-action@master
         env:
