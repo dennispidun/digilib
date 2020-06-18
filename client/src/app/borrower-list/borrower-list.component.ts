@@ -43,8 +43,8 @@ export class BorrowerListComponent implements OnInit {
 
       this.borrowers.forEach(b => {
         this.http.get(`/api/borrower/${b.id}/unreturned`)
-          .toPromise().then((data) => {
-          this.borrowings = data as Borrowing[];
+          .toPromise().then((mData) => {
+          this.borrowings = mData as Borrowing[];
           b.unreturned = this.borrowings.length;
         });
       });

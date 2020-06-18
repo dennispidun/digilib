@@ -3,6 +3,7 @@ import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable, of} from "rxjs";
 import {catchError, debounceTime, distinctUntilChanged, map, switchMap} from "rxjs/operators";
+import {Borrowing} from "../borrower-list/borrowing.model";
 
 const PARAMS = new HttpParams({
   fromObject: {
@@ -24,7 +25,11 @@ export class BorrowComponent implements OnInit {
 
   error: string;
 
+  msg: string;
+
   searchFailed: boolean;
+
+  borrower;
 
   constructor(public activeModal: NgbActiveModal, private http: HttpClient) {
   }
@@ -39,6 +44,8 @@ export class BorrowComponent implements OnInit {
     );
 
   findBorrower(term: string): Observable<string[]> {
+    this.msg = "";
+    this.borrower = undefined;
     if (term === "") {
       return of([]);
     }
@@ -47,10 +54,21 @@ export class BorrowComponent implements OnInit {
     return this.http.get(`/api/borrower?search=${term}`)
       .pipe(
         map(value => (value as []).map(value1 => {
-          const borrower = value1 as any;
-          return borrower.firstname + " " + borrower.lastname;
+          this.borrower = value1 as any;
+          return this.borrower.firstname + " " + this.borrower.lastname;
         }))
       )
+  }
+
+  getCurrentlyBorrowed() {
+    if (this.borrower !== undefined) {
+      this.http.get(`/api/borrower/${this.borrower.id}/unreturned`).toPromise().then((data) => {
+        const borrowings = data as Borrowing[];
+        if (borrowings.length === 1) {
+          this.msg = "Achtung: dieser Schüler hat bereits ein Buch ausgeliehen. 2 Bücher pro Schüler sollten nur bei Ausnahmen erlaubt werden.";
+        }
+      })
+    }
   }
 
   borrow() {
@@ -62,7 +80,7 @@ export class BorrowComponent implements OnInit {
       this.activeModal.close(data);
     }, (err) => {
       if (err.error.apierror.message === "StudentCannotBorrowMultipleBooks") {
-        this.error = "Ein Schüler darf nicht zwei Bücher gleichzeitig ausleihen.";
+        this.error = "Ein Schüler darf nicht mehr als zwei Bücher gleichzeitig ausleihen.";
       }
     });
   }

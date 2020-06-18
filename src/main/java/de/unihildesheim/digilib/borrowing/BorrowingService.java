@@ -40,7 +40,7 @@ class BorrowingService {
                 findByFirstnameAndLastname(createBorrowing.getFirstname(), createBorrowing.getLastname());
 
         byFirstnameAndLastname.ifPresent(borrower -> {
-                if (!(borrower.isTeacher()) && !(getUnreturnedBorrowings(borrower).isEmpty())) {
+                if (!(borrower.isTeacher()) && (getUnreturnedBorrowings(borrower).size() > 1)) {
                     throw new StudentCannotBorrowMultipleBooks();
                 }
             }

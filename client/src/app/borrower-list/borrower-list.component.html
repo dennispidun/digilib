@@ -33,9 +33,9 @@
         <p>{{ borrower.lastname }}</p>
       </td>
       <td>
-        <div *ngIf="borrower.unreturned > 1 && !borrower.teacher == false; else elseBlock">
+        <div *ngIf="borrower.unreturned > 2 && !borrower.teacher == false; else elseBlock">
           <label class="switch" ngbTooltip="{{borrower.firstname}} {{borrower.lastname}}
-                muss zuerst {{borrower.unreturned - 1}} zurückgeben" triggers="click:blur">
+                muss zuerst {{borrower.unreturned - 2}} zurückgeben" triggers="click:blur">
             <input type="checkbox" [(ngModel)]="borrower.teacher" disabled>
             <span class="slider round locked"></span>
           </label>

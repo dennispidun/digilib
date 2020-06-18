@@ -10,8 +10,10 @@
          [class.is-invalid]="searchFailed"
          [(ngModel)]="borrowerName"
          [ngbTypeahead]="search"
+         (selectItem)="getCurrentlyBorrowed()"
          placeholder="Name des Schülers/Lehrers"/>
-  <p class="error-message" *ngIf="error">{{error}}</p>
+  <p class="message error" *ngIf="error">{{error}}</p>
+  <p class="message" *ngIf="msg">{{msg}}</p>
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-outline-success" (click)="borrow()">Verleihen</button>
