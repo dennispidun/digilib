@@ -28,6 +28,7 @@ public class Book {
 
     private String type;
     private String comment;
+    private String price;
 
     @OneToMany(targetEntity = Borrowing.class, mappedBy = "book", fetch = FetchType.LAZY)
     @OrderBy("borrowedOn DESC")

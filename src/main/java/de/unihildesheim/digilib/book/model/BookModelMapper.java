@@ -15,6 +15,7 @@ public class BookModelMapper {
         bookDto.setGenre(book.getGenre());
         bookDto.setType(book.getType());
         bookDto.setComment(book.getComment());
+        bookDto.setPrice(book.getPrice());
         return bookDto;
     }
 }

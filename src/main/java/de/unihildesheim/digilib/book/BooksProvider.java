@@ -48,6 +48,7 @@ public class BooksProvider {
         book.setGenre(genreProvider.getOrSave(createBook.getGenre()));
         book.setType(createBook.getType());
         book.setComment(createBook.getComment());
+        book.setPrice(createBook.getPrice());
 
         book.setCreatedOn(createBook.getCreatedOn());
         if (createBook.getCreatedOn() == null) {

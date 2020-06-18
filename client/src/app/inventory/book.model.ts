@@ -12,4 +12,5 @@ export interface Book {
   returnedOn?: number;
   type: string;
   comment: string;
+  price: string;
 }
