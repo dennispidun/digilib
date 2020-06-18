@@ -15,14 +15,14 @@ public class GenreProvider {
         this.repository = repository;
     }
 
-    public Genre getOrSave(String genre) {
+    public Genre getOrSave(Genre genre) {
         if (genre == null) {
             return null;
         }
 
-        Optional<Genre> foundGenre = repository.findByGenre(genre);
+        Optional<Genre> foundGenre = repository.findByGenre(genre.getGenre());
         if (foundGenre.isEmpty()) {
-            Genre newGenre = new Genre(genre);
+            Genre newGenre = new Genre(genre.getGenre());
             return repository.save(newGenre);
         } else {
             return foundGenre.get();

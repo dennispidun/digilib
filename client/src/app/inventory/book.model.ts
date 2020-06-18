@@ -1,9 +1,11 @@
+import {Genre} from "../details/genre.model";
+
 export interface Book {
   invnr: string;
   isbn: string;
   title: string;
   author: string;
-  genre?: string;
+  genre?: Genre;
   createdOn?: number;
   borrowedOn?: number;
   borrowerName?: string

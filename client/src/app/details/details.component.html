@@ -13,10 +13,13 @@
       <dd>{{book.author}}</dd>
 
       <dt>Genre:</dt>
-      <dd>{{book.genre}}</dd>
+      <dd>{{book.genre.genre}}</dd>
 
       <dt>Buchart:</dt>
       <dd>{{book.type}}</dd>
+
+      <dt>Kommentar:</dt>
+      <dd>{{book.comment}}</dd>
 
       <p>Erstellt am {{book.createdOn | date : 'dd.MM.yyyy'}}</p>
 

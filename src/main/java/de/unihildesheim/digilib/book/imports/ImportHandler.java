@@ -125,7 +125,7 @@ public class ImportHandler {
             }
             parts = tmp;
         }
-        dto.setGenre(parts[p[3]].isBlank() ? "Musterbuchart" : parts[p[3]]);
+        //dto.setGenre(parts[p[3]].isBlank() ? "Musterbuchart" : parts[p[3]]);
         //dto.setPrize(parts[p[4]].isBlank() ? "Musterpreis" : parts[p[4]]);
         return dto;
     }

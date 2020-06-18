@@ -1,5 +1,6 @@
 package de.unihildesheim.digilib.book.model;
 
+import de.unihildesheim.digilib.genre.Genre;
 import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
@@ -25,7 +26,7 @@ public class BookDto {
     @NotEmpty
     private String author;
 
-    private String genre;
+    private Genre genre;
 
     private Date createdOn;
 
