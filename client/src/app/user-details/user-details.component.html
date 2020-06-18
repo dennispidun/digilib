@@ -17,7 +17,7 @@
   <input type="text" class="form-control" [ngClass]="error.password.length > 0 && 'is-invalid'" [(ngModel)]="user.password" placeholder="Passwort">
   <small *ngIf="error.password.length > 0" class="form-text text-danger">{{error.password}}</small>
 
-  <select [disabled]="!roleEditable" class="form-control" [(ngModel)]="user.role">
+  <select class="form-control" [(ngModel)]="user.role">
     <option value="USER">User</option>
     <option value="ADMIN">Admin</option>
   </select>
