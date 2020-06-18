@@ -34,7 +34,7 @@
           }
           font-weight: 900;
           color: #006fe3;
-          margin-left: 10px;
+          margin-left: 0.3rem;
 
           &:first-child {
             margin-left: 0;
@@ -48,7 +48,7 @@
 .navigation {
   position: fixed;
   width: 11rem;
-  height: calc(100vh - 70px);
+  height: 94vh;
 
   margin-top: 6vh;
   background-color: white;
@@ -61,7 +61,6 @@
   .section {
     width: 100%;
     float: left;
-    margin-bottom: 100px;
     position: relative;
 
     nav {
@@ -85,7 +84,7 @@
         }
 
         &:not(:last-child) {
-          margin-bottom: 2px;
+          margin-bottom: 0.14em;
         }
 
         a {
@@ -117,8 +116,8 @@
   grid-column-end: 2;
 
   background-color: #ffffff;
-  margin: 9vh 20px;
-  padding: 20px 40px;
+  margin: 9vh 2em;
+  padding: 1.1em 2.2em;
 
   border-radius: 0.4rem;
 }

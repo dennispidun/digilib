@@ -1,6 +1,6 @@
 div.page {
   display: grid;
-  grid-template-rows: 40px auto;
+  grid-template-rows: 1.5em auto;
 
   h1 {
     grid-row-start: 1;
@@ -9,7 +9,7 @@ div.page {
 }
 
 table {
-  margin-top: 20px;
+  margin-top: 1.3em;
   height: 100%;
   width: calc(100%);
 
@@ -31,16 +31,16 @@ table {
   }
 
   tr {
-    height: 50px;
+    height: 3.1em;
 
 
     &:not(:nth-child(-n + 3)) {
       cursor: pointer;
-      border-top: 1px solid #ddd;
+      border-top: 0.12em solid #ddd;
     }
 
     &:not(:first-child) {
-      border-bottom: 1px solid #ddd;
+      border-bottom: 0.12em solid #ddd;
     }
   }
 
@@ -52,11 +52,11 @@ table {
     vertical-align : middle;
 
     &:first-child {
-      padding-left: 20px;
+      padding-left: 1.2em;
     }
 
     &:last-child {
-      padding-right: 20px;
+      padding-right: 1.2em;
     }
   }
 
