@@ -2,16 +2,18 @@ package de.unihildesheim.digilib.book;
 
 import de.unihildesheim.digilib.book.imports.ImportHandler;
 import de.unihildesheim.digilib.book.imports.ImportResultDto;
-import de.unihildesheim.digilib.book.model.*;
+import de.unihildesheim.digilib.book.model.Book;
+import de.unihildesheim.digilib.book.model.BookDto;
+import de.unihildesheim.digilib.book.model.BookModelMapper;
+import de.unihildesheim.digilib.book.model.ListBookDto;
 import de.unihildesheim.digilib.borrowing.BorrowingService;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.io.*;
+import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;

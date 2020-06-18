@@ -2,7 +2,6 @@ package de.unihildesheim.digilib.utils;
 
 import de.unihildesheim.digilib.apierror.ApplicationRuntimeException;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 public class ISBNNotValidException extends ApplicationRuntimeException {
 

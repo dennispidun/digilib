@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
-import {BehaviorSubject, Observable, Subject} from "rxjs";
+import {BehaviorSubject, Subject} from "rxjs";
 import {User} from "./user/user.model";
 import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
 import {UserDetailsComponent} from "./user-details/user-details.component";

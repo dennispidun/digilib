@@ -13,7 +13,6 @@ import {BorrowComponent} from "./borrow/borrow.component";
 import {ContentComponent} from "./content/content.component";
 import {LoginComponent} from "./login/login.component";
 import {BorrowerListComponent} from "./borrower-list/borrower-list.component";
-import {AppService} from "./app.service";
 import {AuthInterceptor} from "./http.interceptor";
 import {ImportComponent} from "./import/import.component";
 import {AddBookComponent} from './add-book/add-book.component';

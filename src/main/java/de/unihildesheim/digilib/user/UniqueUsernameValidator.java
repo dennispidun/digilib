@@ -1,8 +1,5 @@
 package de.unihildesheim.digilib.user;
 
-import de.unihildesheim.digilib.book.BookRepository;
-import de.unihildesheim.digilib.book.model.UniqueInventoryNumber;
-
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 

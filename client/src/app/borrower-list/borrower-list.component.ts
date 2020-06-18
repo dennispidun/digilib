@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Borrower} from "../inventory/borrow.model";
 import {HttpClient} from "@angular/common/http";
 import {Borrowing} from "./borrowing.model";

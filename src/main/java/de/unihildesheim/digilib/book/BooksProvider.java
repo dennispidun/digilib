@@ -4,23 +4,15 @@ import de.unihildesheim.digilib.book.model.Book;
 import de.unihildesheim.digilib.book.model.BookDto;
 import de.unihildesheim.digilib.book.model.ListBookDto;
 import de.unihildesheim.digilib.borrowing.BorrowingRepository;
-import de.unihildesheim.digilib.genre.Genre;
 import de.unihildesheim.digilib.genre.GenreProvider;
 import de.unihildesheim.digilib.utils.ISBNUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.Charset;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.regex.Pattern;
 
 @Service
 public class BooksProvider {

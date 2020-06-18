@@ -1,11 +1,5 @@
-import { Injectable } from "@angular/core";
-import {
-  HttpRequest,
-  HttpHandler,
-  HttpEvent,
-  HttpInterceptor,
-  HttpErrorResponse
-} from "@angular/common/http";
+import {Injectable} from "@angular/core";
+import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from "@angular/common/http";
 import {tap} from "rxjs/operators";
 import {Router} from "@angular/router";
 // tslint:disable-next-line:import-blacklist

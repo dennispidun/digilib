@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from "@angular/core";
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable, of} from "rxjs";
-import {catchError, debounceTime, distinctUntilChanged, map, switchMap} from "rxjs/operators";
+import {debounceTime, distinctUntilChanged, map, switchMap} from "rxjs/operators";
 import {Borrowing} from "../borrower-list/borrowing.model";
 
 const PARAMS = new HttpParams({

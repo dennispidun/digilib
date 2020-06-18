@@ -1,7 +1,10 @@
 package de.unihildesheim.digilib.book.model;
 
 import de.unihildesheim.digilib.genre.Genre;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
 import java.util.Date;

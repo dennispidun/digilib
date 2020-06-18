@@ -5,7 +5,6 @@ import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {catchError, map} from "rxjs/operators";
 import {of} from "rxjs"
 import {ImportResult} from "./importresult.model";
-import {ImportError} from "./importerror";
 import {Book} from "../inventory/book.model";
 
 @Component({

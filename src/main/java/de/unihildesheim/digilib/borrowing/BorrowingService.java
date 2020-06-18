@@ -1,7 +1,7 @@
 package de.unihildesheim.digilib.borrowing;
 
-import de.unihildesheim.digilib.book.*;
 import de.unihildesheim.digilib.book.BookNotFoundException;
+import de.unihildesheim.digilib.book.BookRepository;
 import de.unihildesheim.digilib.book.model.Book;
 import de.unihildesheim.digilib.book.model.ListBookDto;
 import de.unihildesheim.digilib.borrowing.model.*;
