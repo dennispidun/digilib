@@ -13,6 +13,10 @@ import {debounceTime, distinctUntilChanged, map, switchMap} from "rxjs/operators
 export class AddBookComponent implements OnInit {
 
   book: Book = {
+    comment: "",
+    deletedOn: undefined,
+    price: "",
+    type: "",
     isbn: "",
     invnr: "",
     title: "",
