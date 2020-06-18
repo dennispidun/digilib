@@ -12,6 +12,7 @@ public class BookModelMapper {
         bookDto.setTitle(book.getTitle());
         bookDto.setCreatedOn(book.getCreatedOn());
         bookDto.setAuthor(book.getAuthor());
+        bookDto.setGenre(book.getGenre().getGenre());
         return bookDto;
     }
 }
