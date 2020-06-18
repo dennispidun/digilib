@@ -24,6 +24,13 @@ export class DetailsComponent implements OnInit {
     this.invnr = this.route.snapshot.paramMap.get("invnr");
     this.http.get("/api/books/" + this.invnr).toPromise().then((data) => {
       this.book = data as Book;
+      console.log(data);
+      if (this.book.genre === null) {
+        this.book.genre = {
+          id: 0,
+          genre: ""
+        };
+      }
     });
 
     this.updateHistory();
