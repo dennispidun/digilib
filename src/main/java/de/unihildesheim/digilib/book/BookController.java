@@ -59,6 +59,8 @@ public class BookController {
         }
     }
 
+    //lol
+
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<Book> createBook(@Valid @RequestBody BookDto createBook) {
         return ResponseEntity.ok(booksProvider.create(createBook));
