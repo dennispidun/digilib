@@ -49,6 +49,7 @@ class BorrowingService {
         Book book = bookRepository.findBookByInvnr(invnr).orElseThrow(() -> new BookNotFoundException(invnr));
         Borrowing borrowing = new Borrowing();
         borrowing.setBorrowedOn(new Date());
+        //borrowing.setShouldReturnOn(/*new Date() + weeks*/);
         borrowing.setBook(book);
         borrowing.setLender(lender);
 
