@@ -70,12 +70,16 @@ export class UserComponent implements OnInit {
 
   addUser() {
     const modalRef: NgbModalRef = this.modalService.open(UserDetailsComponent);
+    const addUserModal: UserDetailsComponent = modalRef.componentInstance;
+    this.app.getUser().subscribe(next => {
+      addUserModal.loggedInUser = next;
+    })
 
     this.addingUser = true;
 
     modalRef.result.then(() => {
       this.updateUsers();
       this.addingUser = false;
-    });
+    })
   }
 }
