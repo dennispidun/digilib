@@ -13,4 +13,6 @@ public class BorrowingDto {
     private String lenderLastname;
     private Date borrowedOn;
     private Date returnedOn;
+    private Date shouldReturnOn;
+    private Integer daysOverdue;
 }

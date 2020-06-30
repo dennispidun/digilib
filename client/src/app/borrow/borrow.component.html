@@ -12,9 +12,23 @@
          [ngbTypeahead]="search"
          (selectItem)="getCurrentlyBorrowed()"
          placeholder="Name des Schülers/Lehrers"/>
-  <p class="message error" *ngIf="error">{{error}}</p>
-  <p class="message" *ngIf="msg">{{msg}}</p>
+  <small class="message error">{{ error.name && error.name}}</small>
+
+  <select style="margin-top: 1em" class="form-control" [(ngModel)]="weeks">
+    <option value="1">1 Woche</option>
+    <option value="2">2 Wochen</option>
+    <option value="3">3 Wochen</option>
+    <option value="4">4 Wochen</option>
+  </select>
+
+  <small class="message error" *ngIf="error.weeks">{{error.weeks}}</small>
+  <p class="message" *ngIf="error.general">{{error.general}}</p>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-outline-success" (click)="borrow()">Verleihen</button>
+  <button [disabled]="!this.borrowerName || this.borrowerName.length == 0"
+          type="button"
+          class="btn btn-outline-success"
+          (click)="borrow()">
+    Verleihen
+  </button>
 </div>

@@ -17,6 +17,8 @@ public class Borrowing {
     private Date borrowedOn;
     private Date returnedOn;
 
+    private Date shouldReturnOn;
+
     @ManyToOne
     private Book book;
 
