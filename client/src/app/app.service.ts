@@ -45,6 +45,9 @@ export class AppService {
     const editUserModal: UserDetailsComponent = modalRef.componentInstance;
     editUserModal.editUser = {...user};
     editUserModal.roleEditable = roleEditable;
+    this.getUser().subscribe(next => {
+      editUserModal.loggedInUser = next;
+    })
 
     return modalRef.result.then(() => {
       this.updateUser();

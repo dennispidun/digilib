@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {HttpClient} from "@angular/common/http";
 import {User} from "../user/user.model";
-import {AppService} from "../app.service";
 
 @Component({
   selector: 'app-add-user',
@@ -32,7 +31,7 @@ export class UserDetailsComponent implements OnInit {
   action = "erstellen";
   roleEditable = true;
 
-  constructor(private app: AppService, public activeModal: NgbActiveModal, private http: HttpClient) {
+  constructor(public activeModal: NgbActiveModal, private http: HttpClient) {
   }
 
   ngOnInit(): void {
@@ -40,9 +39,6 @@ export class UserDetailsComponent implements OnInit {
       this.action = "bearbeiten";
       this.user = {...this.editUser};
     }
-    this.app.getUser().subscribe(user => {
-      this.loggedInUser = user;
-    });
   }
 
   createOrEdit() {

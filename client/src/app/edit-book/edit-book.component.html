@@ -1,0 +1,39 @@
+<div class="modal-header">
+  <h4 class="modal-title">Buch bearbeiten</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross Click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <p>Titel*:</p>
+  <input type="text" class="form-control" [class.is-invalid]="error.title.length > 0" [(ngModel)]="book.title" placeholder="Titel*">
+  <small *ngIf="error.title.length > 0" class="form-text text-danger">{{error.title}}</small>
+
+  <p>Autor*:</p>
+  <input type="text" class="form-control" [class.is-invalid]="error.author.length > 0" [(ngModel)]="book.author" placeholder="Autor*">
+  <small *ngIf="error.author.length > 0" class="form-text text-danger">{{error.author}}</small>
+
+  <p>ISBN*:</p>
+  <input type="text" class="form-control" [class.is-invalid]="error.isbn.length > 0" [(ngModel)]="book.isbn" placeholder="ISBN*">
+  <small *ngIf="error.isbn.length > 0" class="form-text text-danger">{{error.isbn}}</small>
+
+  <p>Genre:</p>
+  <input id="typeahead-http" type="text" class="form-control"
+         [(ngModel)]="book.genre.genre"
+         [ngbTypeahead]="genreSearch"
+         placeholder="Genre"/>
+
+  <p>Buchart:</p>
+  <input type="text" class="form-control" [(ngModel)]="book.type" placeholder="Buchart">
+
+  <p>Neupreis:</p>
+  <input type="text" class="form-control" [(ngModel)]="book.price" placeholder="Neupreis">
+
+  <p>Kommentar:</p>
+  <input type="text" class="form-control" [(ngModel)]="book.comment" placeholder="Kommentar">
+
+
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-success" (click)="modify()">Ändern</button>
+</div>

@@ -3,6 +3,7 @@ package de.unihildesheim.digilib.user;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -81,7 +82,7 @@ public class UserController {
     public Page<User> getUsers(@RequestParam int pageNo,
                                @RequestParam int pageSize) {
         return this.userRepository
-                .findAll(PageRequest.of(pageNo, pageSize));
+                .findAll(PageRequest.of(pageNo, pageSize, Sort.by("username")));
     }
 
     @PatchMapping(value = "/api/users/{username}/enabled", consumes = MediaType.TEXT_PLAIN_VALUE)

@@ -5,6 +5,7 @@ import {Book} from "../inventory/book.model";
 import {BorrowComponent} from "../borrow/borrow.component";
 import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
 import {Borrow} from "../inventory/borrow.model";
+import {EditBookComponent} from "../edit-book/edit-book.component";
 
 @Component({
   selector: "app-details",
@@ -18,7 +19,8 @@ export class DetailsComponent implements OnInit {
   book: Book;
   history: Borrow[] = [];
 
-  constructor(private modalService: NgbModal, private http: HttpClient, private route: ActivatedRoute) { }
+  constructor(private modalService: NgbModal, private http: HttpClient, private route: ActivatedRoute) {
+  }
 
   ngOnInit(): void {
     this.invnr = this.route.snapshot.paramMap.get("invnr");
@@ -55,8 +57,7 @@ export class DetailsComponent implements OnInit {
   }
 
   cancel() {
-    this.http.delete("/api/books/" + this.invnr + "/latest-borrowing", {
-    }).subscribe((data) => {
+    this.http.delete("/api/books/" + this.invnr + "/latest-borrowing", {}).subscribe((data) => {
       // @ts-ignore
       this.book.returnedOn = data.returnedOn;
       this.updateHistory();
@@ -64,6 +65,10 @@ export class DetailsComponent implements OnInit {
   }
 
   edit() {
-
+    const modalRef = this.modalService.open(EditBookComponent);
+    modalRef.componentInstance.book = JSON.parse(JSON.stringify(this.book));
+    modalRef.result.then((newBook) => {
+      this.book = newBook;
+    });
   }
 }
