@@ -5,6 +5,7 @@ import {Book} from "../inventory/book.model";
 import {BorrowComponent} from "../borrow/borrow.component";
 import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
 import {Borrow} from "../inventory/borrow.model";
+import {EditBookComponent} from "../edit-book/edit-book.component";
 
 @Component({
   selector: "app-details",
@@ -64,6 +65,16 @@ export class DetailsComponent implements OnInit {
   }
 
   edit() {
-
+    const oldBook: Book ={...this.book};
+    const modalRef = this.modalService.open(EditBookComponent);
+    modalRef.componentInstance.book = this.book;
+    modalRef.result.then(
+      (re) => {},
+      (re) => {this.book = oldBook;})
+    /*modalRef.componentInstance.pass.subscribe((result) => {
+      if (result === "abort") {
+        this.book = oldBook;
+      }
+    })*/
   }
 }

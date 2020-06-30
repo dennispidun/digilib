@@ -59,8 +59,6 @@ public class BookController {
         }
     }
 
-    //lol
-
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<Book> createBook(@Valid @RequestBody BookDto createBook) {
         return ResponseEntity.ok(booksProvider.create(createBook));
@@ -81,7 +79,7 @@ public class BookController {
         book.setComment(dto.getComment());
         book.setType(dto.getType());
         book.setAuthor(dto.getAuthor());
-        book.setGenre(dto.getGenre());
+        //book.setGenre(dto.getGenre());
         book.setIsbn(dto.getIsbn());
         book.setTitle(dto.getTitle());
         return ResponseEntity.ok(repository.save(book));

@@ -19,6 +19,7 @@ import {AddBookComponent} from './add-book/add-book.component';
 import {UserComponent} from './user/user.component';
 import {UserDetailsComponent} from './user-details/user-details.component';
 import {DragDropModule} from "@angular/cdk/drag-drop";
+import {EditBookComponent} from './edit-book/edit-book.component';
 
 @Injectable()
 export class XhrInterceptor implements HttpInterceptor {
@@ -43,7 +44,8 @@ export class XhrInterceptor implements HttpInterceptor {
     AddBookComponent,
     ImportComponent,
     UserComponent,
-    UserDetailsComponent
+    UserDetailsComponent,
+    EditBookComponent
   ],
     imports: [
         NgbModule,
