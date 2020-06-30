@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h4 class="modal-title">Buch erstellen</h4>
+  <h4 class="modal-title">Buch bearbeiten</h4>
   <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross Click')">
     <span aria-hidden="true">&times;</span>
   </button>
@@ -17,10 +17,11 @@
   <input type="text" class="form-control" [class.is-invalid]="error.isbn.length > 0" [(ngModel)]="book.isbn" placeholder="ISBN*">
   <small *ngIf="error.isbn.length > 0" class="form-text text-danger">{{error.isbn}}</small>
 
-  <!-- <input id="typeahead-http" type="text" class="form-control"
+  <p>Genre:</p>
+  <input id="typeahead-http" type="text" class="form-control"
          [(ngModel)]="book.genre.genre"
          [ngbTypeahead]="genreSearch"
-         placeholder="Genre"/> -->
+         placeholder="Genre"/>
 
   <p>Buchart:</p>
   <input type="text" class="form-control" [(ngModel)]="book.type" placeholder="Buchart">

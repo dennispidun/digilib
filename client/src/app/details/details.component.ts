@@ -19,7 +19,8 @@ export class DetailsComponent implements OnInit {
   book: Book;
   history: Borrow[] = [];
 
-  constructor(private modalService: NgbModal, private http: HttpClient, private route: ActivatedRoute) { }
+  constructor(private modalService: NgbModal, private http: HttpClient, private route: ActivatedRoute) {
+  }
 
   ngOnInit(): void {
     this.invnr = this.route.snapshot.paramMap.get("invnr");
@@ -56,8 +57,7 @@ export class DetailsComponent implements OnInit {
   }
 
   cancel() {
-    this.http.delete("/api/books/" + this.invnr + "/latest-borrowing", {
-    }).subscribe((data) => {
+    this.http.delete("/api/books/" + this.invnr + "/latest-borrowing", {}).subscribe((data) => {
       // @ts-ignore
       this.book.returnedOn = data.returnedOn;
       this.updateHistory();
@@ -65,16 +65,10 @@ export class DetailsComponent implements OnInit {
   }
 
   edit() {
-    const oldBook: Book ={...this.book};
     const modalRef = this.modalService.open(EditBookComponent);
-    modalRef.componentInstance.book = this.book;
-    modalRef.result.then(
-      (re) => {},
-      (re) => {this.book = oldBook;})
-    /*modalRef.componentInstance.pass.subscribe((result) => {
-      if (result === "abort") {
-        this.book = oldBook;
-      }
-    })*/
+    modalRef.componentInstance.book = JSON.parse(JSON.stringify(this.book));
+    modalRef.result.then((newBook) => {
+      this.book = newBook;
+    });
   }
 }

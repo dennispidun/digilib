@@ -4,6 +4,8 @@ import de.unihildesheim.digilib.book.imports.ImportHandler;
 import de.unihildesheim.digilib.book.imports.ImportResultDto;
 import de.unihildesheim.digilib.book.model.*;
 import de.unihildesheim.digilib.borrowing.BorrowingService;
+import de.unihildesheim.digilib.genre.Genre;
+import de.unihildesheim.digilib.genre.GenreRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +22,7 @@ import java.util.Optional;
 public class BookController {
 
     final BookRepository repository;
+    final GenreRepository genreRepository;
 
     final BorrowingService borrowingService;
 
@@ -29,8 +32,9 @@ public class BookController {
 
     final ImportHandler importHandler;
 
-    public BookController(BookRepository repository, BorrowingService borrowingService, BooksProvider booksProvider, BookModelMapper bookModelMapper, ImportHandler importHandler) {
+    public BookController(BookRepository repository, GenreRepository genreRepository, BorrowingService borrowingService, BooksProvider booksProvider, BookModelMapper bookModelMapper, ImportHandler importHandler) {
         this.repository = repository;
+        this.genreRepository = genreRepository;
         this.borrowingService = borrowingService;
         this.booksProvider = booksProvider;
         this.bookModelMapper = bookModelMapper;
@@ -79,7 +83,15 @@ public class BookController {
         book.setComment(dto.getComment());
         book.setType(dto.getType());
         book.setAuthor(dto.getAuthor());
-        //book.setGenre(dto.getGenre());
+
+        if (book.getGenre() == null ||
+                (dto.getGenre() != null && !book.getGenre().getGenre().equalsIgnoreCase(dto.getGenre().getGenre()))) {
+            Genre newGenre = genreRepository.findByGenre(dto.getGenre().getGenre())
+                    .orElse(new Genre(dto.getGenre().getGenre()));
+            genreRepository.save(newGenre);
+
+            book.setGenre(newGenre);
+        }
         book.setIsbn(dto.getIsbn());
         book.setTitle(dto.getTitle());
         return ResponseEntity.ok(repository.save(book));
