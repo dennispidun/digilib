@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 
@@ -13,18 +15,22 @@ import java.util.Objects;
 @NoArgsConstructor
 public class ListBookDto extends BookDto {
 
-    private Date borrowedOn;
+    private LocalDateTime borrowedOn;
     private String borrowerName;
-    private Date returnedOn;
+    private LocalDateTime returnedOn;
 
-    public ListBookDto(Book book, Date borrowedOn) {
+    public ListBookDto(Book book, LocalDateTime borrowedOn) {
         this.setAuthor(book.getAuthor());
         this.setInvnr(book.getInvnr());
         this.setIsbn(book.getIsbn());
         this.setTitle(book.getTitle());
         this.setCreatedOn(book.getCreatedOn());
+        this.setBorrowedOn(borrowedOn);
 
-        if (book.getBorrowings() != null && book.getBorrowings().size() >= 1 && book.getBorrowings().get(0) != null) {
+        if (borrowedOn == null
+                || (book.getBorrowings() != null
+                && book.getBorrowings().size() >= 1
+                && book.getBorrowings().get(0) != null)) {
             this.setBorrowedOn(book.getBorrowings().get(0).getBorrowedOn());
             Borrowing borrowing = book.getBorrowings().get(0);
             this.setReturnedOn(borrowing.getReturnedOn());

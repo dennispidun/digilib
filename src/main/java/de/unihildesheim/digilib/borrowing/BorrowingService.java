@@ -8,6 +8,9 @@ import de.unihildesheim.digilib.borrowing.model.*;
 import de.unihildesheim.digilib.user.User;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -48,8 +51,8 @@ class BorrowingService {
 
         Book book = bookRepository.findBookByInvnr(invnr).orElseThrow(() -> new BookNotFoundException(invnr));
         Borrowing borrowing = new Borrowing();
-        borrowing.setBorrowedOn(new Date());
-        //borrowing.setShouldReturnOn(/*new Date() + weeks*/);
+        borrowing.setBorrowedOn(LocalDateTime.now());
+        borrowing.setShouldReturnOn(LocalDate.now().plus(createBorrowing.getWeeks(), ChronoUnit.WEEKS));
         borrowing.setBook(book);
         borrowing.setLender(lender);
 
@@ -117,7 +120,7 @@ class BorrowingService {
                 .stream()
                 .findFirst()
                 .orElseThrow(() -> new BookNeverBorrowedException(invnr));
-        borrowing.setReturnedOn(new Date());
+        borrowing.setReturnedOn(LocalDateTime.now());
 
         repository.save(borrowing);
 
