@@ -17,7 +17,7 @@ public interface BookRepository extends PagingAndSortingRepository<Book, Long> {
 
     Optional<Book> findBookByInvnr(String invnr);
 
-    Page<Book> findBooksByInvnrContainingOrIsbnContainingOrTitleContainingOrAuthorContainingIgnoreCaseAndDeletedOnIsNull(String invnr, String isbn, String title, String author, Pageable pageable);
+    Page<Book> findBooksByInvnrIgnoreCaseContainingOrIsbnContainingOrTitleContainingIgnoreCaseOrAuthorContainingIgnoreCaseAndDeletedOnIsNull(String invnr, String isbn, String title, String author, Pageable pageable);
 
     Page<Book> findAll(Pageable pageable);
 

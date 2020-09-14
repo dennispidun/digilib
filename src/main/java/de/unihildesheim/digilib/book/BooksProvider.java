@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.Min;
 import java.time.LocalDate;
-import java.util.Calendar;
 import java.util.Date;
 
 @Service
@@ -51,7 +50,7 @@ public class BooksProvider {
 
     public Page<ListBookDto> searchForPaginated(String search, @Min(1) int pageNo, int pageSize) {
         return repository
-                .findBooksByInvnrContainingOrIsbnContainingOrTitleContainingOrAuthorContainingIgnoreCaseAndDeletedOnIsNull(
+                .findBooksByInvnrIgnoreCaseContainingOrIsbnContainingOrTitleContainingIgnoreCaseOrAuthorContainingIgnoreCaseAndDeletedOnIsNull(
                         search, search, search, search, PageRequest.of(pageNo, pageSize))
                 .map(book -> new ListBookDto(book));
     }
