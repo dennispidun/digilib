@@ -2,6 +2,8 @@ div.page {
   display: grid;
   grid-template-rows: 1.5em auto;
 
+  padding: 2rem;
+
   h1 {
     grid-row-start: 1;
     vertical-align: middle;
@@ -93,6 +95,14 @@ table {
 
 .tableAlign {
   vertical-align: middle;
+}
+
+.overdue {
+  background-color: rgba(250,20,20, 0.1);
+}
+
+.returnToday {
+  background-color: rgba(210, 255, 0, 0.2);
 }
 
 .book-actions {

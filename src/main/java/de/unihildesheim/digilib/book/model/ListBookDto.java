@@ -10,6 +10,8 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,23 +20,44 @@ public class ListBookDto extends BookDto {
     private LocalDateTime borrowedOn;
     private String borrowerName;
     private LocalDateTime returnedOn;
+    private LocalDate shouldReturnOn;
+    private int daysOverdue;
 
-    public ListBookDto(Book book, LocalDateTime borrowedOn) {
+    public ListBookDto(Book book) {
         this.setAuthor(book.getAuthor());
         this.setInvnr(book.getInvnr());
         this.setIsbn(book.getIsbn());
         this.setTitle(book.getTitle());
         this.setCreatedOn(book.getCreatedOn());
-        this.setBorrowedOn(borrowedOn);
 
-        if (borrowedOn == null
-                || (book.getBorrowings() != null
-                && book.getBorrowings().size() >= 1
-                && book.getBorrowings().get(0) != null)) {
-            this.setBorrowedOn(book.getBorrowings().get(0).getBorrowedOn());
+        if (book.getBorrowings() != null && book.getBorrowings().size() > 0) {
             Borrowing borrowing = book.getBorrowings().get(0);
+            if (borrowing.getReturnedOn() == null) {
+
+                this.setBorrowedOn(borrowing.getBorrowedOn());
+                this.setReturnedOn(borrowing.getReturnedOn());
+                this.setShouldReturnOn(borrowing.getShouldReturnOn());
+                this.setBorrowerName(borrowing.getBorrower().getFirstname() + " " + borrowing.getBorrower().getLastname());
+                this.setDaysOverdue((int) DAYS.between(this.shouldReturnOn, LocalDate.now()));
+            }
+        }
+    }
+
+    public ListBookDto(Borrowing borrowing) {
+        Book book = borrowing.getBook();
+
+        this.setAuthor(book.getAuthor());
+        this.setInvnr(book.getInvnr());
+        this.setIsbn(book.getIsbn());
+        this.setTitle(book.getTitle());
+        this.setCreatedOn(book.getCreatedOn());
+
+        if (borrowing.getReturnedOn() == null) {
+            this.setBorrowedOn(borrowing.getBorrowedOn());
             this.setReturnedOn(borrowing.getReturnedOn());
+            this.setShouldReturnOn(borrowing.getShouldReturnOn());
             this.setBorrowerName(borrowing.getBorrower().getFirstname() + " " + borrowing.getBorrower().getLastname());
+            this.setDaysOverdue((int) DAYS.between(this.shouldReturnOn, LocalDate.now()));
         }
     }
 
