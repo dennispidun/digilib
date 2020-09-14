@@ -7,7 +7,6 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Objects;
 
 import static java.time.temporal.ChronoUnit.DAYS;
@@ -33,6 +32,7 @@ public class ListBookDto extends BookDto {
         this.setType(book.getType());
         this.setComment(book.getComment());
         this.setPrice(book.getPrice());
+        this.setDeletedOn(book.getDeletedOn());
 
         if (book.getBorrowings() != null && book.getBorrowings().size() > 0) {
             Borrowing borrowing = book.getBorrowings().get(0);

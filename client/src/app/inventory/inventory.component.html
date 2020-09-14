@@ -15,7 +15,7 @@
               <a class="page-link" (click)="back()">Zurück</a>
             </li>
             <li class="page-item active">
-              <p class="page-link">{{ pageNo + 1 }}</p>
+              <p class="page-link">{{ pageNo + 1 }} von {{(pagesCount == 0) ? '1' : pagesCount}}</p>
             </li>
             <li class="page-item" [ngClass]="(last || loading)  && 'disabled'">
               <a class="page-link" (click)="next()">Weiter</a>

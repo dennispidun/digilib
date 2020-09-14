@@ -3,6 +3,9 @@
     <h1>
       {{book.title}}
     </h1>
+    <p id="archived" *ngIf="book.deletedOn !== null">
+      (archiviert)
+    </p>
     <p><span style="font-weight: 900">#</span>{{book.invnr}}</p>
 
     <dl>
@@ -26,6 +29,8 @@
 
       <p>Erstellt am {{book.createdOn | date : 'dd.MM.yyyy'}}</p>
 
+      <p id="archived" *ngIf="book.deletedOn !== null">Archiviert am {{book.deletedOn | date : 'dd.MM.yyyy'}}</p>
+
       <dt>Ausleihstatus:</dt>
       <dd *ngIf="!book.borrowedOn">Nicht verliehen</dd>
       <dd *ngIf="book.borrowedOn && book.daysOverdue <= 0">Verliehen</dd>
@@ -37,19 +42,13 @@
         an <span style="font-weight: 900">{{book.borrowerName}}</span>
       </p>
 
-
-
-
-      <p *ngIf="!book.borrowedOn || book.returnedOn">
-        Aktuell nicht verliehen.
-      </p>
     </dl>
 
     <div class="actions">
-      <button *ngIf="!book.borrowedOn || book.returnedOn" type="button" class="btn btn-success" (click)="borrow()">
+      <button *ngIf="!book.borrowedOn || book.returnedOn" [disabled]="book.deletedOn !== null" type="button" class="btn btn-success" (click)="borrow()">
         Verleihen
       </button>
-      <button *ngIf="book.borrowedOn && !book.returnedOn" type="button" class="btn btn-primary" (click)="cancel()">
+      <button *ngIf="book.borrowedOn && !book.returnedOn" [disabled]="book.deletedOn !== null" type="button" class="btn btn-primary" (click)="cancel()">
         Zurücknehmen
       </button>
       <button type="button" class="btn btn-info" (click)="edit()">

@@ -83,6 +83,7 @@ public class BookController {
         book.setComment(dto.getComment());
         book.setType(dto.getType());
         book.setAuthor(dto.getAuthor());
+        book.setDeletedOn(dto.getDeletedOn());
 
         if (book.getGenre() == null ||
                 (dto.getGenre() != null && !book.getGenre().getGenre().equalsIgnoreCase(dto.getGenre().getGenre()))) {

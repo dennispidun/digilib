@@ -13,8 +13,8 @@
   <input type="text" class="form-control" [class.is-invalid]="error.author.length > 0" [(ngModel)]="book.author" placeholder="Autor*">
   <small *ngIf="error.author.length > 0" class="form-text text-danger">{{error.author}}</small>
 
-  <p>ISBN*:</p>
-  <input type="text" class="form-control" [class.is-invalid]="error.isbn.length > 0" [(ngModel)]="book.isbn" placeholder="ISBN*">
+  <p>ISBN:</p>
+  <input type="text" class="form-control" [class.is-invalid]="error.isbn.length > 0" [(ngModel)]="book.isbn" placeholder="ISBN">
   <small *ngIf="error.isbn.length > 0" class="form-text text-danger">{{error.isbn}}</small>
 
   <p>Genre:</p>
@@ -34,6 +34,7 @@
 
 
 </div>
-<div class="modal-footer">
-  <button type="button" class="btn btn-outline-success" (click)="modify()">Ändern</button>
+<div class="modal-footer" id="footer">
+  <button type="button" class="btn btn-danger" (click)="modify(true)">{{(book.deletedOn === null) ? 'Archivieren' : 'Wiederherstellen'}}</button>
+  <button type="button" class="btn btn-outline-success" (click)="modify(false)">Ändern</button>
 </div>

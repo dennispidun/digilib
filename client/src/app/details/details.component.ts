@@ -68,8 +68,6 @@ export class DetailsComponent implements OnInit {
     const modalRef = this.modalService.open(EditBookComponent);
     modalRef.componentInstance.book = JSON.parse(JSON.stringify(this.book));
     modalRef.result.then((newBook) => {
-      //this.book = newBook;
-
       Object.assign(this.book, newBook);
     });
   }

@@ -4,7 +4,6 @@ import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {Observable, of} from "rxjs";
 import {debounceTime, distinctUntilChanged, map, switchMap} from "rxjs/operators";
 import {HttpClient} from "@angular/common/http";
-import {Genre} from "../details/genre.model";
 
 @Component({
   selector: 'app-edit-book',
@@ -75,8 +74,16 @@ export class EditBookComponent implements OnInit, OnDestroy {
     }
   }
 
-  modify() {
+  modify(archive) {
     this.validate();
+
+    if (archive) {
+      if (this.book.deletedOn === null) {
+        this.book.deletedOn = new Date();
+      } else {
+        this.book.deletedOn = null;
+      }
+    }
 
     this.http.patch("/api/books/" + this.book.invnr, this.book).subscribe((data) => {
       this.activeModal.close(data);

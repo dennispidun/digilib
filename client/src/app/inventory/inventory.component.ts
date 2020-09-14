@@ -24,6 +24,7 @@ export class InventoryComponent implements OnInit {
   nextBooks: Book[] | undefined = undefined;
 
   booksCount = 0;
+  pagesCount = 0;
 
   first = true;
   last: boolean;
@@ -94,6 +95,7 @@ export class InventoryComponent implements OnInit {
         this.first = data.first;
         this.last = data.last;
         this.booksCount = data.totalElements;
+        this.pagesCount = Math.ceil(this.booksCount / 10);
 
         if(!this.last) {
           this.getBooks(pageNo + 1, searchOption, behindOption).then((books: any) => {
