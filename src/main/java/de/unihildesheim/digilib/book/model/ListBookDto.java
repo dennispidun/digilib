@@ -27,10 +27,7 @@ public class ListBookDto extends BookDto {
         this.setCreatedOn(book.getCreatedOn());
         this.setBorrowedOn(borrowedOn);
 
-        if (borrowedOn == null
-                || (book.getBorrowings() != null
-                && book.getBorrowings().size() >= 1
-                && book.getBorrowings().get(0) != null)) {
+        if (borrowedOn != null) {
             this.setBorrowedOn(book.getBorrowings().get(0).getBorrowedOn());
             Borrowing borrowing = book.getBorrowings().get(0);
             this.setReturnedOn(borrowing.getReturnedOn());
