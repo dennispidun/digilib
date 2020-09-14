@@ -29,7 +29,6 @@ export class ContentComponent implements OnInit {
 
   edit() {
     this.app.editUser(this.user, false).then(() => {
-      console.log("closed.test132")
     })
   }
 }
