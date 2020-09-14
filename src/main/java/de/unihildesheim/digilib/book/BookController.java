@@ -2,7 +2,10 @@ package de.unihildesheim.digilib.book;
 
 import de.unihildesheim.digilib.book.imports.ImportHandler;
 import de.unihildesheim.digilib.book.imports.ImportResultDto;
-import de.unihildesheim.digilib.book.model.*;
+import de.unihildesheim.digilib.book.model.Book;
+import de.unihildesheim.digilib.book.model.BookDto;
+import de.unihildesheim.digilib.book.model.ListBookDto;
+import de.unihildesheim.digilib.book.model.UpdateBookDto;
 import de.unihildesheim.digilib.borrowing.BorrowingService;
 import de.unihildesheim.digilib.genre.Genre;
 import de.unihildesheim.digilib.genre.GenreRepository;
@@ -96,13 +99,15 @@ public class BookController {
 
     @PostMapping("/import")
     public ResponseEntity<ImportResultDto> importBooks(@RequestParam("file") Optional<MultipartFile> file,
-                                                       @RequestParam("delimiter") char d, @RequestParam("pos") String pos,
+                                                       @RequestParam("delimiter") char d,
+                                                       @RequestParam("utf8") boolean en,
+                                                       @RequestParam("pos") String pos,
                                                        @RequestParam("path") Optional<String> path) {
         try {
             if (file.isPresent()) {
-                return this.importHandler.importCSV(file.get().getInputStream(), d, pos).report();
+                return this.importHandler.importCSV(file.get().getInputStream(), d, en, pos).report();
             } else if (path.isPresent()){
-                return this.importHandler.importLocal(path.get(), d, pos).report();
+                return this.importHandler.importLocal(path.get(), d, en, pos).report();
             } else {
                 return new ImportResultDto("Es wurde nichts zum Importieren übergeben.").report();
             }

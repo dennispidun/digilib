@@ -31,10 +31,10 @@ public class ImportHandler {
 
     @PostConstruct
     public void checkLocal() {
-        importLocal("./importfolder", '|', "01234567");
+        importLocal("./importfolder", '|', false, "01234567");
     }
 
-    public ImportResultDto importLocal(String path, char d, String pos) {
+    public ImportResultDto importLocal(String path, char d, boolean en, String pos) {
         ImportResultDto result = new ImportResultDto();
         if (new File(path).mkdirs()) {
             result.addErr(ImportError.FOLDEREMPTY, path);
@@ -44,7 +44,7 @@ public class ImportHandler {
                         Files.isRegularFile(p) && Files.isReadable(p)).map(Path::toFile).collect(Collectors.toList())) {
                     try {
                         FileInputStream fs = new FileInputStream(fileP);
-                        result.addDto(importCSV(fs, d, pos));
+                        result.addDto(importCSV(fs, d, en, pos));
                         fs.close();
                         if (result.getRealErrs() == 0) {
                             File mv = new File("./imported");
@@ -64,10 +64,10 @@ public class ImportHandler {
         return result;
     }
 
-    public ImportResultDto importCSV(InputStream input, char d, String p) {
+    public ImportResultDto importCSV(InputStream input, char d, boolean en, String p) {
         ImportResultDto result = new ImportResultDto();
         try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(input, "Cp1252"));
+            BufferedReader br = new BufferedReader(new InputStreamReader(input, (en ? "UTF-8" : "Cp1252")));
             String line;
             try {
                 while ((line = br.readLine()) != null) {

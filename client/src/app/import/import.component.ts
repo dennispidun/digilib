@@ -16,6 +16,7 @@ export class ImportComponent implements OnInit {
   @ViewChild("fileUpload", {static: false}) fileUpload: ElementRef;
   files = [];
   delimiter: string;
+  utf8: boolean;
 
   columns = [
     'Author',
@@ -41,6 +42,7 @@ export class ImportComponent implements OnInit {
     this.delimiter = "|";
     this.path = "./importfolder/";
     this.result = "";
+    this.utf8 = false;
   }
 
   drop(event: CdkDragDrop<string[]>) {
@@ -51,6 +53,7 @@ export class ImportComponent implements OnInit {
   createData(file): FormData {
     const formData = new FormData();
     formData.append("delimiter", this.delimiter);
+    formData.append("utf8", this.utf8.toString());
     formData.append("pos", this.pos.toString().replace(/,/g, ''));
     if (file === null) {
       formData.append("path", this.path);

@@ -17,7 +17,11 @@
            #fileUpload
            id="fileUpload"
            name="fileUpload"
-           multiple="multiple" >
+           multiple="multiple">
+    <section>
+      <input type="checkbox" name="encoding" id="encoding" [(ngModel)]="utf8">
+      <label for="encoding">UTF-8 statt ANSI benutzen</label>
+    </section>
     <label for="delimiter">Trennzeichen:</label>
     <section>
       <input class="form-control" id="delimiter" name="delimiter" [(ngModel)]="delimiter" maxlength="1" placeholder="|" size="1">
