@@ -29,6 +29,10 @@ public class ListBookDto extends BookDto {
         this.setIsbn(book.getIsbn());
         this.setTitle(book.getTitle());
         this.setCreatedOn(book.getCreatedOn());
+        this.setGenre(book.getGenre());
+        this.setType(book.getType());
+        this.setComment(book.getComment());
+        this.setPrice(book.getPrice());
 
         if (book.getBorrowings() != null && book.getBorrowings().size() > 0) {
             Borrowing borrowing = book.getBorrowings().get(0);
