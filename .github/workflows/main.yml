@@ -59,29 +59,3 @@ jobs:
         with:
           name: app
           path: build/libs/digilib-*.jar
-  deploy:
-    needs: build-backend
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@master
-        with:
-          name: app
-          path: app-folder
-      - name: Copy file via scp
-        uses: appleboy/scp-action@master
-        env:
-          HOST: ${{ secrets.HOST }}
-          USERNAME: ${{ secrets.USERNAME }}
-          PORT: ${{ secrets.PORT }}
-          KEY: ${{ secrets.SSHKEY }}
-        with:
-          source: "app-folder"
-          target: "/opt/app"
-      - name: Executing remote  command
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST }}
-          USERNAME: ${{ secrets.USERNAME }}
-          PORT: ${{ secrets.PORT }}
-          KEY: ${{ secrets.SSHKEY }}
-          script: sh /opt/app/start.sh
