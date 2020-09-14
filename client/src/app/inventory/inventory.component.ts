@@ -119,7 +119,6 @@ export class InventoryComponent implements OnInit {
   next() {
     if (!this.last) {
       if (this.nextBooks) {
-        console.log(this.nextBooks);
         this.books = this.nextBooks;
       }
       this.pageNo++;
@@ -131,7 +130,6 @@ export class InventoryComponent implements OnInit {
   back() {
     if (!this.first) {
       if (this.beforeBooks) {
-        console.log("use beforeBooks");
         this.books = this.beforeBooks;
       }
       this.pageNo--;

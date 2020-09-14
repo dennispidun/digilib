@@ -28,7 +28,6 @@ public class UserController {
     @RequestMapping("/api/user")
     public User user(Principal user) {
         if (user == null || user.getName() == null) {
-            System.out.println("user = " + user);
             throw new UsernameNotFoundException("NULL");
         }
 
