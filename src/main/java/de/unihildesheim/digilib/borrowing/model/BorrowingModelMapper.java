@@ -2,6 +2,10 @@ package de.unihildesheim.digilib.borrowing.model;
 
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+
+import static java.time.temporal.ChronoUnit.DAYS;
+
 @Component
 public class BorrowingModelMapper {
 
@@ -11,7 +15,8 @@ public class BorrowingModelMapper {
         borrowingDto.setBorrowedOn(borrowing.getBorrowedOn());
         borrowingDto.setReturnedOn(borrowing.getReturnedOn());
         borrowingDto.setShouldReturnOn(borrowing.getShouldReturnOn());
-        borrowingDto.setDaysOverdue(0);
+        borrowingDto.setDaysOverdue(borrowing.getShouldReturnOn() != null ?
+                (int) DAYS.between(borrowing.getShouldReturnOn(), LocalDate.now()) : 0);
         if (borrowing.getLender() != null) {
             borrowingDto.setLenderFirstname(borrowing.getLender().getFirstname());
             borrowingDto.setLenderLastname(borrowing.getLender().getLastname());

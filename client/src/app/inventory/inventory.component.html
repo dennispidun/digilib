@@ -41,7 +41,9 @@
       <th style="width: 250px">Autor</th>
       <th style="width: 200px">Verliehen seit</th>
     </tr>
-    <tr *ngFor="let book of books" class="tableAlign" (click)="view(book)">
+    <tr *ngFor="let book of books" class="tableAlign" (click)="view(book)"
+        [class.overdue]="book.daysOverdue >= 0 && book.borrowedOn"
+        [class.returnToday]="book.daysOverdue == 0 && book.borrowedOn">
       <td>
         <p>{{ book.invnr}}</p>
       </td>
@@ -52,7 +54,7 @@
         <p>{{ book.title }}</p>
       </td>
       <td>
-        <p>{{ book.author }}</p>
+        <p>{{ book.author }}{{book.daysOverdue}}</p>
       </td>
       <td colspan="2">
         <p *ngIf="book.borrowedOn && !book.returnedOn">{{ book.borrowedOn | date : 'dd.MM.yyyy'}}</p>

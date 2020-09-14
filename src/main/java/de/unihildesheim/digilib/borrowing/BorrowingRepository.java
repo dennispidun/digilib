@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -17,6 +19,6 @@ interface BorrowingRepository extends PagingAndSortingRepository<Borrowing, Long
     List<Borrowing> getBorrowingByBorrower_IdAndReturnedOnIsNull(Long Id);
     List<Borrowing> getBorrowingByReturnedOn(Date returnedOn);
 
-    Page<Borrowing> findAllByBorrowedOnBeforeAndReturnedOnIsNull(Pageable pageable, Date before);
+    Page<Borrowing> findAllByShouldReturnOnBeforeAndReturnedOnIsNull(Pageable pageable, LocalDate before);
 
 }
