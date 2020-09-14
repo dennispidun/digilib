@@ -5,6 +5,8 @@ import de.unihildesheim.digilib.user.User;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -14,8 +16,14 @@ public class Borrowing {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Date borrowedOn;
-    private Date returnedOn;
+
+    @Column(nullable = false)
+    private LocalDateTime borrowedOn;
+
+    private LocalDateTime returnedOn;
+
+    @Column(nullable = false)
+    private LocalDate shouldReturnOn;
 
     @ManyToOne
     private Book book;

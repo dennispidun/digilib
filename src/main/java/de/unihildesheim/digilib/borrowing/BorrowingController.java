@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,7 +30,9 @@ class BorrowingController {
     }
 
     @RequestMapping(value = "/borrowings", method = RequestMethod.POST)
-    private ResponseEntity addBorrowing(Principal user, @PathVariable("invnr") String invnr, @RequestBody CreateBorrowingDto createBorrowingDto) throws BookAlreadyBorrowedException {
+    private ResponseEntity addBorrowing(Principal user, @PathVariable("invnr") String invnr,
+                                        @Valid @RequestBody CreateBorrowingDto createBorrowingDto)
+            throws BookAlreadyBorrowedException {
         User loggedInUser = this.userRepository.findUserByUsername(user.getName())
                 .orElseThrow(() -> new UserNotFoundException(user.getName()));
 

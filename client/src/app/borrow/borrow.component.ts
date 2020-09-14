@@ -19,11 +19,17 @@ const PARAMS = new HttpParams({
   styleUrls: ["./borrow.component.scss"]
 })
 export class BorrowComponent implements OnInit {
-  borrowerName: string;
 
   @Input() invnr: string;
 
-  error: string;
+  weeks = 1;
+  borrowerName: string;
+
+  error = {
+    name: "",
+    weeks: "",
+    general: ""
+  };
 
   msg: string;
 
@@ -72,16 +78,48 @@ export class BorrowComponent implements OnInit {
   }
 
   borrow() {
+    this.validate().then(() => {
+      this.http.post("/api/books/" + this.invnr + "/borrowings", {
+        firstname: this.borrowerName.substring(0, this.borrowerName.lastIndexOf(" ")),
+        lastname: this.borrowerName.substring(this.borrowerName.lastIndexOf(" ") + 1),
+        weeks: this.weeks
+      }).subscribe((data) => {
+        this.activeModal.close(data);
+      }, (err) => {
+        if (err.error.apierror.message === "StudentCannotBorrowMultipleBooks") {
+          this.error.general = "Ein Schüler darf nicht mehr als zwei Bücher gleichzeitig ausleihen.";
+        } else if (err.error.apierror.message === "Validation error") {
+          err.error.apierror.subErrors.forEach(apiError => {
+            this.error[apiError.field] = apiError.message;
+          });
+        }
 
-    this.http.post("/api/books/" + this.invnr + "/borrowings", {
-      firstname: this.borrowerName.substring(0, this.borrowerName.lastIndexOf(" ")),
-      lastname: this.borrowerName.substring(this.borrowerName.lastIndexOf(" ") + 1)
-    }).subscribe((data) => {
-      this.activeModal.close(data);
-    }, (err) => {
-      if (err.error.apierror.message === "StudentCannotBorrowMultipleBooks") {
-        this.error = "Ein Schüler darf nicht mehr als zwei Bücher gleichzeitig ausleihen.";
-      }
+      });
+    }).catch(() => {
+
     });
+  }
+
+  private validate(): Promise<any> {
+    if (!this.borrowerName.includes(" ")) {
+      this.searchFailed = true;
+      this.error.name = "Bitte geben Sie einen Vornamen an.";
+      return Promise.reject();
+    } else {
+      const firstname = this.borrowerName.substring(0, this.borrowerName.lastIndexOf(" "));
+      const lastname = this.borrowerName.substring(this.borrowerName.lastIndexOf(" ") + 1);
+      if (firstname.length === 0) {
+        this.searchFailed = true;
+        this.error.name = "Bitte geben Sie einen Vornamen an.";
+        return Promise.reject();
+      }
+      if (lastname.length === 0) {
+        this.searchFailed = true;
+        this.error.name = "Bitte geben Sie einen Nachnamen an.";
+        return Promise.reject();
+      }
+    }
+
+    return Promise.resolve();
   }
 }
