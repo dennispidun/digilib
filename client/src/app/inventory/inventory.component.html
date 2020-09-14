@@ -54,7 +54,7 @@
         <p>{{ book.title }}</p>
       </td>
       <td>
-        <p>{{ book.author }}</p>
+        <p>{{ book.author }}{{book.daysOverdue}}</p>
       </td>
       <td colspan="2">
         <p *ngIf="book.borrowedOn && !book.returnedOn">{{ book.borrowedOn | date : 'dd.MM.yyyy'}}</p>

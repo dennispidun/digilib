@@ -15,7 +15,8 @@ public class BorrowingModelMapper {
         borrowingDto.setBorrowedOn(borrowing.getBorrowedOn());
         borrowingDto.setReturnedOn(borrowing.getReturnedOn());
         borrowingDto.setShouldReturnOn(borrowing.getShouldReturnOn());
-        borrowingDto.setDaysOverdue((int) DAYS.between(borrowing.getShouldReturnOn(), LocalDate.now()));
+        borrowingDto.setDaysOverdue(borrowing.getShouldReturnOn() != null ?
+                (int) DAYS.between(borrowing.getShouldReturnOn(), LocalDate.now()) : 0);
         if (borrowing.getLender() != null) {
             borrowingDto.setLenderFirstname(borrowing.getLender().getFirstname());
             borrowingDto.setLenderLastname(borrowing.getLender().getLastname());

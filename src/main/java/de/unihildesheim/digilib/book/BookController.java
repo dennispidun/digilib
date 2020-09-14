@@ -28,16 +28,13 @@ public class BookController {
 
     final BooksProvider booksProvider;
 
-    final BookModelMapper bookModelMapper;
-
     final ImportHandler importHandler;
 
-    public BookController(BookRepository repository, GenreRepository genreRepository, BorrowingService borrowingService, BooksProvider booksProvider, BookModelMapper bookModelMapper, ImportHandler importHandler) {
+    public BookController(BookRepository repository, GenreRepository genreRepository, BorrowingService borrowingService, BooksProvider booksProvider, ImportHandler importHandler) {
         this.repository = repository;
         this.genreRepository = genreRepository;
         this.borrowingService = borrowingService;
         this.booksProvider = booksProvider;
-        this.bookModelMapper = bookModelMapper;
         this.importHandler = importHandler;
     }
 
@@ -72,7 +69,7 @@ public class BookController {
     public ResponseEntity<ListBookDto> getBook(@PathVariable("invnr") String invnr) {
         String decInvnr = URLDecoder.decode(invnr, StandardCharsets.UTF_8);
         Book book = repository.findBookByInvnr(decInvnr).orElseThrow(() -> new BookNotFoundException(decInvnr));
-        ListBookDto bookDto = bookModelMapper.mapToListBook(book);
+        ListBookDto bookDto = new ListBookDto(book);
         return ResponseEntity.ok().body(borrowingService.addBorrowHistory(bookDto));
     }
 

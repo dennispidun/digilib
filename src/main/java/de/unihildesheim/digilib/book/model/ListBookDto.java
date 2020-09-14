@@ -38,7 +38,11 @@ public class ListBookDto extends BookDto {
                 this.setReturnedOn(borrowing.getReturnedOn());
                 this.setShouldReturnOn(borrowing.getShouldReturnOn());
                 this.setBorrowerName(borrowing.getBorrower().getFirstname() + " " + borrowing.getBorrower().getLastname());
-                this.setDaysOverdue((int) DAYS.between(this.shouldReturnOn, LocalDate.now()));
+
+                if (this.shouldReturnOn != null) {
+                    this.setDaysOverdue((int) DAYS.between(this.shouldReturnOn, LocalDate.now()));
+
+                }
             }
         }
     }

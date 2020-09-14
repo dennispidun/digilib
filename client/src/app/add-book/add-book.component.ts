@@ -20,7 +20,8 @@ export class AddBookComponent implements OnInit {
     isbn: "",
     invnr: "",
     title: "",
-    author: ""
+    author: "",
+    daysOverdue: 0
   };
   error = {
     isbn: "",

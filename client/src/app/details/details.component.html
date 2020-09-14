@@ -26,11 +26,19 @@
 
       <p>Erstellt am {{book.createdOn | date : 'dd.MM.yyyy'}}</p>
 
+      <dt>Ausleihstatus:</dt>
+      <dd *ngIf="!book.borrowedOn">Nicht verliehen</dd>
+      <dd *ngIf="book.borrowedOn && book.daysOverdue <= 0">Verliehen</dd>
+      <dd class="overdue" *ngIf="book.borrowedOn && book.daysOverdue > 0">Überzogen ({{book.daysOverdue}} Tage im Verzug)</dd>
+
       <p *ngIf="book.borrowedOn && !book.returnedOn">
         Verliehen am
         {{book.borrowedOn | date : 'dd.MM.yyyy'}}
         an <span style="font-weight: 900">{{book.borrowerName}}</span>
       </p>
+
+
+
 
       <p *ngIf="!book.borrowedOn || book.returnedOn">
         Aktuell nicht verliehen.

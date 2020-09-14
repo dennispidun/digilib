@@ -22,6 +22,11 @@ dd {
   min-height: 1em;
 }
 
+dd.overdue {
+  color: brown;
+  font-weight: 900;
+}
+
 button {
   margin-right: 0.5em;
 }
