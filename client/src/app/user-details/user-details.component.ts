@@ -28,7 +28,7 @@ export class UserDetailsComponent implements OnInit {
 
   editUser: User;
 
-  action = "erstellen";
+  action = "Erstellen";
   roleEditable = true;
 
   constructor(public activeModal: NgbActiveModal, private http: HttpClient) {
@@ -36,7 +36,7 @@ export class UserDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.editUser) {
-      this.action = "bearbeiten";
+      this.action = "Bearbeiten";
       this.user = {...this.editUser};
     }
   }
