@@ -2,7 +2,7 @@
 
   <table>
     <tr class="no-books">
-      <th class="booksCount" colspan="5">{{booksCount}} archivierte{{(booksCount > 1) ? ' Bücher' : 's Buch'}} gefunden.</th>
+      <th class="booksCount" colspan="5">{{booksCount}} archivierte{{(booksCount > 1 || booksCount == 0) ? ' Bücher' : 's Buch'}} gefunden.</th>
     </tr>
     <tr class="table-actions no-books">
       <th>
