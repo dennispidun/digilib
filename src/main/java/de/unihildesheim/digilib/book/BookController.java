@@ -10,6 +10,7 @@ import de.unihildesheim.digilib.borrowing.BorrowingService;
 import de.unihildesheim.digilib.genre.Genre;
 import de.unihildesheim.digilib.genre.GenreRepository;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -74,6 +75,15 @@ public class BookController {
         Book book = repository.findBookByInvnr(decInvnr).orElseThrow(() -> new BookNotFoundException(decInvnr));
         ListBookDto bookDto = new ListBookDto(book);
         return ResponseEntity.ok().body(borrowingService.addBorrowHistory(bookDto));
+    }
+
+    @GetMapping("/archived")
+    public Page<ListBookDto> getArchived(@RequestParam int pageNo,
+                                         @RequestParam int pageSize) {
+        if (pageNo < 0) {
+            throw new PageNoBelowZeroException(pageNo);
+        }
+        return repository.findByDeletedOnIsNotNull(PageRequest.of(pageNo, pageSize)).map(book -> new ListBookDto(book));
     }
 
     @PatchMapping("/{invnr}")

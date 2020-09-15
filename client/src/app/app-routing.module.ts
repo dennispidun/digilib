@@ -1,6 +1,7 @@
 import {NgModule} from "@angular/core";
 import {RouterModule, Routes} from "@angular/router";
 import {InventoryComponent} from "./inventory/inventory.component";
+import {ArchivedComponent} from "./archived/archived.component";
 import {DetailsComponent} from "./details/details.component";
 import {ContentComponent} from "./content/content.component";
 import {LoginComponent} from "./login/login.component";
@@ -16,6 +17,7 @@ const routes: Routes = [
     children: [
       {path: "book/:invnr", component: DetailsComponent},
       {path: "dashboard", component: InventoryComponent},
+      {path: "archive", component: ArchivedComponent},
       {path: "personen", component: BorrowerListComponent},
       {path: "benutzer", component: UserComponent},
       {path: "import", component: ImportComponent},

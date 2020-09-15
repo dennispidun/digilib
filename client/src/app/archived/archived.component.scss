@@ -1,0 +1,113 @@
+div.page {
+  display: grid;
+  grid-template-rows: 1.5em auto;
+
+  padding: 2rem;
+}
+
+table {
+  margin-top: 1.3em;
+  height: 100%;
+  width: calc(100%);
+
+  tr.description {
+
+    height: 70px;
+
+    & > * {
+      font-size: 20px;
+      color: #717171;
+      opacity: 1;
+    }
+  }
+
+  tr.header {
+    height: 40px;
+    font-size: 17px;
+    color: #717171;
+  }
+
+  tr {
+    height: 3.1em;
+
+
+    &:not(:nth-child(-n + 3)) {
+      cursor: pointer;
+      border-top: 0.12em solid #ddd;
+    }
+
+    &:not(:first-child) {
+      border-bottom: 0.12em solid #ddd;
+    }
+  }
+
+  tr:hover {
+    background-color: #f5f5f5;
+  }
+
+  td, th {
+    vertical-align : middle;
+
+    &:first-child {
+      padding-left: 1.2em;
+    }
+
+    &:last-child {
+      padding-right: 1.2em;
+    }
+  }
+
+  tr.no-books {
+    cursor: revert !important;
+    &:hover {
+      background-color: white;
+    }
+    border: 0;
+  }
+}
+
+.pagecontroller {
+
+  li {
+    a:not(.disabled) {
+      cursor: pointer;
+    }
+
+    .active p{
+      cursor: hand;
+    }
+  }
+}
+
+.table-actions {
+  & > * {
+    height: 2em;
+    padding-bottom: 1.25em;
+  }
+  padding-bottom: -40px;
+
+}
+
+.tableAlign {
+  vertical-align: middle;
+}
+
+.overdue {
+  background-color: rgba(250,20,20, 0.1);
+}
+
+.returnToday {
+  background-color: rgba(210, 255, 0, 0.2);
+}
+
+.book-actions {
+  & > * {
+    float: left;
+    max-width: 400px;
+    margin-right: 20px;
+  }
+}
+
+.booksCount {
+  font-size: 1.2em;
+}

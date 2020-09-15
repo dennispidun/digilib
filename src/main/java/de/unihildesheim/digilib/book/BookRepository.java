@@ -23,4 +23,8 @@ public interface BookRepository extends PagingAndSortingRepository<Book, Long> {
 
     Page<Book> findBooksByDeletedOn(Date deletedOn, Pageable pageable);
 
+    Page<Book> findByDeletedOnIsNotNull(Pageable pageable);
+
+    List<Book> findByDeletedOnIsNotNull();
+
 }

@@ -1,0 +1,48 @@
+<div class="page">
+
+  <table>
+    <tr class="no-books">
+      <th class="booksCount" colspan="5">{{booksCount}} archivierte{{(booksCount > 1) ? ' Bücher' : 's Buch'}} gefunden.</th>
+    </tr>
+    <tr class="table-actions no-books">
+      <th>
+        <nav class="pagecontroller">
+          <ul class="pagination">
+            <li class="page-item" [ngClass]="(first || loading) && 'disabled'">
+              <a class="page-link" (click)="back()">Zurück</a>
+            </li>
+            <li class="page-item active">
+              <p class="page-link">{{ pageNo + 1 }} von {{(pagesCount == 0) ? '1' : pagesCount}}</p>
+            </li>
+            <li class="page-item" [ngClass]="(last || loading)  && 'disabled'">
+              <a class="page-link" (click)="next()">Weiter</a>
+            </li>
+          </ul>
+        </nav>
+      </th>
+    </tr>
+    <tr class="header no-books">
+      <th style="width: 160px">Inventar-Nr</th>
+      <th style="width: 300px">Titel</th>
+      <th style="width: 250px">Autor</th>
+      <th style="width: 180px">ISBN</th>
+    </tr>
+    <tr *ngFor="let book of books" class="tableAlign" (click)="view(book)">
+      <td>
+        <p>{{ book.invnr}}</p>
+      </td>
+      <td>
+        <p>{{ book.title }}</p>
+      </td>
+      <td>
+        <p>{{ book.author }}</p>
+      </td>
+      <td>
+        <p>{{ book.isbn }}</p>
+      </td>
+    </tr>
+    <tr *ngIf="books.length == 0" class="no-books">
+      <td style="text-align: center" colspan="5">Keine Bücher gefunden</td>
+    </tr>
+  </table>
+</div>

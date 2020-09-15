@@ -4,6 +4,7 @@ import {FormsModule} from "@angular/forms";
 
 import {AppComponent} from "./app.component";
 import {InventoryComponent} from "./inventory/inventory.component";
+import {ArchivedComponent} from "./archived/archived.component";
 import {HTTP_INTERCEPTORS, HttpClientModule, HttpHandler, HttpInterceptor, HttpRequest} from "@angular/common/http";
 import {AppRoutingModule} from "./app-routing.module";
 import {DetailsComponent} from "./details/details.component";
@@ -36,6 +37,7 @@ export class XhrInterceptor implements HttpInterceptor {
   declarations: [
     AppComponent,
     InventoryComponent,
+    ArchivedComponent,
     DetailsComponent,
     BorrowComponent,
     ContentComponent,

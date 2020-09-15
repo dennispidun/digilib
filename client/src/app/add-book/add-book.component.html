@@ -4,7 +4,7 @@
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
-<div class="modal-body">
+<div class="modal-body" (keydown.enter)="create()">
   <input type="text" class="form-control" [class.is-invalid]="error.title.length > 0" [(ngModel)]="book.title" placeholder="Titel*">
   <small *ngIf="error.title.length > 0" class="form-text text-danger">{{error.title}}</small>
 
