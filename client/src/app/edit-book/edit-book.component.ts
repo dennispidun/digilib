@@ -74,16 +74,13 @@ export class EditBookComponent implements OnInit, OnDestroy {
     }
   }
 
-  modify(archive) {
-    this.validate();
+  archive() {
+    this.book.deletedOn = ((this.book.deletedOn === null) ? new Date() : null);
+    this.modify();
+  }
 
-    if (archive) {
-      if (this.book.deletedOn === null) {
-        this.book.deletedOn = new Date();
-      } else {
-        this.book.deletedOn = null;
-      }
-    }
+  modify() {
+    this.validate();
 
     this.http.patch("/api/books/" + this.book.invnr, this.book).subscribe((data) => {
       this.activeModal.close(data);
