@@ -19,7 +19,7 @@ public class ISBNUtils {
             int tot = 0;
             for (int i = 0; i < 12; i++) {
                 int digit = Integer.parseInt(isbn.substring(i, i + 1));
-                tot += (i % 2 == 0) ? digit * 1 : digit * 3;
+                tot += (i % 2 == 0) ? digit : digit * 3;
             }
 
             //checksum must be 0-9. If calculated as 10 then = 0
@@ -74,8 +74,7 @@ public class ISBNUtils {
         if (isbn == null) {
             return "";
         }
-        String newISBN = isbn.replaceAll("-", "").strip();
-        return newISBN;
+        return isbn.replaceAll("-", "").strip();
     }
 
 }
