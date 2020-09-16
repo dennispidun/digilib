@@ -10,6 +10,10 @@ div.page {
   }
 }
 
+.page-item.active p {
+  width: 4.63em;
+}
+
 table {
   margin-top: 1.3em;
   height: 100%;
@@ -71,6 +75,29 @@ table {
   }
 }
 
+.no-books th {
+  vertical-align: baseline;
+  padding-right: 1em;
+}
+
+#navbar {
+  width: 1px;
+}
+
+#searchbar {
+  width: 15em;
+  min-width: 15em;
+}
+
+#overduebox {
+  min-width: 15em;
+  width: 20em;
+}
+
+#createbutton {
+  min-width: 10em;
+}
+
 .pagecontroller {
 
   li {
@@ -115,4 +142,8 @@ table {
 
 .booksCount {
   font-size: 1.2em;
+}
+
+.books {
+  text-align: center;
 }

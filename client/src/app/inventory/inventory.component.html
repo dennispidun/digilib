@@ -7,8 +7,10 @@
     <tr class="no-books">
       <th class="booksCount" colspan="5">{{booksCount}} {{(booksCount > 1 || booksCount == 0) ? 'Bücher' : 'Buch'}} gefunden.</th>
     </tr>
+  </table>
+  <table>
     <tr class="table-actions no-books">
-      <th>
+      <th id="navbar">
         <nav class="pagecontroller">
           <ul class="pagination">
             <li class="page-item" [ngClass]="(first || loading) && 'disabled'">
@@ -23,17 +25,19 @@
           </ul>
         </nav>
       </th>
-      <th colspan="2">
+      <th colspan="2" id="searchbar">
         <input type="text" class="form-control" style="max-width: 500px;" placeholder="Inventar-Nr./ISBN/Titel/Autor" #search [disabled]="behind">
       </th>
-      <th>
+      <th id="overduebox">
         <input (change)="updateBehind()" ngbButton type="checkbox" [(ngModel)]="behind" id="behind"/>
         <label for="behind">Nur Bücher im Verzug anzeigen</label>
       </th>
-      <th>
+      <th id="createbutton">
         <button type="button" class="btn btn-outline-success" (click)="addBook()">Buch hinzufügen</button>
       </th>
     </tr>
+  </table>
+  <table class="books">
     <tr class="header no-books">
       <th style="width: 160px">Inventar-Nr</th>
       <th style="width: 180px">ISBN</th>
