@@ -4,7 +4,6 @@ export interface Borrower {
   lastname: string;
   teacher: boolean;
   unreturned: number;
-  grade: string;
 }
 
 export interface Borrow {
