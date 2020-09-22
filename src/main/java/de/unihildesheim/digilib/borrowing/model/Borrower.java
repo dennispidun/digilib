@@ -22,6 +22,8 @@ public class Borrower {
 
     private boolean teacher = false;
 
+    private String grade;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

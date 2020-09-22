@@ -60,6 +60,13 @@ public class BorrowerController {
         return borrowerRepository.save(borrower);
     }
 
+    @PatchMapping(value = "/{id}/grade", consumes = MediaType.TEXT_PLAIN_VALUE)
+    public Borrower setGrade(@PathVariable("id") long id, @RequestBody String grade) {
+        Borrower borrower = borrowerRepository.findById(id).orElseThrow(() -> new BorrowerNotFoundException(id));
+        borrower.setGrade(grade);
+        return borrowerRepository.save(borrower);
+    }
+
     @GetMapping(value = "/{id}/unreturned")
     public List<Borrowing> getUnreturned(@PathVariable("id") long id) {
         return borrowingRepository.getBorrowingByBorrower_IdAndReturnedOnIsNull(id);

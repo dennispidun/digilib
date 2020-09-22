@@ -63,5 +63,10 @@ export class BorrowerListComponent implements OnInit {
       .subscribe();
   }
 
+  setGrade(borrower: Borrower) {
+    if (borrower.grade !== null && borrower.grade !== '') {
+      this.http.patch(`/api/borrower/${borrower.id}/grade`, borrower.grade).subscribe();
+    }
+  }
 
 }

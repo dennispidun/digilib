@@ -20,6 +20,7 @@
       <th style="width: 180px">Vorname</th>
       <th style="width: 300px">Nachname</th>
       <th style="width: 250px">Lehrer?</th>
+      <th style="width: 250px">Klasse</th>
       <th style="width: 250px">Aktuell ausgeliehen</th>
     </tr>
     <tr *ngFor="let borrower of borrowers" class="tableAlign">
@@ -46,6 +47,9 @@
             <span class="slider round"></span>
           </label>
         </ng-template>
+      </td>
+      <td>
+        <input type="text" maxlength="4" class="grade" [(ngModel)]="borrower.grade" (change)="setGrade(borrower)">
       </td>
       <td>
         <p>{{ borrower.unreturned }}</p>
