@@ -15,5 +15,7 @@ export interface Borrow {
 
   lenderFirstname: string;
   lenderLastname: string;
+  receiverFirstname: string;
+  receiverLastname: string;
 
 }

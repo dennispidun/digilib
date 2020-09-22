@@ -114,12 +114,13 @@ class BorrowingService {
                 .collect(Collectors.toList());
     }
 
-    public BorrowingDto cancelLatestBorrowing(String invnr) {
+    public BorrowingDto cancelLatestBorrowing(String invnr, User receiver) {
         Borrowing borrowing = repository.getBorrowingByBook_InvnrOrderByBorrowedOnDesc(invnr)
                 .stream()
                 .findFirst()
                 .orElseThrow(() -> new BookNeverBorrowedException(invnr));
         borrowing.setReturnedOn(LocalDateTime.now());
+        borrowing.setReceiver(receiver);
 
         repository.save(borrowing);
 

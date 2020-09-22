@@ -12,6 +12,8 @@ public class BorrowingDto {
 
     private String lenderFirstname;
     private String lenderLastname;
+    private String receiverFirstname;
+    private String receiverLastname;
     private LocalDateTime borrowedOn;
     private LocalDateTime returnedOn;
     private LocalDate shouldReturnOn;

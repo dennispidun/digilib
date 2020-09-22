@@ -33,6 +33,9 @@ public class Borrowing {
     @ManyToOne
     private User lender;
 
+    @ManyToOne
+    private User receiver;
+
 
 
 }

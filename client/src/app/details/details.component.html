@@ -68,6 +68,7 @@
         <th style="width: 160px">Vorname</th>
         <th style="width: 160px">Nachname</th>
         <th style="width: 250px">Verliehen von</th>
+        <th style="width: 250px">Zurückgenommen von</th>
         <th style="width: 160px">Ausgeliehen am</th>
         <th style="width: 160px">Zurückgegeben am</th>
       </tr>
@@ -75,6 +76,7 @@
         <td>{{item.borrower.firstname}}</td>
         <td>{{item.borrower.lastname}}</td>
         <td>{{item.lenderFirstname}} {{item.lenderLastname}}</td>
+        <td>{{item.receiverFirstname}} {{item.receiverLastname}}</td>
         <td>{{item.borrowedOn | date : 'dd.MM.yyyy'}}</td>
         <td>{{item.returnedOn | date : 'dd.MM.yyyy'}}</td>
       </tr>

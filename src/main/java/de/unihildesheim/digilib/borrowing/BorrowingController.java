@@ -54,8 +54,10 @@ class BorrowingController {
     }
 
     @RequestMapping(value = "/latest-borrowing", method = RequestMethod.DELETE)
-    private ResponseEntity<BorrowingDto> cancelLatestBorrowing(@PathVariable("invnr") String invnr) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.cancelLatestBorrowing(invnr));
+    private ResponseEntity<BorrowingDto> cancelLatestBorrowing(Principal user, @PathVariable("invnr") String invnr) {
+        User loggedInUser = this.userRepository.findUserByUsername(user.getName())
+                .orElseThrow(() -> new UserNotFoundException(user.getName()));
+        return ResponseEntity.status(HttpStatus.OK).body(service.cancelLatestBorrowing(invnr, loggedInUser));
     }
 
 }
