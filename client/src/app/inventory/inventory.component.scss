@@ -40,7 +40,7 @@ table {
     height: 3.1em;
 
 
-    &:not(:nth-child(-n + 3)) {
+    &:not(:nth-child(-n + 1)) {
       cursor: pointer;
       border-top: 0.12em solid #ddd;
     }
