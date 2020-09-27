@@ -3,40 +3,45 @@
     Willkommen, {{user.firstname}} {{user.lastname}}!
   </h1>
 
-  <table>
-    <tr class="no-books">
-      <th class="booksCount" colspan="5">{{booksCount}} {{(booksCount > 1 || booksCount == 0) ? 'Bücher' : 'Buch'}} gefunden.</th>
-    </tr>
-  </table>
-  <table>
-    <tr class="table-actions no-books">
-      <th id="navbar">
-        <nav class="pagecontroller">
-          <ul class="pagination">
-            <li class="page-item" [ngClass]="(first || loading) && 'disabled'">
-              <a class="page-link" (click)="back()">Zurück</a>
-            </li>
-            <li class="page-item active">
-              <p class="page-link">{{ pageNo + 1 }} von {{(pagesCount == 0) ? '1' : pagesCount}}</p>
-            </li>
-            <li class="page-item" [ngClass]="(last || loading)  && 'disabled'">
-              <a class="page-link" (click)="next()">Weiter</a>
-            </li>
-          </ul>
-        </nav>
-      </th>
-      <th colspan="2" id="searchbar">
-        <input type="text" class="form-control" style="max-width: 500px;" placeholder="Inventar-Nr./ISBN/Titel/Autor" #search [disabled]="behind">
-      </th>
-      <th id="overduebox">
-        <input (change)="updateBehind()" ngbButton type="checkbox" [(ngModel)]="behind" id="behind"/>
-        <label for="behind">Nur Bücher im Verzug anzeigen</label>
-      </th>
-      <th id="createbutton">
-        <button type="button" class="btn btn-outline-success" (click)="addBook()">Buch hinzufügen</button>
-      </th>
-    </tr>
-  </table>
+  <p class="booksCount" colspan="5">{{booksCount}} {{(booksCount > 1 || booksCount == 0) ? 'Bücher' : 'Buch'}} gefunden.</p>
+
+  <div class="controls">
+    <div class="page-controller">
+      <nav>
+        <ul class="pagination">
+          <li class="page-item" [ngClass]="(first || loading) && 'disabled'">
+            <a class="page-link" (click)="back()">Zurück</a>
+          </li>
+          <li class="page-item active">
+            <p class="page-link">{{ pageNo + 1 }} von {{(pagesCount == 0) ? '1' : pagesCount}}</p>
+          </li>
+          <li class="page-item" [ngClass]="(last || loading)  && 'disabled'">
+            <a class="page-link" (click)="next()">Weiter</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <div class="searchbar">
+      <input type="text" class="form-control" style="max-width: 500px;" placeholder="Inventar-Nr./ISBN/Titel/Autor" #search [disabled]="behind">
+    </div>
+
+    <div class="overdueSelect">
+      <div ngbDropdown class="d-inline-block">
+        <button class="btn btn-secondary" id="dropdownBasic1" ngbDropdownToggle [(ngModel)]="filterText">
+          {{ (filterText.toString().length>20)? (filterText | slice:0:25)+'..':(filterText) }}
+        </button>
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <button [class.activeFilter]="item === filterText" ngbDropdownItem *ngFor="let item of getFilterTypes(); let i = index" (click)="select(i)">
+            {{ item }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="add-book">
+      <button type="button" class="btn btn-outline-success" (click)="addBook()">Buch hinzufügen</button>
+    </div>
+  </div>
   <table class="books">
     <tr class="header no-books">
       <th style="width: 160px">Inventar-Nr</th>

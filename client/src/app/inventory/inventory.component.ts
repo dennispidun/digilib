@@ -19,6 +19,8 @@ export class InventoryComponent implements OnInit {
 
   @ViewChild("search") searchElement: ElementRef;
 
+  filterText: string = BookFilter.ALL;
+
   books: Book[] = [];
   beforeBooks: Book[] | undefined = undefined;
   nextBooks: Book[] | undefined = undefined;
@@ -84,7 +86,7 @@ export class InventoryComponent implements OnInit {
       searchOption = "&search=" + this.searchElement.nativeElement.value;
     }
 
-    if (this.behind) {
+    if (this.filterText === BookFilter.OVERDUE) {
       behindOption = "&behind=true";
     }
 
@@ -196,4 +198,22 @@ export class InventoryComponent implements OnInit {
       this.addingBook = false;
     });
   }
+
+  // tslint:disable-next-line:no-shadowed-variable
+  select(filter) {
+    this.filterText = Object.values(BookFilter)[filter];
+    this.updateBehind();
+  }
+
+  getFilterTypes() : string[] {
+    return Object.values(BookFilter);
+  }
+}
+
+enum BookFilter {
+  ALL = "Alle Bücher anzeigen",
+  BORROWED = "Verliehene Bücher anzeigen",
+  OVERDUE = "Bücher im Verzug anzeigen",
+  WARNING = "Bücher, die Mahnung benötigen anzeigen",
+  INVOICE = "Bücher, die Rechnung benötigen anzeigen"
 }

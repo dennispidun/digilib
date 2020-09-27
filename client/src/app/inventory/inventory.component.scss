@@ -1,6 +1,6 @@
 div.page {
   display: grid;
-  grid-template-rows: 1.5em auto;
+  grid-tremplate-rows: 1.5rem auto;
 
   padding: 2rem;
 
@@ -10,12 +10,24 @@ div.page {
   }
 }
 
-.page-item.active p {
-  width: 4.63em;
+.controls {
+  padding: 10px 1rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  & > div{
+    margin: 0.75rem 0;
+  }
+}
+
+.searchbar {
+  min-width: 30rem;
 }
 
 table {
-  margin-top: 1.3em;
+  margin-top: 1.3rem;
   height: 100%;
   width: calc(100%);
 
@@ -37,16 +49,16 @@ table {
   }
 
   tr {
-    height: 3.1em;
+    height: 3.1rem;
 
 
     &:not(:nth-child(-n + 1)) {
       cursor: pointer;
-      border-top: 0.12em solid #ddd;
+      border-top: 0.12rem solid #ddd;
     }
 
     &:not(:first-child) {
-      border-bottom: 0.12em solid #ddd;
+      border-bottom: 0.12rem solid #ddd;
     }
   }
 
@@ -58,11 +70,11 @@ table {
     vertical-align : middle;
 
     &:first-child {
-      padding-left: 1.2em;
+      padding-left: 1.2rem;
     }
 
     &:last-child {
-      padding-right: 1.2em;
+      padding-right: 1.2rem;
     }
   }
 
@@ -77,28 +89,35 @@ table {
 
 .no-books th {
   vertical-align: baseline;
-  padding-right: 1em;
+  padding-right: 1rem;
 }
 
-#navbar {
-  width: 1px;
-}
+.overdueSelect {
+  button#dropdownBasic1 {
+    width: 15rem;
+  }
 
-#searchbar {
-  width: 15em;
-  min-width: 15em;
-}
 
-#overduebox {
-  min-width: 15em;
-  width: 20em;
+
+  div[ngbDropdownMenu=""] > * {
+    padding: 0.45rem 0.75rem;
+  }
+
+  div[ngbDropdownMenu=""] > *:hover {
+    background-color: rgba(220,220,220,0.5);
+  }
+
+  .activeFilter {
+    font-weight: 900;
+    background-color: rgba(220,220,220,0.45);
+  }
 }
 
 #createbutton {
-  min-width: 10em;
+  min-width: 10rem;
 }
 
-.pagecontroller {
+.page-controller {
 
   li {
     a:not(.disabled) {
@@ -109,16 +128,12 @@ table {
       cursor: hand;
     }
   }
-}
 
-.table-actions {
-  & > * {
-    height: 2em;
-    padding-bottom: 1.25em;
+  .page-item.active p {
+    min-width: 6rem;
   }
-  padding-bottom: -40px;
-
 }
+
 
 .tableAlign {
   vertical-align: middle;
@@ -132,16 +147,8 @@ table {
   background-color: rgba(210, 255, 0, 0.2);
 }
 
-.book-actions {
-  & > * {
-    float: left;
-    max-width: 400px;
-    margin-right: 20px;
-  }
-}
-
 .booksCount {
-  font-size: 1.2em;
+  font-size: 1.2rem;
 }
 
 .books {
