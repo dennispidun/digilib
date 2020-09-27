@@ -1,45 +1,40 @@
 .header {
+  display: flex;
+  justify-content: space-between;
   position: fixed;
-  top: 0;
-  height: 6vh;
+  height: 4rem;
   width:100%;
   background-color: #A7C407;
   z-index: 100;
-  display: grid;
-  grid-template-columns: 90% 9%;
-  grid-column-gap: 0.3rem;
   color: white;
-  padding-left: 2.5rem;
-  padding-right: 0.3rem;
-  line-height: 5.5vh;
-  grid-template-rows: 6vh;
+  line-height: 2rem;
+  padding: 0 2rem;
 
   .title {
-    grid-column: 1;
-    font-size: 3vh;
-    min-width: 25em;
+    justify-self: flex-start;
+    font-size: 1.5rem;
+    min-width: 20em;
+    margin: auto 0;
   }
 
   .user {
-    grid-column: 2;
-    align-self: center;
-    #account {
-      line-height: 1rem;
-      float: right;
-      p {
-        font-size: 1.05em;
-        a {
-          &:hover {
-            cursor: pointer;
-            text-decoration: underline;
-          }
-          font-weight: 900;
-          color: #006fe3;
-          margin-left: 0.3rem;
+    justify-self: flex-end;
+    line-height: 1.2rem;
+    margin: auto 0;
+    float: right;
+    p {
+      font-size: 1rem;
+      a {
+        &:hover {
+          cursor: pointer;
+          text-decoration: underline;
+        }
+        font-weight: 900;
+        color: #006fe3;
+        margin-left: 0.3rem;
 
-          &:first-child {
-            margin-left: 0;
-          }
+        &:first-child {
+          margin-left: 0;
         }
       }
     }
@@ -49,9 +44,9 @@
 .navigation {
   position: fixed;
   width: 11rem;
-  height: 94vh;
+  height: 100%;
 
-  margin-top: 6vh;
+  margin-top: 4rem;
   background-color: white;
   color: gray;
 

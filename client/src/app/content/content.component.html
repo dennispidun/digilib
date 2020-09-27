@@ -3,13 +3,11 @@
     Digitale Bibliothek der Grundschule auf der Höhe
   </p>
   <div class="user">
-    <div id="account">
-      <p>Angemeldet als: </p>
-      <p *ngIf="user">
-        <a (click)="edit()">{{user.username}}</a>
-        <a (click)="logout()">(Logout)</a>
-      </p>
-    </div>
+    <p>Angemeldet als: </p>
+    <p *ngIf="user">
+      <a (click)="edit()">{{user.username}}</a>
+      <a (click)="logout()">(Logout)</a>
+    </p>
   </div>
 </div>
 <div class="page">
