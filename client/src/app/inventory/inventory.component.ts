@@ -21,6 +21,8 @@ export class InventoryComponent implements OnInit {
 
   filterText: string = BookFilter.ALL;
 
+  searchDisabled = false;
+
   books: Book[] = [];
   beforeBooks: Book[] | undefined = undefined;
   nextBooks: Book[] | undefined = undefined;
@@ -30,7 +32,6 @@ export class InventoryComponent implements OnInit {
 
   first = true;
   last: boolean;
-  behind = false;
 
   loading = false;
 
@@ -87,9 +88,14 @@ export class InventoryComponent implements OnInit {
     }
 
     if (this.filterText === BookFilter.OVERDUE) {
-      behindOption = "&behind=true";
+      behindOption = "&behind=0";
+    } else if (this.filterText === BookFilter.WARNING) {
+      behindOption = "&behind=1";
+    } else if (this.filterText === BookFilter.INVOICE) {
+      behindOption = "&behind=2";
+    } else if (this.filterText === BookFilter.BORROWED) {
+      behindOption = "&behind=-1000";
     }
-
 
     return this.http.get(`/api/books?pageNo=${pageNo}&pageSize=${this.PAGE_SIZE}${searchOption}${behindOption}`)
       .toPromise().then((data: any) => {
@@ -175,7 +181,7 @@ export class InventoryComponent implements OnInit {
       this.searchCache = "";
     }
 
-    if (!this.behind && !this.addingBook) {
+    if (this.filterText === BookFilter.ALL && !this.addingBook) {
       if (text.key !== "Enter") {
         this.searchCache += text.key;
         this.lastTimeKeyEntered = Date.now();
@@ -202,6 +208,7 @@ export class InventoryComponent implements OnInit {
   // tslint:disable-next-line:no-shadowed-variable
   select(filter) {
     this.filterText = Object.values(BookFilter)[filter];
+    this.searchDisabled = filter !== 0;
     this.updateBehind();
   }
 

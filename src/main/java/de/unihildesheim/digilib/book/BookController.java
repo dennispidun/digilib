@@ -46,21 +46,19 @@ public class BookController {
     public Page<ListBookDto> getBooks(@RequestParam(required = false) String search,
                                       @RequestParam int pageNo,
                                       @RequestParam int pageSize,
-                                      @RequestParam(required = false) Boolean behind) {
+                                      @RequestParam(required = false) Integer behind) {
         if (pageNo < 0) {
             throw new PageNoBelowZeroException(pageNo);
         }
 
-        behind = behind != null ? behind : false;
-
-        if (!behind) {
+        if (behind == null) {
             if (search == null || search.isEmpty()) {
                 return booksProvider.findPaginated(pageNo, pageSize);
             } else {
                 return booksProvider.searchForPaginated(search, pageNo, pageSize);
             }
         } else {
-            return booksProvider.findBehindPaginated(pageNo, pageSize);
+            return booksProvider.findBooksBehindPaginated(pageNo, pageSize, behind);
         }
     }
 

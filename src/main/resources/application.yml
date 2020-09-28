@@ -16,7 +16,13 @@ jwt:
   type: JWT
   audience: Digilib
 
-
+overdue:
+  days:
+    warning:
+      before: 6
+      after: 21
+    invoice:
+      before: 20
 security:
   ignored:
     - "*.bundle.*"

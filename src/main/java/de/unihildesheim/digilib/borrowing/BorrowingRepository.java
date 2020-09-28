@@ -18,6 +18,7 @@ interface BorrowingRepository extends PagingAndSortingRepository<Borrowing, Long
     List<Borrowing> getBorrowingByBorrower_IdAndReturnedOnIsNull(Long Id);
     List<Borrowing> getBorrowingByReturnedOn(Date returnedOn);
 
-    Page<Borrowing> findAllByShouldReturnOnBeforeAndReturnedOnIsNull(Pageable pageable, LocalDate before);
+    Page<Borrowing> findAllByShouldReturnOnAfterAndShouldReturnOnBeforeAndReturnedOnIsNull(Pageable pageable, LocalDate lower, LocalDate upper);
+    Page<Borrowing> findAllByShouldReturnOnBeforeAndReturnedOnIsNull(Pageable pageable, LocalDate lower);
 
 }
