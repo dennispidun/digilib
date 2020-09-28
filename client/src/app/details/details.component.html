@@ -3,7 +3,7 @@
     <h1>
       {{book.title}}
     </h1>
-    <p id="archived" *ngIf="book.deletedOn !== null">
+    <p class="archived" *ngIf="book.deletedOn !== null">
       (archiviert)
     </p>
     <p><span style="font-weight: 900">#</span>{{book.invnr}}</p>
@@ -29,7 +29,7 @@
 
       <p>Erstellt am {{book.createdOn | date : 'dd.MM.yyyy'}}</p>
 
-      <p id="archived" *ngIf="book.deletedOn !== null">Archiviert am {{book.deletedOn | date : 'dd.MM.yyyy'}}</p>
+      <p class="archived" *ngIf="book.deletedOn !== null">Archiviert am {{book.deletedOn | date : 'dd.MM.yyyy'}}</p>
 
       <dt>Ausleihstatus:</dt>
       <dd *ngIf="!book.borrowedOn">Nicht verliehen</dd>
