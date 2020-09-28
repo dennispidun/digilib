@@ -11,7 +11,7 @@ import {HttpClient} from "@angular/common/http";
 })
 export class LoginComponent implements OnInit {
 
-  credentials = {username: "admin", password: "password"};
+  credentials = {username: "", password: ""};
 
   error = "";
 
