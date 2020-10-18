@@ -49,6 +49,12 @@ export class XhrInterceptor implements HttpInterceptor {
     UserDetailsComponent,
     EditBookComponent
   ],
+  entryComponents: [
+    BorrowComponent,
+    UserDetailsComponent,
+    AddBookComponent,
+    EditBookComponent
+  ],
     imports: [
         NgbModule,
         BrowserModule,

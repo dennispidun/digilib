@@ -67,6 +67,7 @@
       <tr class="header">
         <th style="width: 160px">Vorname</th>
         <th style="width: 160px">Nachname</th>
+        <th style="width: 160px">Klasse</th>
         <th style="width: 250px">Verliehen von</th>
         <th style="width: 250px">Zurückgenommen von</th>
         <th style="width: 160px">Ausgeliehen am</th>
@@ -75,6 +76,7 @@
       <tr *ngFor="let item of history">
         <td>{{item.borrower.firstname}}</td>
         <td>{{item.borrower.lastname}}</td>
+        <td>{{item.borrower.grade}}</td>
         <td>{{item.lenderFirstname}} {{item.lenderLastname}}</td>
         <td>{{item.receiverFirstname}} {{item.receiverLastname}}</td>
         <td>{{item.borrowedOn | date : 'dd.MM.yyyy'}}</td>
